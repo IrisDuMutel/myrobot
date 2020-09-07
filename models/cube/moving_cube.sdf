@@ -4,6 +4,15 @@
     <static>false</static>
 
     <link name="cube_base">
+      <inertial>
+        <mass>15.0</mass>
+        <origin xyz="0.0 0 0.1" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.1</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.1</iyy> <iyz>0</iyz>
+          <izz>0.1</izz>
+        </inertia>
+      </inertial>
       <pose>0 0 0.1 0 0 0</pose>
       <collision name="collision">
         <geometry>
@@ -129,7 +138,7 @@
     </joint>
 
     <link name='RealSense'>
-      <pose>0 0 0.16 0 0 -3.14</pose>
+      <pose>0.225 0 0.1 0 0 0</pose>
         <collision name='collision'>
            <geometry>
             <box>
@@ -145,29 +154,33 @@
             </box>
           </geometry>
         </visual>
-        <sensor type='camera' name='RealSense'>
-          <always_on>true</always_on>
-          <visualize>true</visualize>
-          
-          <camera name='Realsense'>
-            <depth_camera>
-              <output>depths</output>
-            </depth_camera>        
+        <sensor type="camera" name="RealSense">
+          <update_rate>30.0</update_rate>
+          <camera name="head">
+            <horizontal_fov>1.5</horizontal_fov>  
+            <image>
+              <!--<width>800</width>
+              <height>800</height>-->
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.02</near>
+              <far>300</far>
+            </clip>
           </camera>
-          <plugin name="my_robot_camera_controller"
-            filename="myrobot_camera.so">
-          <alwaysOn>true</alwaysOn>
-          <updateRate>0.0</updateRate>
-          <cameraName>RealSense/</cameraName>
-          <imageTopicName>image_realsense</imageTopicName>
-          <cameraInfoTopicName>camera_realsense</cameraInfoTopicName>
-          <frameName>RealSense</frameName>
-          <hackBaseline>0.12</hackBaseline>
-          <distortionK1>0.0</distortionK1>
-          <distortionK2>0.0</distortionK2>
-          <distortionK3>0.0</distortionK3>
-          <distortionT1>0.0</distortionT1>
-          <distortionT2>0.0</distortionT2>
+          <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+            <alwaysOn>true</alwaysOn>
+            <updateRate>0.0</updateRate>
+            <cameraName>RealSense</cameraName>
+            <imageTopicName>image_raw</imageTopicName>
+            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+            <frameName>camera</frameName>
+            <hackBaseline>0.07</hackBaseline>
+            <distortionK1>0.0</distortionK1>
+            <distortionK2>0.0</distortionK2>
+            <distortionK3>0.0</distortionK3>
+            <distortionT1>0.0</distortionT1>
+            <distortionT2>0.0</distortionT2>
           </plugin>
         </sensor>
     </link>
@@ -180,22 +193,8 @@
         <xyz>0 0 1</xyz>
       </axis>
     </joint>
+        
     
-    <plugin name="my_robot_camera_controller"
-      filename="myrobot_camera.so">
-    <alwaysOn>true</alwaysOn>
-    <updateRate>0.0</updateRate>
-    <cameraName>RealSense/</cameraName>
-    <imageTopicName>image_realsense</imageTopicName>
-    <cameraInfoTopicName>camera_realsense</cameraInfoTopicName>
-    <frameName>RealSense</frameName>
-    <hackBaseline>0.12</hackBaseline>
-    <distortionK1>0.0</distortionK1>
-    <distortionK2>0.0</distortionK2>
-    <distortionK3>0.0</distortionK3>
-    <distortionT1>0.0</distortionT1>
-    <distortionT2>0.0</distortionT2>
-    </plugin>
   </model>
 </sdf>
 

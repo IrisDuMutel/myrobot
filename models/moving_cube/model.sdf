@@ -124,7 +124,7 @@
       <child>left_wheel</child>
       <parent>cube_base</parent>
       <axis>
-        <xyz>0 1 0</xyz>
+        <xyz>0 0 1</xyz>
       </axis>
     </joint>
 
@@ -133,7 +133,7 @@
       <child>right_wheel</child>
       <parent>cube_base</parent>
       <axis>
-        <xyz>0 1 0</xyz>
+        <xyz>0 0 1</xyz>
       </axis>
     </joint>
 
@@ -176,20 +176,6 @@
               <far>3</far>
             </clip>
           </camera>
-          <!--<plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-            <alwaysOn>true</alwaysOn>
-            <updateRate>0.0</updateRate>
-            <cameraName>RealSense</cameraName>
-            <imageTopicName>image_raw</imageTopicName>
-            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-            <frameName>camera</frameName>
-            <hackBaseline>0.07</hackBaseline>
-            <distortionK1>0.0</distortionK1>
-            <distortionK2>0.0</distortionK2>
-            <distortionK3>0.0</distortionK3>
-            <distortionT1>0.0</distortionT1>
-            <distortionT2>0.0</distortionT2>
-          </plugin>-->
           <plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
             <baseline>0.2</baseline>
             <alwaysOn>true</alwaysOn>
@@ -228,7 +214,26 @@
       </axis>
     </joint>
         
-    
+    <plugin name="cube_moving_code" filename="libgazebo_ros_diff_drive.so">
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <odometrySource>world</odometrySource>
+        <publishOdomTF>true</publishOdomTF>
+        <robotBaseFrame>cube_base</robotBaseFrame>
+        <publishWheelTF>false</publishWheelTF>
+        <publishTf>true</publishTf>
+        <publishWheelJointState>true</publishWheelJointState>
+        <legacyMode>false</legacyMode>
+        <updateRate>30</updateRate>
+        <leftJoint>left_wheel_hinge</leftJoint>
+        <rightJoint>right_wheel_hinge</rightJoint>
+        <wheelSeparation>0.4</wheelSeparation>
+        <wheelDiameter>0.2</wheelDiameter>
+        <!--<wheelAcceleration>1</wheelAcceleration>
+        <wheelTorque>10</wheelTorque>-->
+        <rosDebugLevel>na</rosDebugLevel>
+      </plugin>
   </model>
 </sdf>
 

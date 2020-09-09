@@ -22,8 +22,7 @@ if  __name__ == '__main__':
     try:
         while not rospy.is_shutdown():
             status.model_name = 'moving_cube'
-            status.pose.position.z=1
-            status.twist.angular.z = 0 #returns angles between 180 and -180 NOW IN DEG
+            status.twist.angular.z = 1 #returns angles between 180 and -180 NOW IN DEG
             pub.publish(status)
             rate.sleep()
 

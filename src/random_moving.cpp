@@ -13,7 +13,7 @@ int main (int argc, char **argv)
   gazebo_msgs::GetModelState currPosel;
   start_pose.position.x = currPosel.response.pose.position.x+0.01;
   start_pose.position.y = currPosel.response.pose.position.x+0.01;
-  start_pose.position.z = 1.0;
+  start_pose.position.z = 0.0;
   start_pose.orientation.x = 0.0;
   start_pose.orientation.y = 0.0;
   start_pose.orientation.z = 0.0;

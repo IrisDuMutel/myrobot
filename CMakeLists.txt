@@ -64,7 +64,7 @@ find_package(gazebo REQUIRED)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(DIRECTORY msg FILES Num.msg)
+ add_message_files(DIRECTORY msg FILES vect_msg.msg)
 
 
 ## Generate services in the 'srv' folder

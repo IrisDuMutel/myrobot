@@ -7,18 +7,27 @@ project(myrobot)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  gazebo_ros
-  controller_manager
-  joint_state_publisher
-  robot_state_publisher
-  rospy
-  rviz
-  std_msgs
-  gazebo_msgs
-)
 
+
+find_package(catkin REQUIRED COMPONENTS
+    roscpp
+    rospy
+    gazebo_ros
+    controller_manager
+    joint_state_publisher
+    robot_state_publisher
+    rospy
+    rviz
+    std_msgs
+    gazebo_msgs
+    image_transport
+    cv_bridge
+    sensor_msgs
+    message_generation
+    image_transport
+    nav_msgs
+    genmsg
+)
 find_package(gazebo REQUIRED)
 
 ## System dependencies are found with CMake's conventions
@@ -55,17 +64,13 @@ find_package(gazebo REQUIRED)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+# add_message_files(DIRECTORY msg FILES Num.msg)
+
 
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
-#   Service1.srv
-#   Service2.srv
+#   AddTwoInts.srv
 # )
 
 ## Generate actions in the 'action' folder
@@ -80,7 +85,8 @@ find_package(gazebo REQUIRED)
 #   DEPENDENCIES
 #   std_msgs
 # )
-
+generate_messages(DEPENDENCIES std_msgs nav_msgs)
+catkin_package(CATKIN_DEPENDS message_runtime)
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
@@ -113,35 +119,24 @@ find_package(gazebo REQUIRED)
 link_directories(${GAZEBO_LIBRARY_DIRS})
 include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
 
-# For earthquake_plugin plugin
-add_library(plannar_mover_plugin src/plannar_mover.cpp)
-target_link_libraries(plannar_mover_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 
-catkin_package(
-  DEPENDS
-    roscpp
-    gazebo_ros
-    controller_manager
-    joint_state_publisher
-    robot_state_publisher
-    rospy
-    rviz
-    std_msgs
-    gazebo_msgs
-)
+
 
 ###########
 ## Build ##
 ###########
-
+find_package(OpenCV REQUIRED)
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
-)
 
+
+
+include_directories(include
+  ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
+
+)
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/myrobot.cpp
@@ -156,6 +151,9 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 ## add_executable(random_moving src/random_moving.cpp)
+add_executable(camera_depth src/camera_depth.cpp)
+target_link_libraries(camera_depth ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -185,7 +183,10 @@ include_directories(
 #   scripts/my_python_script
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
-
+catkin_install_python(PROGRAMS scripts/try1.py scripts/realsense.py scripts/controller.py 
+                          scripts/camera.py scripts/trajplan.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
 # install(TARGETS ${PROJECT_NAME}_node
@@ -228,6 +229,5 @@ include_directories(
 # catkin_add_nosetests(test)
 
 
-add_executable(random_moving src/random_moving.cpp)
-target_link_libraries(random_moving ${catkin_LIBRARIES})
+
 ##add_dependencies(random_moving beginner_tutorials_generate_messages_cpp)

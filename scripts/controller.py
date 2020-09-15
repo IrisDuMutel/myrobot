@@ -69,8 +69,8 @@ if __name__ == "__main__":
             print(psi_ref)
             
             # Control
-            x_cmd = x_error*0.25
-            psi_cmd = psi_error*0.3
+            x_cmd = x_error*1
+            psi_cmd = psi_error*1
     
             # Normalization
             psi_cmd = psi_cmd/180 #degrees

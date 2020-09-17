@@ -7,7 +7,7 @@ from myrobot.msg import vect_msg
 import message_filters
 
 msg = vect_msg()
-def navigator():
+def random():
     rospy.init_node('trajplan',anonymous=True) # Create goal node called 'trajplan'
     pub = rospy.Publisher('ref_vel',vect_msg,queue_size=10) #create goal publisher in the topic ref_vel, with vector_msg msgs
     # and goal queue_size (size of outgoing message) of 10
@@ -38,7 +38,7 @@ def callback(rs_sub,pub):
 
 if  __name__ == '__main__':
     try:
-        navigator()
+        random()
     except rospy.ROSInterruptException:
         pass
     

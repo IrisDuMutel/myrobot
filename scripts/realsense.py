@@ -98,6 +98,21 @@ def callback(color_raw, depth_raw,pub):
         validIdxL = np.nonzero(valid_matrix[0:3,0])
         validIdxR = np.nonzero(valid_matrix[0:3,2])
         
+        # if(((len(validIdxL[0]))>1 and len(validIdxR[0]))>1):
+        #         angle = 180 - (np.mean(dist[validIdxL,0]) - np.mean(dist[validIdxR,2]))*180/np.pi
+        #         value = 1/np.amin(dist)
+        #         # #TODO remove print functions
+        #         # print(validIdxL[0])
+        #         # print(dist[validIdxL,0])
+        #         # saturation 
+        #         if value > 1/minDist:       # saturation to max speed
+        #             value = 1.5
+        #         if value<1/maxDist:     # saturation to min speed
+        #             value = 0
+        # else:
+        #     angle = 0
+        #     value = 0
+        
         if(((len(validIdxL[0]))>1 and len(validIdxR[0]))>1):
                 angle = 180 - (np.mean(dist[validIdxL,0]) - np.mean(dist[validIdxR,2]))*180/np.pi
                 value = 1/np.amin(dist)
@@ -112,7 +127,6 @@ def callback(color_raw, depth_raw,pub):
         else:
             angle = 0
             value = 0
-        
         print(angle, value)
         vect = [angle,value]
 

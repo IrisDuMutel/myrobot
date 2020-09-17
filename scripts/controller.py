@@ -59,7 +59,8 @@ def callback(vel_sub, x_sub, pub):
     # Error computation:
     x_error = x_ref-x_est
     psi_error = psi_ref-psi_est
-    print(psi_est)
+    # print(psi_est)
+    print(x_ref)
     print(psi_ref)
     
     # Control

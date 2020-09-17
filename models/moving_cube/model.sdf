@@ -167,13 +167,13 @@
           <camera>
             <horizontal_fov>1.5</horizontal_fov>
             <image>
-              <!--<width>640</width>
+              <width>640</width>
               <height>480</height>
-              <format>R8G8B8</format>-->
+              <format>R8G8B8</format><!---->
             </image>
             <clip>
               <near>0.05</near>
-              <far>3</far>
+              <far>100</far>
             </clip>
           </camera>
           <plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">

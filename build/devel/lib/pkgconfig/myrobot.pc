@@ -1,0 +1,8 @@
+prefix=/home/iris/catkin_ws/src/myrobot/build/devel
+
+Name: myrobot
+Description: Description of myrobot
+Version: 0.0.0
+Cflags: -I/home/iris/catkin_ws/src/myrobot/build/devel/include
+Libs: -L${prefix}/lib 
+Requires: message_runtime

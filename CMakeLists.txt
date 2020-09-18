@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     rospy
     gazebo_ros
+    gazebo_plugins
     controller_manager
     joint_state_publisher
     robot_state_publisher
@@ -86,7 +87,8 @@ find_package(gazebo REQUIRED)
 #   std_msgs
 # )
 generate_messages(DEPENDENCIES std_msgs nav_msgs)
-catkin_package(CATKIN_DEPENDS message_runtime)
+catkin_package(INCLUDE_DIRS plugins/light/include
+CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp)
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
@@ -118,10 +120,20 @@ catkin_package(CATKIN_DEPENDS message_runtime)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 link_directories(${GAZEBO_LIBRARY_DIRS})
 include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+add_library(contact SHARED plugins/contact/ContactPlugin.cc)
+target_link_libraries(contact ${GAZEBO_LIBRARIES})
 
+include_directories(plugins/light/include)
+include_directories( ${catkin_INCLUDE_DIRS} 
+                     ${Boost_INCLUDE_DIR} 
+                     ${GAZEBO_INCLUDE_DIRS}
+)
 
-
-
+add_library(${PROJECT_NAME} plugins/light/src/light_sensor_plugin.cpp)
+## Specify libraries to link a library or executable target against
+target_link_libraries( ${PROJECT_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} CameraPlugin )
 
 ###########
 ## Build ##
@@ -183,8 +195,7 @@ target_link_libraries(camera_depth ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 #   scripts/my_python_script
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
-catkin_install_python(PROGRAMS scripts/try1.py scripts/realsense.py scripts/controller.py 
-                          scripts/camera.py scripts/trajplan.py
+catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## Mark executables for installation

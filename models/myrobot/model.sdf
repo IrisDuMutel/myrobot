@@ -326,10 +326,10 @@
           </box>
         </geometry>
         <material> <!-- LED material -->
-            <ambient>0 0 1 1</ambient>
+            <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
-            <emissive>0 1 0 1</emissive>
+            <emissive>1 1 0 1</emissive>
           </material> <!-- End LED material -->
       </visual>
       <sensor name='camera' type='camera'>

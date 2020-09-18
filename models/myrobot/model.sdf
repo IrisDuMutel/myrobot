@@ -207,7 +207,7 @@
     </link>
 
     <link name='front_contact_sensor'>
-      <pose>0.2005 0 0.1 0 0 0</pose>
+      <pose>0.205 0 0.1 0 0 0</pose>
         <collision name='front_collision'>
            <geometry>
             <box>
@@ -253,7 +253,7 @@
     </link>
 
     <link name='back_contact_sensor'>
-      <pose>-0.2005 0 0.1 0 0 0</pose>
+      <pose>-0.205 0 0.1 0 0 0</pose>
         <collision name='back_collision'>
            <geometry>
             <box>
@@ -290,7 +290,7 @@
     </link>
     
     <link name='LightSensor'>
-      <pose>0.125 0.07 0.175 0 0 0</pose>
+      <pose>0.125 0.07 0.155 0 0 0</pose>
       <inertial>
         <mass>0.01</mass>
         <!-- <inertia>
@@ -325,6 +325,12 @@
             <size>0.01 0.01 0.01</size>
           </box>
         </geometry>
+        <material> <!-- LED material -->
+            <ambient>0 0 1 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 1 0 1</emissive>
+          </material> <!-- End LED material -->
       </visual>
       <sensor name='camera' type='camera'>
         <camera name='__default__'>

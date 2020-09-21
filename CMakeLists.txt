@@ -88,6 +88,7 @@ find_package(gazebo REQUIRED)
 # )
 generate_messages(DEPENDENCIES std_msgs nav_msgs)
 catkin_package(INCLUDE_DIRS plugins/light/include
+                            plugins/contact
 CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp)
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -126,12 +127,14 @@ add_library(contact SHARED plugins/contact/ContactPlugin.cc)
 target_link_libraries(contact ${GAZEBO_LIBRARIES})
 
 include_directories(plugins/light/include)
+include_directories(plugins/contact)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME} plugins/light/src/light_sensor_plugin.cpp)
+# add_library(${PROJECT_NAME} plugins/contact/ContactPlugin.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries( ${PROJECT_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} CameraPlugin )
 
@@ -163,8 +166,9 @@ include_directories(include
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 ## add_executable(random_moving src/random_moving.cpp)
-add_executable(camera_depth src/camera_depth.cpp)
-target_link_libraries(camera_depth ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+# add_executable(camera_depth src/camera_depth.cpp)
+# target_link_libraries(camera_depth ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
 ## Rename C++ executable without prefix
@@ -195,7 +199,8 @@ target_link_libraries(camera_depth ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 #   scripts/my_python_script
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
-catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py 
+catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py scripts/arbiter.py 
+                              scripts/random.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## Mark executables for installation

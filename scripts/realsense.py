@@ -128,7 +128,7 @@ def callback(color_raw, depth_raw,pub):
             angle = 0
             value = 0
         print(angle, value)
-        vect = [0,0.5]
+        vect = [angle,value]
 
         #FIXME: make a simultaneous visualization of depth and color frames
         if show_depth: 

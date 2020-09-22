@@ -5,7 +5,7 @@
 
     <link name="cube_base">
       <inertial>
-        <mass>1.50</mass>
+        <mass>15</mass>
         <origin xyz="0.0 0 0.047" rpy=" 0 0 0"/>
         <inertia>
           <ixx>1</ixx> <ixy>0</ixy> <ixz>0</ixz>
@@ -48,7 +48,7 @@
         <pose>0 -0.01 -0.08 0 0 0</pose>
         <geometry>
           <sphere>
-            <radius>0.045</radius>
+            <radius>0.07</radius>
           </sphere>
         </geometry>
 
@@ -63,11 +63,11 @@
           </friction>
         </surface> 
       </collision>
-      <visual name='caster_collision'>
+      <!-- <visual name='caster_collision'>
         <pose>0 -0.01 -0.08 0 0 0</pose>
         <geometry>
           <sphere>
-            <radius>0.045</radius>
+            <radius>0.07</radius>
           </sphere>
         </geometry>
         <material>
@@ -76,7 +76,7 @@
             <name>Gazebo/Black</name>
           </script>
         </material>
-      </visual>
+      </visual> -->
     </link>
 
     <link name='left_wheel'>
@@ -95,16 +95,16 @@
         <collision name='  collision'>
            <geometry>
             <cylinder>
-              <radius>.06</radius>
+              <radius>.08</radius>
               <length>0.025</length>
             </cylinder>
           </geometry>
         </collision>
 
-        <visual name='visual'>
+        <!-- <visual name='visual'>
           <geometry>
             <cylinder>
-              <radius>.06</radius>
+              <radius>.08</radius>
               <length>0.025</length>
             </cylinder>
           </geometry>
@@ -114,7 +114,7 @@
             <specular>0 0 0 0</specular>
             <emissive>0 0 0 1</emissive>
           </material>
-        </visual>
+        </visual> -->
     </link>
       
     <link name='right_wheel'>
@@ -133,15 +133,15 @@
         <collision name='  collision'>
            <geometry>
             <cylinder>
-              <radius>.06</radius>
+              <radius>.08</radius>
               <length>0.025</length>
             </cylinder>
           </geometry>
         </collision>
-        <visual name='visual'>
+        <!-- <visual name='visual'>
           <geometry>
             <cylinder>
-              <radius>.06</radius>
+              <radius>.08</radius>
               <length>0.025</length>
             </cylinder>
           </geometry>
@@ -151,7 +151,7 @@
             <specular>0 0 0 0</specular>
             <emissive>0 0 0 1</emissive>
         </material>
-        </visual>
+        </visual> -->
     </link>
 
     <link name='RealSense'>

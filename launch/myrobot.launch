@@ -18,16 +18,16 @@
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find myrobot)/models/myrobot/$(arg model).sdf" />
 
   <node pkg="gazebo_ros" type="spawn_model" name="spawn_sdf" args="-sdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
- <!--<node pkg="myrobot" name="trajplan" type="trajplan.py"/>
+ <!--<node pkg="myrobot" name="trajplan" type="trajplan.py"/>-->
 
   <node pkg="myrobot" name="controller" type="controller.py" output="screen"/>
-  <node name="image_view1" pkg="image_view" type="image_view" respawn="false" output="screen">
+  <!-- <node name="image_view1" pkg="image_view" type="image_view" respawn="false" output="screen">
   <remap from="image" to="/camera2/color/image_raw" />
-  </node>
-  <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/>-->
-  <!--<node pkg="myrobot" name="contact" type="contact.py" output="screen"/>-->
+  </node> -->
+  <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/>
+  <!--<node pkg="myrobot" name="contact" type="contact.py" output="screen"/>
   <node name="image_view2" pkg="image_view" type="image_view" respawn="false" output="screen">
   <remap from="image" to="/camera2/rgb/image_raw" />
   </node>
-  <node pkg="myrobot" name="light" type="light.py" output="screen"/> 
+  <node pkg="myrobot" name="light" type="light.py" output="screen"/> -->
 </launch>

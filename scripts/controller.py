@@ -101,7 +101,3 @@ if __name__ == "__main__":
         controller()            
     except rospy.ROSInterruptException:
         pass
-
-
-
-

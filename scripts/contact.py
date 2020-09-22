@@ -50,4 +50,3 @@ if  __name__ == '__main__':
         contact()
     except rospy.ROSInterruptException:
         pass
-    

@@ -200,7 +200,7 @@ include_directories(include
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py scripts/arbiter.py 
-                              scripts/random.py scripts/contact.py scripts/light.py
+                               scripts/contact.py scripts/light.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## Mark executables for installation

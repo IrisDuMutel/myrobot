@@ -12,10 +12,10 @@ This project intends to simulate the behaviour of a Devastator ground robot.
 
     
     cd catkin_ws
-    catkin_make...
+    catkin_make
     
     
--Check if it's working by launching any of the launchfiles included:
+-Check if it's working by launching any of the launch files included:
 
     
     roslaunch myrobot myrobot.launch

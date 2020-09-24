@@ -2,6 +2,9 @@
 <sdf version="1.5">
   <model name = "cube">
     <static>false</static>
+    
+    <!--LINKS-->
+
     <link name="link1">
       <collision name="collision">
         <geometry>

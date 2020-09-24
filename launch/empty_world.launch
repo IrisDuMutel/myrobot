@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
+<!-- Launch an empty world simulation -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find myrobot)/worlds/empty_world.world"/>
     <arg name="paused" value="false"/>

@@ -3,6 +3,8 @@
   <model name = "moving_cube">
     <static>false</static>
 
+    <!-- LINKS -->
+
     <link name="cube_base">
       <inertial>
         <mass>15.0</mass>
@@ -118,25 +120,7 @@
           </geometry>
         </visual>
     </link>
-
-    <joint type='revolute' name='left_wheel_hinge'>
-      <pose>0 0 -0.03 0 0 0</pose>
-      <child>left_wheel</child>
-      <parent>cube_base</parent>
-      <axis>
-        <xyz>0 0 1</xyz>
-      </axis>
-    </joint>
-
-    <joint type='revolute' name='right_wheel_hinge'>
-      <pose>0 0 0.03 0 0 0</pose>
-      <child>right_wheel</child>
-      <parent>cube_base</parent>
-      <axis>
-        <xyz>0 0 1</xyz>
-      </axis>
-    </joint>
-
+  
     <link name='RealSense'>
       <pose>0.225 0 0.1 0 0 0</pose>
       <inertial>
@@ -176,6 +160,7 @@
               <far>100</far>
             </clip>
           </camera>
+          <!-- camera plugin -->
           <plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
             <baseline>0.2</baseline>
             <alwaysOn>true</alwaysOn>
@@ -205,6 +190,25 @@
         </sensor>
     </link>
 
+    <!-- JOINTS -->
+    <joint type='revolute' name='left_wheel_hinge'>
+      <pose>0 0 -0.03 0 0 0</pose>
+      <child>left_wheel</child>
+      <parent>cube_base</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint type='revolute' name='right_wheel_hinge'>
+      <pose>0 0 0.03 0 0 0</pose>
+      <child>right_wheel</child>
+      <parent>cube_base</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
     <joint type='fixed' name='RealSenseJoint'>
       <pose>0 0 0 0 0 0</pose>
       <child>RealSense</child>
@@ -214,6 +218,7 @@
       </axis>
     </joint>
         
+    <!-- PLUGINS -->
     <plugin name="cube_moving_code" filename="libgazebo_ros_diff_drive.so">
         <commandTopic>cmd_vel</commandTopic>
         <odometryTopic>odom</odometryTopic>

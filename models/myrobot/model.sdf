@@ -3,6 +3,7 @@
   <model name = "myrobot">
     <static>false</static>
 
+    <!-- LINKS --> 
     <link name="cube_base">
       <inertial>
         <mass>15</mass>
@@ -199,6 +200,7 @@
               <far>100</far>
             </clip>
           </camera>
+          <!-- Realsense plugin -->
           <plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
             <baseline>0.2</baseline>
             <alwaysOn>true</alwaysOn>
@@ -265,6 +267,7 @@
           <contact>
             <collision>collision_front_collision</collision>
           </contact>
+          <!-- Contact sensor plugin -->
           <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
             <alwaysOn>true</alwaysOn>
             <updateRate>30.0</updateRate>
@@ -272,7 +275,6 @@
             <frameName>front_contact_sensor</frameName>
           </plugin>
         </sensor>
-
     </link>
 
     <link name='back_contact_sensor'>
@@ -303,6 +305,7 @@
           <contact>
             <collision>collision_back_collision</collision>
           </contact>
+          <!-- Contact sensor plugin -->
           <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
             <alwaysOn>true</alwaysOn>
             <updateRate>30.0</updateRate>
@@ -367,6 +370,7 @@
             <far>100</far>
           </clip>
         </camera>
+        <!-- Light sensor plugin -->
         <plugin name="myrobot" filename="libgazebo_light_sensor_plugin.so">
           <cameraName>camera2</cameraName>
           <alwaysOn>true</alwaysOn>
@@ -392,6 +396,7 @@
       <gravity>1</gravity>
     </link>
 
+    <!-- JOINTS -->
     <joint type='revolute' name='left_wheel_hinge'>
       <pose>0 0 -0.03 0 0 0</pose>
       <child>left_wheel</child>
@@ -434,6 +439,7 @@
       <parent>cube_base</parent>
     </joint>
     
+    <!-- PLUGINS -->
     <plugin name="cube_moving_code" filename="libgazebo_ros_diff_drive.so">
         <commandTopic>cmd_vel</commandTopic>
         <odometryTopic>odom</odometryTopic>

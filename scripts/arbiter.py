@@ -29,6 +29,7 @@ def callback(rs_sub,light_sub,contact_sub,pub):
     vect_b  = [force_sub.angle, force_sub.value]
     vect_c  = [light_sub.angle, light_sub.value] 
     # Sum vectors
+    # TODO check if the vectfcn.sum works
     bb_vect = vectfcn.sum_vect(vectfcn.sum_vect(vectfcn.sum_vect(vectfcn.sum_vect(vect_a,vect_b),vect_c),vect_d),vect_e)
     rospy.loginfo(bb_vect) 
     # Publish message to topic

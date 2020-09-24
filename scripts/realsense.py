@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Code property of Matteo Scanavino
+# Code property of Matteo Scanavino - matteo.svanavino@gmail.it
 # Minor changes by Iris David Du Mutel
 import rospy
 # from std_msgs.msg import Float32MultiArray
@@ -22,16 +22,14 @@ def realsense_behaviour():
     ts = message_filters.TimeSynchronizer([color_sub, depth_sub], 10)
     ts.registerCallback(callback,pub)
     rospy.spin()
+
 def callback(color_raw, depth_raw,pub):
-    print('abcdefghijk\n')
     test = vect_msg()
     msg = vect_msg()
     bridge = CvBridge()
     # realsense min and max distance 
     minDist = 0.3
     maxDist = 4.5
-    # rs_plt = rospy.get_param("/rs_video")
-    # show_depth = rospy.get_param("/rs_depth")
     # set show_depth to True to show the rgb and depth frames together
     rs_plt = True # Display what is seen in color frames
     show_depth = False
@@ -54,12 +52,12 @@ def callback(color_raw, depth_raw,pub):
          # color = np.asanyarray(color_frame.get_data())
         try:
             color_image = bridge.imgmsg_to_cv2(color_raw, "bgr8")
-            depth_image = bridge.imgmsg_to_cv2(depth_raw, "32FC1")            
+            depth_image = bridge.imgmsg_to_cv2(depth_raw, "32FC1")
         except CvBridgeError as e:
             print(e)
         
         depth_array = np.array(depth_image, dtype=np.float32)
-        cv2.normalize(depth_array, depth_array, 0, 1, cv2.NORM_MINMAX)
+        norm_depth=cv2.normalize(depth_array, depth_array, 0, 1, cv2.NORM_MINMAX)
         # Access depth component
          # colorizer = rs.colorizer()
          # colorizer_depth = np.asanyarray(colorizer.colorize(depth_frame).get_data()    
@@ -78,11 +76,11 @@ def callback(color_raw, depth_raw,pub):
         # print(len(colorized_depth[1]))
         # print((colorized_depth[120,1]))
         # print((colorized_depth[120,319]))
-        
+
         for xCount in range(0,3):
             for yCount in range(0,3):
                 distance = colorized_depth[valY[yCount],valX[xCount]]
-                if(distance < 0.3) or math.isnan(distance)==True:
+                if(distance < minDist) or math.isnan(distance)==True:
                     distance =  np.inf
                     valid_matrix[yCount,xCount] = 0
                 else:
@@ -129,12 +127,21 @@ def callback(color_raw, depth_raw,pub):
             value = 0
         print(angle, value)
         vect = [angle,value]
-
+        RGB = np.dstack((norm_depth, np.zeros_like(norm_depth), np.zeros_like(norm_depth)))
+        grey_3_channel = cv2.cvtColor(norm_depth, cv2.COLOR_GRAY2BGR)
         #FIXME: make a simultaneous visualization of depth and color frames
         if show_depth: 
             images = np.hstack((color, colorized_depth))
         else:
-            images = color
+            # images = color
+            # images = colorized_depth
+            # images = norm_depth
+            # images = np.vstack((color, grey_3_channel))
+            images = np.concatenate((color, grey_3_channel), axis=1)
+            print(len(grey_3_channel[1]))
+            print(len(color[1]))
+            # images = np.hstack((color, grey_3_channel))
+            # images = np.hstack((color, norm_depth))
         if rs_plt:
             cv2.imshow('RealSense', images)
             k = cv2.waitKey(1) & 0xFF
@@ -142,7 +149,7 @@ def callback(color_raw, depth_raw,pub):
                 # break
                 pass
 
-    #         # Send data
+            # Send data
             msg.header.stamp = rospy.Time.now()
             msg.angle = vect[0]
             msg.value = vect[1]

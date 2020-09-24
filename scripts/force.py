@@ -9,9 +9,9 @@ import message_filters
 
 msg = vect_msg()
 def force():
-    rospy.init_node('force',anonymous=True) # Create goal node called 'trajplan'
+    rospy.init_node('force',anonymous=True)
     rospy.loginfo("Status: Force Sensors Initialized") 
-    # Subscribe to messages
+    # Subscribe to topics
     front_sub = message_filters.Subscriber('/force/front_sensor', ContactsState)
     back_sub = message_filters.Subscriber('/force/back_sensor', ContactsState)
     # Syncronize

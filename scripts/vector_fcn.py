@@ -1,5 +1,5 @@
 #!usr/bin/env python
-#Code Property of Matteo Scanavino - matteo.scanavino@polito.it
+#Code Property of Matteo Scanavino - matteo.scanavino@gmail.it
 import matplotlib.pyplot as plt
 import numpy as np
 import random

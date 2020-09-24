@@ -214,8 +214,8 @@
             <depthImageCameraInfoTopicName>/camera/depth/camera_info</depthImageCameraInfoTopicName>
             <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
             <frameName>RealSense</frameName>
-            <pointCloudCutoff>0.5</pointCloudCutoff>
-            <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+            <pointCloudCutoff>0.3</pointCloudCutoff>
+            <pointCloudCutoffMax>4.5</pointCloudCutoffMax>
             <distortionK1>0</distortionK1>
             <distortionK2>0</distortionK2>
             <distortionK3>0</distortionK3>
@@ -231,7 +231,7 @@
     </link>
 
     <link name='front_force_sensor'>
-      <pose>0.205 0 0.1 0 0 0</pose>
+      <pose>0.08 0 0.05 0 0 0</pose>
         <visual name='visual'>
           <geometry>
             <box>

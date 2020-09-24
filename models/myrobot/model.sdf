@@ -230,7 +230,7 @@
         </sensor>
     </link>
 
-    <link name='front_contact_sensor'>
+    <link name='front_force_sensor'>
       <pose>0.205 0 0.1 0 0 0</pose>
         <visual name='visual'>
           <geometry>
@@ -261,7 +261,7 @@
           </contact>
         </sensor>
         <plugin name="my_plugin" filename="libcontact.so"/> -->
-        <sensor name="f_contact_sensor" type="contact">
+        <sensor name="f_force_sensor" type="contact">
           <update_rate>30.0</update_rate>
           <always_on>true</always_on>
           <contact>
@@ -271,13 +271,13 @@
           <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
             <alwaysOn>true</alwaysOn>
             <updateRate>30.0</updateRate>
-            <bumperTopicName>/contact/front_sensor</bumperTopicName>
-            <frameName>front_contact_sensor</frameName>
+            <bumperTopicName>/force/front_sensor</bumperTopicName>
+            <frameName>front_force_sensor</frameName>
           </plugin>
         </sensor>
     </link>
 
-    <link name='back_contact_sensor'>
+    <link name='back_force_sensor'>
       <pose>-0.205 0 0.1 0 0 0</pose>
         <visual name='visual'>
           <geometry>
@@ -299,7 +299,7 @@
             </box>
           </geometry>
         </collision>
-        <sensor name="b_contact_sensor" type="contact">
+        <sensor name="b_force_sensor" type="contact">
           <update_rate>30.0</update_rate>
           <always_on>true</always_on>
           <contact>
@@ -309,8 +309,8 @@
           <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
             <alwaysOn>true</alwaysOn>
             <updateRate>30.0</updateRate>
-            <bumperTopicName>/contact/back_sensor</bumperTopicName>
-            <frameName>back_contact_sensor</frameName>
+            <bumperTopicName>/force/back_sensor</bumperTopicName>
+            <frameName>back_force_sensor</frameName>
           </plugin>
         </sensor>
     </link>
@@ -421,15 +421,15 @@
       <parent>cube_base</parent>
     </joint>
 
-    <joint type='fixed' name='FrontContactJoint'>
+    <joint type='fixed' name='FrontForceJoint'>
       <pose>0 0 0 0 0 0</pose>
-      <child>front_contact_sensor</child>
+      <child>front_force_sensor</child>
       <parent>cube_base</parent>
     </joint>
 
-    <joint type='fixed' name='BackContactJoint'>
+    <joint type='fixed' name='BackForceJoint'>
       <pose>0 0 0 0 0 0</pose>
-      <child>back_contact_sensor</child>
+      <child>back_force_sensor</child>
       <parent>cube_base</parent>
     </joint>
 

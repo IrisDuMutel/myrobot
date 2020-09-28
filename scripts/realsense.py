@@ -32,11 +32,11 @@ def callback(color_raw, depth_raw,pub):
     maxDist = 4.5
     # set show_depth to True to show the rgb and depth frames together
     rs_plt = True # Display what is seen in color frames
-    show_depth = False
+    show_depth = True
     # Show images
     if rs_plt:
-        cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-
+        cv2.namedWindow('RealSense color', cv2.WINDOW_AUTOSIZE)
+        cv2.namedWindow('RealSense depth', cv2.WINDOW_AUTOSIZE)
     try:
         # while not rospy.is_shutdown():
 
@@ -129,21 +129,12 @@ def callback(color_raw, depth_raw,pub):
         vect = [angle,value]
         RGB = np.dstack((norm_depth, np.zeros_like(norm_depth), np.zeros_like(norm_depth)))
         grey_3_channel = cv2.cvtColor(norm_depth, cv2.COLOR_GRAY2BGR)
-        #FIXME: make a simultaneous visualization of depth and color frames
-        if show_depth: 
-            images = np.hstack((color, colorized_depth))
-        else:
-            # images = color
-            # images = colorized_depth
-            # images = norm_depth
-            # images = np.vstack((color, grey_3_channel))
-            images = np.concatenate((color, grey_3_channel), axis=1)
-            print(len(grey_3_channel[1]))
-            print(len(color[1]))
-            # images = np.hstack((color, grey_3_channel))
-            # images = np.hstack((color, norm_depth))
+
         if rs_plt:
-            cv2.imshow('RealSense', images)
+            cv2.imshow('RealSense color', color)
+            if show_depth:
+                cv2.imshow('RealSense depth', grey_3_channel)
+                
             k = cv2.waitKey(1) & 0xFF
             if k == ord('q'):
                 # break

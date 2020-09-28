@@ -24,8 +24,8 @@
    <node name="image_view1" pkg="image_view" type="image_view" respawn="false" output="screen">
   <remap from="image" to="/camera2/color/image_raw" />
   </node> -->
-  <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/>
-  <!--<node pkg="myrobot" name="contact" type="contact.py" output="screen"/>
+  <!--<node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/>
+  <node pkg="myrobot" name="contact" type="contact.py" output="screen"/>
   <node name="image_view2" pkg="image_view" type="image_view" respawn="false" output="screen">
   <remap from="image" to="/camera2/rgb/image_raw" />
   </node>

@@ -156,7 +156,7 @@
     </link>
 
     <link name='RealSense'>
-      <pose>0.05 0 0.113 0 0 0</pose>
+      <pose>0.035 0 0.1 0 0 0</pose>
       <inertial>
         <mass>0.1</mass>
         <inertia>
@@ -168,7 +168,7 @@
         <collision name='collision'>
            <geometry>
             <box>
-              <size>0.05 0.05 0.05</size>
+              <size>0.03 0.05 0.02</size>
             </box>
           </geometry>
         </collision>
@@ -176,7 +176,7 @@
         <visual name='visual'>
           <geometry>
             <box>
-              <size>0.05 0.05 0.05</size>
+              <size>0.03 0.05 0.02</size>
             </box>
           </geometry>
           <material> <!-- LED material -->
@@ -230,25 +230,25 @@
         </sensor>
     </link>
 
-    <link name='front_force_sensor'>
-      <pose>0.08 0 0.05 0 0 0</pose>
+    <link name='rightfront_force_sensor'>
+      <pose>0.09 0.05 0.05 0 0 0</pose>
         <visual name='visual'>
           <geometry>
             <box>
-              <size>0.01 0.01 0.01</size>
+              <size>0.05 0.01 0.01</size>
             </box>
           </geometry>
           <material> <!-- LED material -->
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
-            <emissive>0 1 0 1</emissive>
+            <emissive>0 1 1 1</emissive>
           </material> <!-- End LED material -->
         </visual>
-        <collision name='collision_front_collision'>
+        <collision name='collision_rightfront_collision'>
            <geometry>
             <box>
-              <size>0.01 0.01 0.01</size>
+              <size>0.05 0.01 0.01</size>
             </box>
           </geometry>
         </collision>
@@ -261,56 +261,56 @@
           </contact>
         </sensor>
         <plugin name="my_plugin" filename="libcontact.so"/> -->
-        <sensor name="f_force_sensor" type="contact">
+        <sensor name="rf_force_sensor" type="contact">
           <update_rate>30.0</update_rate>
           <always_on>true</always_on>
           <contact>
-            <collision>collision_front_collision</collision>
+            <collision>collision_rightfront_collision</collision>
           </contact>
           <!-- Contact sensor plugin -->
           <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
             <alwaysOn>true</alwaysOn>
             <updateRate>30.0</updateRate>
-            <bumperTopicName>/force/front_sensor</bumperTopicName>
-            <frameName>front_force_sensor</frameName>
+            <bumperTopicName>/force/rightfront_sensor</bumperTopicName>
+            <frameName>rightfront_force_sensor</frameName>
           </plugin>
         </sensor>
     </link>
 
-    <link name='back_force_sensor'>
-      <pose>-0.09 0 0.1 0 0 0</pose>
+    <link name='leftfront_force_sensor'>
+      <pose>0.09 -0.05 0.05 0 0 0</pose>
         <visual name='visual'>
           <geometry>
             <box>
-              <size>0.01 0.01 0.01</size>
+              <size>0.05 0.01 0.01</size>
             </box>
           </geometry>
           <material> <!-- LED material -->
             <ambient>0 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
-            <emissive>0 1 0 1</emissive>
+            <emissive>0 1 1 1</emissive>
           </material> <!-- End LED material -->
         </visual>
-        <collision name='collision_back_collision'>
+        <collision name='collision_leftfront_collision'>
            <geometry>
             <box>
-              <size>0.01 0.01 0.01</size>
+              <size>0.05 0.01 0.01</size>
             </box>
           </geometry>
         </collision>
-        <sensor name="b_force_sensor" type="contact">
+        <sensor name="lf_force_sensor" type="contact">
           <update_rate>30.0</update_rate>
           <always_on>true</always_on>
           <contact>
-            <collision>collision_back_collision</collision>
+            <collision>collision_leftfront_collision</collision>
           </contact>
           <!-- Contact sensor plugin -->
           <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
             <alwaysOn>true</alwaysOn>
             <updateRate>30.0</updateRate>
-            <bumperTopicName>/force/back_sensor</bumperTopicName>
-            <frameName>back_force_sensor</frameName>
+            <bumperTopicName>/force/leftfront_sensor</bumperTopicName>
+            <frameName>leftfront_force_sensor</frameName>
           </plugin>
         </sensor>
     </link>
@@ -421,15 +421,15 @@
       <parent>cube_base</parent>
     </joint>
 
-    <joint type='fixed' name='FrontForceJoint'>
+    <joint type='fixed' name='RigthFrontForceJoint'>
       <pose>0 0 0 0 0 0</pose>
-      <child>front_force_sensor</child>
+      <child>rightfront_force_sensor</child>
       <parent>cube_base</parent>
     </joint>
 
-    <joint type='fixed' name='BackForceJoint'>
+    <joint type='fixed' name='LeftFrontForceJoint'>
       <pose>0 0 0 0 0 0</pose>
-      <child>back_force_sensor</child>
+      <child>leftfront_force_sensor</child>
       <parent>cube_base</parent>
     </joint>
 

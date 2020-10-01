@@ -40,7 +40,7 @@ def controller():
     ts.registerCallback(callback,pub)
     # rate=rospy.Rate(30)
     # rate.sleep()
-    print('dddddd')
+    print('fffffff')
     rospy.spin()
    
 

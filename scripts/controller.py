@@ -30,22 +30,19 @@ from sensor_msgs.msg import Image, CameraInfo
 
 
 def controller():
-    print('ccccc')
     rospy.init_node('controller',anonymous=True)
     pub = rospy.Publisher('cmd_vel',Twist,queue_size=10)
     x_sub   = message_filters.Subscriber('/odom', Odometry)
-    # vel_sub = message_filters.Subscriber('/force_vect', vect_msg)
-    vel_sub = message_filters.Subscriber('/rs_vect', vect_msg)
+    vel_sub = message_filters.Subscriber('/force_vect', vect_msg)
+    # vel_sub = message_filters.Subscriber('/rs_vect', vect_msg)
     ts = message_filters.TimeSynchronizer([vel_sub,x_sub], 10)
     ts.registerCallback(callback,pub)
     # rate=rospy.Rate(30)
     # rate.sleep()
-    print('fffffff')
     rospy.spin()
    
 
 def callback(vel_sub, x_sub, pub):
-    print('aaaaaaaaa')
     U = vect_msg()
     Xest = Odometry()
     cmd = Twist()
@@ -98,7 +95,6 @@ def get_rotation(Xest):
     
 if __name__ == "__main__":
     try:
-        print('bbbbb')
         controller()            
     except rospy.ROSInterruptException:
         pass

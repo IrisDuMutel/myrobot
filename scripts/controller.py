@@ -26,7 +26,7 @@ from nav_msgs.msg import Odometry
 from myrobot.msg import vect_msg
 import message_filters
 from sensor_msgs.msg import Image, CameraInfo
-
+from matplotlib import pyplot as plt
 
 
 def controller():
@@ -39,6 +39,8 @@ def controller():
     ts.registerCallback(callback,pub)
     # rate=rospy.Rate(30)
     # rate.sleep()
+    plt.ion()
+    plt.show()
     rospy.spin()
    
 
@@ -57,11 +59,12 @@ def callback(vel_sub, x_sub, pub):
     # Error computation:
     x_error = x_ref-x_est
     psi_error = psi_ref-psi_est
+    # print('psi_error:',psi_error)
     # print(psi_est)
     # print('ref_vel:', x_ref)
-    
+
     # Control
-    x_cmd = x_error*1
+    x_cmd = x_error*.25
     psi_cmd = psi_error*1
     # Normalization
     psi_cmd = psi_cmd/180 #degrees
@@ -71,6 +74,7 @@ def callback(vel_sub, x_sub, pub):
         psi_cmd = 0.5
     if psi_cmd < -0.5:
         psi_cmd = -0.5
+    print('psi_cmd: ', psi_cmd)
     if x_cmd > 1:
         x_cmd = 1
     if x_cmd < -1:
@@ -82,6 +86,15 @@ def callback(vel_sub, x_sub, pub):
     # Publishing
     pub.publish(cmd)
     rospy.loginfo("In the loop")
+    show_plot=True
+    if show_plot==True:
+        stamp = vel_sub.header.stamp
+        time = stamp.secs + stamp.nsecs * 1e-9
+        plt.plot(time, psi_cmd, '*')
+        plt.plot(time, psi_ref, 'o')
+        plt.axis("equal")
+        plt.draw()
+        plt.pause(0.00000000001)
 
 
 
@@ -94,6 +107,7 @@ def get_rotation(Xest):
     
 if __name__ == "__main__":
     try:
-        controller()            
+        controller()
+                    
     except rospy.ROSInterruptException:
         pass

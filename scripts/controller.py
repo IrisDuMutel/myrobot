@@ -35,7 +35,7 @@ def controller():
     x_sub   = message_filters.Subscriber('/odom', Odometry)
     vel_sub = message_filters.Subscriber('/force_vect', vect_msg)
     # vel_sub = message_filters.Subscriber('/rs_vect', vect_msg)
-    ts = message_filters.TimeSynchronizer([vel_sub,x_sub], 10)
+    ts = message_filters.ApproximateTimeSynchronizer([vel_sub,x_sub], queue_size=10, slop=0.1)
     ts.registerCallback(callback,pub)
     # rate=rospy.Rate(30)
     # rate.sleep()
@@ -58,12 +58,11 @@ def callback(vel_sub, x_sub, pub):
     x_error = x_ref-x_est
     psi_error = psi_ref-psi_est
     # print(psi_est)
-    print(x_ref)
-    print(psi_ref)
+    # print('ref_vel:', x_ref)
     
     # Control
-    x_cmd = x_error*0.25
-    psi_cmd = psi_error*0.3
+    x_cmd = x_error*1
+    psi_cmd = psi_error*1
     # Normalization
     psi_cmd = psi_cmd/180 #degrees
     x_cmd = x_cmd/1

@@ -20,9 +20,9 @@
   <node pkg="gazebo_ros" type="spawn_model" name="spawn_sdf" args="-sdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
 
 <!-- OTHER NODES -->
-  <!--<node pkg="myrobot" name="controller" type="controller.py" output="screen"/>
+  <node pkg="myrobot" name="controller" type="controller.py" output="screen"/>
   <node pkg="myrobot" name="force" type="force.py" output="screen"/>
-  <node name="image_view1" pkg="image_view" type="image_view" respawn="false" output="screen">
+  <!--<node name="image_view1" pkg="image_view" type="image_view" respawn="false" output="screen">
   <remap from="image" to="/camera2/color/image_raw" />
   </node> -->
   <!--<node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/>

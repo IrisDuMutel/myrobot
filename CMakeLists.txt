@@ -27,7 +27,8 @@ find_package(catkin REQUIRED COMPONENTS
     message_generation
     image_transport
     nav_msgs
-    genmsg
+    genmsg  
+
 )
 find_package(gazebo REQUIRED)
 

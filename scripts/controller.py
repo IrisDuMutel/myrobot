@@ -90,11 +90,15 @@ def callback(vel_sub, x_sub, pub):
     if show_plot==True:
         stamp = vel_sub.header.stamp
         time = stamp.secs + stamp.nsecs * 1e-9
-        plt.plot(time, psi_cmd, '*')
-        plt.plot(time, psi_ref, 'o')
-        plt.axis("equal")
+        plt.plot(time, psi_cmd, 'g*', label='psi cmd')
+        # plt.plot(time, psi_ref/180, 'bo', label='psi ref')
+        plt.plot(time, psi_est/180, 'r+', label='psi est')
+        # plt.axis("equal")
+        plt.ylim(-1.5,1.5)
+        plt.grid()
         plt.draw()
-        plt.pause(0.00000000001)
+        # plt.legend()
+        plt.pause(0.0000001)
 
 
 

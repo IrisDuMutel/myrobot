@@ -12,7 +12,7 @@ msg = vect_msg()
 def force():
     rospy.init_node('force',anonymous=True)
     rospy.loginfo("Status: Force Sensors Initialized") 
-    value = 0.4
+    value = 1
     angle = 0
     # Subscribe to topics
     rightfront_sub = message_filters.Subscriber('/force/rightfront_sensor', ContactsState)
@@ -36,8 +36,8 @@ def callback(rightfront_sub,leftfront_sub,value,angle):
         rightfront_force = rightfront_sub.states[0].total_wrench.force.x
         rospy.loginfo('Ive been toched from the right F=%s\n', rightfront_force)
         # Fill vector message
-        angle = (- 1023) * 180/1023
-        value = -0.4
+        angle = -90
+        value = -1
         right_now = rospy.Time.now()
         seconds = rospy.Duration(2)
         endtime = right_now+seconds
@@ -55,8 +55,8 @@ def callback(rightfront_sub,leftfront_sub,value,angle):
         leftfront_force = leftfront_sub.states[0].total_wrench.force.x
         rospy.loginfo('Ive been toched from the left F=%s\n', leftfront_force) 
         # Fill vector message
-        angle = 1023* 180/1023
-        value = -0.4
+        angle = 90
+        value = -1
         right_now = rospy.Time.now()
         seconds = rospy.Duration(2)
         endtime = right_now+seconds

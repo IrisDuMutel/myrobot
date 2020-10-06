@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
+import time
 import math
 import random
 from gazebo_msgs.msg import ContactsState
@@ -17,7 +18,7 @@ def force():
     rightfront_sub = message_filters.Subscriber('/force/rightfront_sensor', ContactsState)
     leftfront_sub = message_filters.Subscriber('/force/leftfront_sensor', ContactsState)
     # Syncronize
-    ts = message_filters.TimeSynchronizer([rightfront_sub,leftfront_sub], queue_size=10)
+    ts = message_filters.ApproximateTimeSynchronizer([rightfront_sub,leftfront_sub], queue_size=10, slop=0.1)
     ts.registerCallback(callback,value,angle)# Register callback and publisher
     rospy.spin()
 
@@ -28,7 +29,7 @@ def callback(rightfront_sub,leftfront_sub,value,angle):
     # force = (forceL+forceR)/2
     msg.value=value
     msg.angle=angle
-    print(value)
+    
     if not rightfront_sub.states:
         pass
     else:
@@ -36,7 +37,17 @@ def callback(rightfront_sub,leftfront_sub,value,angle):
         rospy.loginfo('Ive been toched from the right F=%s\n', rightfront_force)
         # Fill vector message
         angle = (- 1023) * 180/1023
-        value = -0.2 
+        value = -0.4
+        right_now = rospy.Time.now()
+        seconds = rospy.Duration(2)
+        endtime = right_now+seconds
+        msg.header.stamp = rospy.Time.now()
+        msg.value = value
+        msg.angle = angle
+        rospy.loginfo('Force vector data sent')
+        pub = rospy.Publisher('force_vect', vect_msg, queue_size=10)
+        while rospy.Time.now()<endtime:
+            pub.publish(msg)
 
     if not leftfront_sub.states:
         pass
@@ -45,8 +56,21 @@ def callback(rightfront_sub,leftfront_sub,value,angle):
         rospy.loginfo('Ive been toched from the left F=%s\n', leftfront_force) 
         # Fill vector message
         angle = 1023* 180/1023
-        value = -0.2
+        value = -0.4
+        right_now = rospy.Time.now()
+        seconds = rospy.Duration(2)
+        endtime = right_now+seconds
+        msg.header.stamp = rospy.Time.now()
+        msg.value = value
+        msg.angle = angle
+        
+        rospy.loginfo('Force vector data sent')
+        pub = rospy.Publisher('force_vect', vect_msg, queue_size=10)
+        while rospy.Time.now()<endtime:
+            pub.publish(msg)
+            
 
+    
     msg.header.stamp = rospy.Time.now()
     msg.value = value
     msg.angle = angle

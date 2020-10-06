@@ -6,12 +6,12 @@
     <!-- LINKS --> 
     <link name="cube_base">
       <inertial>
-        <mass>15</mass>
+        <mass>0.78</mass>
         <origin xyz="0.0 0 0.047" rpy=" 0 0 0"/>
         <inertia>
-          <ixx>1</ixx> <ixy>0</ixy> <ixz>0</ixz>
-          <iyy>1</iyy> <iyz>0</iyz>
-          <izz>1</izz>
+          <ixx>0.0025285</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.003489</iyy> <iyz>0</iyz>
+          <izz>0.004718</izz>
         </inertia>
       </inertial>
       <pose>0 0 0.056 1.5705 0 1.5705</pose>
@@ -120,12 +120,12 @@
       <inertial>
         <mass>0.1</mass>
         <inertia>
-          <ixx>1</ixx>
+          <ixx>0.00006771</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>1</iyy>
+          <iyy>0.00006771</iyy>
           <iyz>0</iyz>
-          <izz>1</izz>
+          <izz>0.000125</izz>
         </inertia>
       </inertial>
         <collision name='  collision'>
@@ -158,12 +158,12 @@
       <inertial>
         <mass>0.1</mass>
         <inertia>
-          <ixx>1</ixx>
+          <ixx>0.00006771</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>1</iyy>
+          <iyy>0.00006771</iyy>
           <iyz>0</iyz>
-          <izz>1</izz>
+          <izz>0.000125</izz>
         </inertia>
       </inertial>
         <collision name='  collision'>

@@ -90,6 +90,8 @@ find_package(gazebo REQUIRED)
 generate_messages(DEPENDENCIES std_msgs nav_msgs)
 catkin_package(INCLUDE_DIRS plugins/light/include
                             plugins/contact
+                            plugins/keys2cmdvel
+                            # plugins/simpletrackedvehicle
 CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp)
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -125,10 +127,14 @@ include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 add_library(contact SHARED plugins/contact/ContactPlugin.cc)
+# add_library(simpletrackedvehicle SHARED plugins/simpletrackedvehicle/SimpleTrackedVehiclePlugin.cc)
 target_link_libraries(contact ${GAZEBO_LIBRARIES})
 
 include_directories(plugins/light/include)
 include_directories(plugins/contact)
+include_directories(plugins/keys2cmdvel)
+# include_directories(plugins/simpletrackedvehicle)
+# include_directories(plugins/trackedvehicle)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}

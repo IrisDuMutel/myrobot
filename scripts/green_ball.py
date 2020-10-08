@@ -4,6 +4,7 @@
 import rospy
 # from std_msgs.msg import Float32MultiArray
 from myrobot.msg import vect_msg
+from geometry_msgs.msg import Twist
 import cv2 
 # import cv2.cv
 import os
@@ -21,7 +22,8 @@ def green_ball():
     pub = rospy.Publisher('gb_vect', vect_msg, queue_size=10)
     color_sub = message_filters.Subscriber('camera/color/image_raw',Image)
     depth_sub = message_filters.Subscriber('camera/depth/image_raw',Image)
-    ts = message_filters.TimeSynchronizer([color_sub, depth_sub], 10)
+    # x_sub = message_filters.Subscriber('/odom',Twist)
+    ts = message_filters.ApproximateTimeSynchronizer([color_sub, depth_sub], queue_size=10,slop=0.1)
     ts.registerCallback(callback,pub)
     rospy.spin()
 
@@ -36,7 +38,12 @@ def callback(color_raw, depth_raw,pub):
             color_image = bridge.imgmsg_to_cv2(color_raw, "bgr8")
     except CvBridgeError as e:
             print(e)
-
+    # Xest = x_sub
+    # # Variable assignation:
+                        
+    
+    # [yaw, pitch, roll] = get_rotation(Xest)
+    # psi_est = yaw*180/math.pi
     frame = imutils.resize(color_image, width=600)
     blurred = cv2.GaussianBlur(frame, (11, 11), 0)
     hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -58,11 +65,18 @@ def callback(color_raw, depth_raw,pub):
         # centroid
         c = max(cnts, key=cv2.contourArea)
         ((x, y), radius) = cv2.minEnclosingCircle(c)
+        # if x<280:
+        #     vect[0]=90
+        #     vect[1]=0
+        # elif x>305:
+        #     vect[0]=-90
+        #     vect[1]=0
+        # else:
         if radius<100:
             vect[0]=0
             vect[1]=0.8
         else:
-            vect[0]=0
+            vect[0]= 0
             vect[1]=0
         M = cv2.moments(c)
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
@@ -86,7 +100,13 @@ def callback(color_raw, depth_raw,pub):
     msg.value = vect[1]
     rospy.loginfo('Realsense vector data sent')
     pub.publish(msg)
-    
+
+def get_rotation(Xest):
+    orientation_q = Xest.pose.pose.orientation
+    orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
+    r = R.from_quat(orientation_list)
+    EuAn = r.as_euler('zyx', degrees=False)
+    return EuAn 
 if __name__ == '__main__':
     try:
         green_ball()

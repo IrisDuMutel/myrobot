@@ -42,7 +42,7 @@
         <pose>0 0.02 0 0 0 0</pose>
         <geometry>
           <!--<mesh><uri>model://myrobot/meshes/Devastator.dae</uri></mesh>-->
-           <box>
+          <box>
             <size>0.17 0.07 0.207</size>
           </box> 
         </geometry>
@@ -72,7 +72,7 @@
           </friction>
         </surface> 
       </collision>
-       <visual name='caster_collision'>
+      <visual name='caster_collision'>
         <pose>0 -0.01 -0.05 0 0 0</pose>
         <geometry>
           <sphere>
@@ -106,7 +106,7 @@
           </friction>
         </surface> 
       </collision>
-       <visual name='caster_collision2'>
+      <visual name='caster_collision2'>
         <pose>0 -0.01 0.05 0 0 0</pose>
         <geometry>
           <sphere>
@@ -136,7 +136,7 @@
         </inertia>
       </inertial>
         <collision name='  collision'>
-           <geometry>
+          <geometry>
             <cylinder>
               <radius>.05</radius>
               <length>0.025</length>
@@ -144,7 +144,7 @@
           </geometry>
         </collision>
 
-         <visual name='visual'>
+        <visual name='visual'>
           <geometry>
             <cylinder>
               <radius>.05</radius>
@@ -182,7 +182,7 @@
         </inertia>
       </inertial>
         <collision name='  collision'>
-           <geometry>
+          <geometry>
             <cylinder>
               <radius>.05</radius>
               <length>0.025</length>
@@ -197,7 +197,7 @@
             </friction>
           </surface>
         </collision>
-         <visual name='visual'>
+        <visual name='visual'>
           <geometry>
             <cylinder>
               <radius>.05</radius>
@@ -214,7 +214,7 @@
     </link>
 
     <link name='RealSense'>
-      <pose>0.035 0 0.12 0 0 0</pose>
+      <pose>0.035 0 0.14 0 0 0</pose>
       <inertial>
         <mass>0.1</mass>
         <inertia>
@@ -224,7 +224,7 @@
         </inertia>
       </inertial>
         <collision name='collision'>
-           <geometry>
+          <geometry>
             <box>
               <size>0.03 0.05 0.02</size>
             </box>
@@ -304,7 +304,7 @@
           </material> <!-- End LED material -->
         </visual>
         <collision name='collision_rightfront_collision'>
-           <geometry>
+          <geometry>
             <box>
               <size>0.05 0.01 0.01</size>
             </box>
@@ -351,7 +351,7 @@
           </material> <!-- End LED material -->
         </visual>
         <collision name='collision_leftfront_collision'>
-           <geometry>
+          <geometry>
             <box>
               <size>0.05 0.01 0.01</size>
             </box>
@@ -389,7 +389,7 @@
       <collision name='collision'>
         <geometry>
           <box>
-             <size>0.01 0.01 0.01</size>
+            <size>0.01 0.01 0.01</size>
           </box>
         </geometry>
         <max_contacts>10</max_contacts>

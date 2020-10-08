@@ -33,7 +33,7 @@ def controller():
     rospy.init_node('controller',anonymous=True)
     pub = rospy.Publisher('cmd_vel',Twist,queue_size=10)
     x_sub   = message_filters.Subscriber('/odom', Odometry)
-    vel_sub = message_filters.Subscriber('/force_vect', vect_msg)
+    vel_sub = message_filters.Subscriber('/gb_vect', vect_msg)
     # vel_sub = message_filters.Subscriber('/rs_vect', vect_msg)
     ts = message_filters.ApproximateTimeSynchronizer([vel_sub,x_sub], queue_size=10, slop=0.1)
     ts.registerCallback(callback,pub)
@@ -42,7 +42,7 @@ def controller():
     plt.ion()
     plt.show()
     rospy.spin()
-   
+
 
 def callback(vel_sub, x_sub, pub):
     U = vect_msg()
@@ -87,18 +87,18 @@ def callback(vel_sub, x_sub, pub):
     pub.publish(cmd)
     rospy.loginfo("In the loop")
     show_plot=True
-    if show_plot==True:
-        stamp = vel_sub.header.stamp
-        time = stamp.secs + stamp.nsecs * 1e-9
-        plt.plot(time, psi_cmd, 'g*', label='psi cmd')
-        # plt.plot(time, psi_ref/180, 'bo', label='psi ref')
-        plt.plot(time, psi_est/180, 'r+', label='psi est')
-        # plt.axis("equal")
-        plt.ylim(-1.5,1.5)
-        plt.grid()
-        plt.draw()
-        # plt.legend()
-        plt.pause(0.0000001)
+    # if show_plot==True:
+    #     stamp = vel_sub.header.stamp
+    #     time = stamp.secs + stamp.nsecs * 1e-9
+    #     plt.plot(time, psi_cmd, 'g*', label='psi cmd')
+    #     # plt.plot(time, psi_ref/180, 'bo', label='psi ref')
+    #     plt.plot(time, psi_est/180, 'r+', label='psi est')
+    #     # plt.axis("equal")
+    #     plt.ylim(-1.5,1.5)
+    #     plt.grid()
+    #     plt.draw()
+    #     # plt.legend()
+    #     plt.pause(0.0000001)
 
 
 

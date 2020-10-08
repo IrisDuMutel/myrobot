@@ -8,7 +8,7 @@
   <arg name="z_pos" default="0.0"/>
 <!-- World choice and configuration -->
  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find myrobot)/worlds/tracked_vehicle_simple.world"/>
+    <arg name="world_name" value="$(find myrobot)/worlds/green_ball.world"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
@@ -16,9 +16,9 @@
     <arg name="debug" value="false"/>
   </include>
 <!-- Find model and launch it as 'gazebo_ros' node -->
-  <!--<param name="robot_description" command="$(find xacro)/xacro --><!--inorder $(find myrobot)/models/myrobot/$(arg model).sdf" />
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find myrobot)/models/myrobot/$(arg model).sdf" />
   <node pkg="gazebo_ros" type="spawn_model" name="spawn_sdf" args="-sdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
--->
+
 <!-- OTHER NODES -->
   <!--<node pkg="myrobot" name="controller" type="controller.py" output="screen"/>
   <node pkg="myrobot" name="force" type="force.py" output="screen"/>

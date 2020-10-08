@@ -10,7 +10,7 @@
     </include>
 
     <model name="green_ball">
-      <static>True</static>
+      <static>False</static>
 
       <link name="ball">
           <inertial>

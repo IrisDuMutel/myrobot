@@ -18,7 +18,7 @@ from collections import deque
 
 def green_ball():
     rospy.init_node('realsense_behaviour', anonymous=True)
-    pub = rospy.Publisher('rs_vect', vect_msg, queue_size=10)
+    pub = rospy.Publisher('gb_vect', vect_msg, queue_size=10)
     color_sub = message_filters.Subscriber('camera/color/image_raw',Image)
     depth_sub = message_filters.Subscriber('camera/depth/image_raw',Image)
     ts = message_filters.TimeSynchronizer([color_sub, depth_sub], 10)
@@ -26,7 +26,7 @@ def green_ball():
     rospy.spin()
 
 def callback(color_raw, depth_raw,pub):
-    test = vect_msg()
+    vect = [0, 0]
     msg = vect_msg()
     bridge = CvBridge()
     greenLower = (29, 86, 6)
@@ -59,7 +59,11 @@ def callback(color_raw, depth_raw,pub):
         c = max(cnts, key=cv2.contourArea)
         ((x, y), radius) = cv2.minEnclosingCircle(c)
         if radius<100:
-            
+            vect[0]=0
+            vect[1]=0.8
+        else:
+            vect[0]=0
+            vect[1]=0
         M = cv2.moments(c)
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
         print(center)
@@ -76,6 +80,12 @@ def callback(color_raw, depth_raw,pub):
     # show the frame to our screen
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
+    # Send data
+    msg.header.stamp = rospy.Time.now()
+    msg.angle = vect[0]
+    msg.value = vect[1]
+    rospy.loginfo('Realsense vector data sent')
+    pub.publish(msg)
     
 if __name__ == '__main__':
     try:

@@ -5,6 +5,7 @@ import rospy
 # from std_msgs.msg import Float32MultiArray
 from myrobot.msg import vect_msg
 from geometry_msgs.msg import Twist
+from nav_msgs.msg import Odometry
 import cv2 
 # import cv2.cv
 import os
@@ -16,18 +17,19 @@ from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge, CvBridgeError
 import imutils #collection of OpenCV and Python convenience functions
 from collections import deque
+from scipy.spatial.transform import Rotation as R
 
 def green_ball():
     rospy.init_node('realsense_behaviour', anonymous=True)
     pub = rospy.Publisher('gb_vect', vect_msg, queue_size=10)
     color_sub = message_filters.Subscriber('camera/color/image_raw',Image)
-    depth_sub = message_filters.Subscriber('camera/depth/image_raw',Image)
-    # x_sub = message_filters.Subscriber('/odom',Twist)
-    ts = message_filters.ApproximateTimeSynchronizer([color_sub, depth_sub], queue_size=10,slop=0.1)
+    # depth_sub = message_filters.Subscriber('camera/depth/image_raw',Image)
+    x_sub = message_filters.Subscriber('/odom',Odometry)
+    ts = message_filters.ApproximateTimeSynchronizer([color_sub, x_sub], queue_size=10,slop=0.1)
     ts.registerCallback(callback,pub)
     rospy.spin()
 
-def callback(color_raw, depth_raw,pub):
+def callback(color_raw, x_sub,pub):
     vect = [0, 0]
     msg = vect_msg()
     bridge = CvBridge()
@@ -38,12 +40,12 @@ def callback(color_raw, depth_raw,pub):
             color_image = bridge.imgmsg_to_cv2(color_raw, "bgr8")
     except CvBridgeError as e:
             print(e)
-    # Xest = x_sub
+    Xest = x_sub
     # # Variable assignation:
                         
     
-    # [yaw, pitch, roll] = get_rotation(Xest)
-    # psi_est = yaw*180/math.pi
+    [yaw, pitch, roll] = get_rotation(Xest)
+    psi_est = yaw*180/math.pi
     frame = imutils.resize(color_image, width=600)
     blurred = cv2.GaussianBlur(frame, (11, 11), 0)
     hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -65,19 +67,19 @@ def callback(color_raw, depth_raw,pub):
         # centroid
         c = max(cnts, key=cv2.contourArea)
         ((x, y), radius) = cv2.minEnclosingCircle(c)
-        # if x<280:
-        #     vect[0]=90
-        #     vect[1]=0
-        # elif x>305:
-        #     vect[0]=-90
-        #     vect[1]=0
-        # else:
-        if radius<100:
-            vect[0]=0
-            vect[1]=0.8
-        else:
-            vect[0]= 0
+        if x<280:
+            vect[0]=90
             vect[1]=0
+        elif x>305:
+            vect[0]=-90
+            vect[1]=0
+        else:
+            if radius<100:
+                vect[0]=psi_est
+                vect[1]=0.8
+            else:
+                vect[0]= psi_est
+                vect[1]=0
         M = cv2.moments(c)
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
         print(center)

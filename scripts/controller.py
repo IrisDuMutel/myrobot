@@ -64,7 +64,7 @@ def callback(vel_sub, x_sub, pub):
     # print('ref_vel:', x_ref)
 
     # Control
-    x_cmd = x_error*.25
+    x_cmd = x_error*.5
     psi_cmd = psi_error*1
     # Normalization
     psi_cmd = psi_cmd/180 #degrees

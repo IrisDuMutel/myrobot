@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
   <model name = "myrobot">
-    <static>True</static>
+    <static>false</static>
 
     <!-- LINKS --> 
     <link name="cube_base">
@@ -38,6 +38,14 @@
           </friction>
         </surface>
       </collision>
+      <visual name="visual">
+        <pose>0.02 0 -0.01 1.5707 0 1.5707</pose>
+        <geometry>
+          <mesh><uri>model://myrobot/meshes/Devastator.dae</uri></mesh>
+          
+        </geometry>
+        
+      </visual>
       <!--<visual name="visual">
         <pose>0 0 0 0 0 0</pose>
         <geometry>
@@ -117,7 +125,7 @@
       </visual><!---->
     </link>
 
-    <link name="dev">
+    <!--<link name="dev">
       <inertial>
          
         <mass>15</mass>
@@ -152,7 +160,7 @@
         </geometry>
         
       </visual>
-    </link><!---->
+    </link>-->
 
     <link name="BaseBoards">
       <inertial>
@@ -354,11 +362,11 @@
           <iyy>0.003489</iyy> <iyz>0</iyz>
           <izz>0.004718</izz>
         </inertia> -->
-        <mass>1</mass>
+        <mass>0.1</mass>
         <inertia>
-          <ixx>.01</ixx> <ixy>0</ixy> <ixz>0</ixz>
-          <iyy>.01</iyy> <iyz>0</iyz>
-          <izz>.01</izz>
+          <ixx>.0001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>.0001</iyy> <iyz>0</iyz>
+          <izz>.0001</izz>
         </inertia>
       </inertial>
       <pose>0.065 0.005 0.1035 0 0 0</pose>
@@ -492,6 +500,45 @@
         </visual> <!---->
     </link>
 
+    <link name="supporto_sg90">
+      <inertial>
+
+      </inertial>
+      <pose>0.085 0.005 0.0995 0 0 0</pose>
+      <!--<pose>0 0 0 0 0 0</pose>-->
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.027 0.049 0.004</size>
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <pose>-0.003 0.015 0 0 0 1.5707</pose>
+        <geometry>
+          <mesh><uri>model://test_model/meshes/Supporto_sg90_base.dae</uri></mesh>
+          
+          <!--<box>
+            <size>0.05 0.05 0.004</size>
+          </box> -->
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/RedTransparent</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+
     
 
     
@@ -525,6 +572,12 @@
       <pose>0 0 0 0 0 0</pose>
       <child>piastra_anteriore</child>
       <parent>cube_base</parent>
+    </joint>
+
+    <joint type='fixed' name='supporto_sg90_joint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>supporto_sg90</child>
+      <parent>piastra_anteriore</parent>
     </joint>
 
     <!-- PLUGINS -->

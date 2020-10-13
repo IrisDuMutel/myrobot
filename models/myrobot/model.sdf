@@ -811,7 +811,7 @@
     <joint type='fixed' name='RealSenseJoint'>
       <pose>0 0 0 0 0 0</pose>
       <child>RealSense</child>
-      <parent>cube_base</parent>
+      <parent>BaseBoards</parent>
     </joint>
 
     <joint type='fixed' name='RigthFrontForceJoint'>

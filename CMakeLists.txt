@@ -27,7 +27,8 @@ find_package(catkin REQUIRED COMPONENTS
     message_generation
     image_transport
     nav_msgs
-    genmsg  
+    genmsg 
+     
 
 )
 find_package(gazebo REQUIRED)
@@ -91,6 +92,7 @@ generate_messages(DEPENDENCIES std_msgs nav_msgs)
 catkin_package(INCLUDE_DIRS plugins/light/include
                             plugins/contact
                             plugins/keys2cmdvel
+                            plugins/actuator
                             # plugins/simpletrackedvehicle
 CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp)
 ################################################
@@ -129,16 +131,17 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 add_library(contact SHARED plugins/contact/ContactPlugin.cc)
 # add_library(simpletrackedvehicle SHARED plugins/simpletrackedvehicle/SimpleTrackedVehiclePlugin.cc)
 target_link_libraries(contact ${GAZEBO_LIBRARIES})
-
 include_directories(plugins/light/include)
 include_directories(plugins/contact)
 include_directories(plugins/keys2cmdvel)
+include_directories(plugins/actuator)
 # include_directories(plugins/simpletrackedvehicle)
 # include_directories(plugins/trackedvehicle)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}
 )
+# add_library(actuator SHARED plugins/actuator/ActuatorPlugin.cc)
 
 add_library(${PROJECT_NAME} plugins/light/src/light_sensor_plugin.cpp)
 # add_library(${PROJECT_NAME} plugins/contact/ContactPlugin.cpp)
@@ -207,7 +210,7 @@ include_directories(include
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py scripts/arbiter.py 
-                               scripts/force.py scripts/light.py scripts/vector_fcn.py
+                               scripts/force.py scripts/light.py scripts/vector_fcn.py 
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## Mark executables for installation

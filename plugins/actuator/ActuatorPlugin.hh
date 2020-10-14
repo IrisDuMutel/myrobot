@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Open Source Robotics Foundation
+ * Copyright (C) 2015 Open Source Robotics Foundation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,80 +15,93 @@
  *
 */
 
-#ifndef GAZEBO_PLUGINS_ACTORPLUGIN_HH_
-#define GAZEBO_PLUGINS_ACTORPLUGIN_HH_
+#ifndef GAZEBO_PLUGINS_ACTUATORPLUGIN_
+#define GAZEBO_PLUGINS_ACTUATORPLUGIN_
 
-#include <string>
+#include <functional>
 #include <vector>
+#include <string>
+#include <gazebo/common/Events.hh>
+#include <gazebo/physics/physics.hh>
+#include <gazebo/gazebo.hh>
 
-#include "gazebo/common/Plugin.hh"
-#include "gazebo/physics/physics.hh"
-#include "gazebo/util/system.hh"
+/// Example SDF:
+///       <plugin name="actuator_plugin" filename="libActuatorPlugin.so">
+///        <actuator>
+///          <name>actuator_0</name> <!-- optional -->
+///          <joint>JOINT_0</joint> <!-- name of joint to actuate -->
+///          <index>0</index> <!-- needed for multi-DOF joints -->
+///          <type>electric_motor</type> <!-- motor model type -->
+///          <power>20</power> <!-- parameters for motor model -->
+///          <max_velocity>6</max_velocity>
+///          <max_torque>10.0</max_torque>
+///        </actuator>
+///      </plugin>
+///    </model>
+///
+/// Required fields:
+/// - name
+/// - joint
+/// - index (can be 0 in most cases)
+/// - type: current options are electric_motor, velocity_limiter or null
+/// Required for motor model electric_motor:
+/// - power
+/// - max_velocity
+/// - max_torque
+/// Required for motor model velocity_limiter:
+/// - max_velocity
+/// - max_torque
 
 namespace gazebo
 {
-  class GZ_PLUGIN_VISIBLE ActorPlugin : public ModelPlugin
+  /// \brief Properties for a model of a rotational actuator
+  class ActuatorProperties
   {
-    /// \brief Constructor
-    public: ActorPlugin();
+    /// \brief An identifier for the actuator.
+    public: std::string name;
 
-    /// \brief Load the actor plugin.
-    /// \param[in] _model Pointer to the parent model.
-    /// \param[in] _sdf Pointer to the plugin's SDF elements.
-    public: virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf);
+    /// \brief Which joint index is actuated by this actuator.
+    public: int jointIndex;
 
-    // Documentation Inherited.
-    public: virtual void Reset();
+    /// \brief Mechanical power output of the actuator (Watts)
+    public: float power;
 
-    /// \brief Function that is called every update cycle.
-    /// \param[in] _info Timing information
-    private: void OnUpdate(const common::UpdateInfo &_info);
+    /// \brief Maximum velocity of the actuator (radians per second)
+    public: float maximumVelocity;
 
-    /// \brief Helper function to choose a new target location
-    private: void ChooseNewTarget();
+    /// \brief Maximum torque of the actuator (Newton-meters)
+    public: float maximumTorque;
 
-    /// \brief Helper function to avoid obstacles. This implements a very
-    /// simple vector-field algorithm.
-    /// \param[in] _pos Direction vector that should be adjusted according
-    /// to nearby obstacles.
-    private: void HandleObstacles(ignition::math::Vector3d &_pos);
-
-    /// \brief Pointer to the parent actor.
-    private: physics::ActorPtr actor;
-
-    /// \brief Pointer to the world, for convenience.
-    private: physics::WorldPtr world;
-
-    /// \brief Pointer to the sdf element.
-    private: sdf::ElementPtr sdf;
-
-    /// \brief Velocity of the actor
-    private: ignition::math::Vector3d velocity;
-
-    /// \brief List of connections
-    private: std::vector<event::ConnectionPtr> connections;
-
-    /// \brief Current target location
-    private: ignition::math::Vector3d target;
-
-    /// \brief Target location weight (used for vector field)
-    private: double targetWeight = 1.0;
-
-    /// \brief Obstacle weight (used for vector field)
-    private: double obstacleWeight = 1.0;
-
-    /// \brief Time scaling factor. Used to coordinate translational motion
-    /// with the actor's walking animation.
-    private: double animationFactor = 1.0;
-
-    /// \brief Time of the last update.
-    private: common::Time lastUpdate;
-
-    /// \brief List of models to ignore. Used for vector field
-    private: std::vector<std::string> ignoreModels;
-
-    /// \brief Custom trajectory info.
-    private: physics::TrajectoryInfoPtr trajectoryInfo;
+    /// \brief Function used to calculate motor output.
+    /// \param[in] float1 Input velocity.
+    /// \param[in] float2 Input torque.
+    /// \param[in] ActuatorProperties Static properties of this actuator
+    /// \return Torque according to the model.
+    public: std::function<float (float, float, const ActuatorProperties&)>
+              modelFunction;
   };
+
+  /// \brief Plugin for simulating a torque-speed curve for actuators.
+  class GZ_PLUGIN_VISIBLE ActuatorPlugin : public ModelPlugin
+  {
+    /// Documentation inherited
+    public: void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
+
+    /// \brief Callback on world update event.
+    private: void WorldUpdateCallback();
+
+    /// \brief The joints we want to actuate
+    private: std::vector<physics::JointPtr> joints;
+
+    /// \brief Corresponding actuator properties (power, max torque, etc.)
+    private: std::vector<ActuatorProperties> actuators;
+
+    /// \brief Connections to events associated with this class.
+    private: std::vector<event::ConnectionPtr> connections;
+  };
+
+  // Register this plugin with the simulator
+  GZ_REGISTER_MODEL_PLUGIN(ActuatorPlugin)
 }
+
 #endif

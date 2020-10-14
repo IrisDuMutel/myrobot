@@ -29,9 +29,10 @@ using namespace gazebo;
 /// \param[in] _speed Input velocity.
 /// \param[in] _properties Static properties of this actuator
 /// \return Torque according to the model.
-float ElectricMotorModel(const float _speed, const float /*_torque*/, const ActuatorProperties &_properties)
+float ElectricMotorModel(const float _speed, const float /*_torque*/,
+  const ActuatorProperties &_properties)
 {
-if (_speed > _properties.maximumVelocity)
+  if (_speed > _properties.maximumVelocity)
     return _properties.power / _properties.maximumVelocity;
 
   float torque = _properties.power / _speed;

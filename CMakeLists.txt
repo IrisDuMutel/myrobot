@@ -93,6 +93,7 @@ catkin_package(INCLUDE_DIRS plugins/light/include
                             plugins/contact
                             plugins/keys2cmdvel
                             plugins/actuator
+                        
                             # plugins/simpletrackedvehicle
 CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp)
 ################################################
@@ -127,26 +128,28 @@ CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp)
 link_directories(${GAZEBO_LIBRARY_DIRS})
 include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
-add_library(contact SHARED plugins/contact/ContactPlugin.cc)
-# add_library(simpletrackedvehicle SHARED plugins/simpletrackedvehicle/SimpleTrackedVehiclePlugin.cc)
-target_link_libraries(contact ${GAZEBO_LIBRARIES})
+# set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+
 include_directories(plugins/light/include)
 include_directories(plugins/contact)
-include_directories(plugins/keys2cmdvel)
 include_directories(plugins/actuator)
-# include_directories(plugins/simpletrackedvehicle)
-# include_directories(plugins/trackedvehicle)
+include_directories(plugins/keys2cmdvel)
+include_directories(plugins/simpletrackedvehicle)
+include_directories(plugins/trackedvehicle)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}
 )
-# add_library(actuator SHARED plugins/actuator/ActuatorPlugin.cc)
+# add_library(simpletrackedvehicle SHARED plugins/simpletrackedvehicle/SimpleTrackedVehiclePlugin.cc)
+# add_library(contact SHARED plugins/actuator/ActuatorPlugin.cc)
 
-add_library(${PROJECT_NAME} plugins/light/src/light_sensor_plugin.cpp)
-# add_library(${PROJECT_NAME} plugins/contact/ContactPlugin.cpp)
-## Specify libraries to link a library or executable target against
-target_link_libraries( ${PROJECT_NAME} ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} CameraPlugin )
+# Build our plugin
+add_library(ContactPlugin SHARED plugins/contact/ContactPlugin.cc)
+target_link_libraries(ContactPlugin ${GAZEBO_LIBRARIES}) # found in /home/iris/catkin_ws/devel/lib/libContactPlugin.so
+add_library(light_sensor_plugin SHARED plugins/light/src/light_sensor_plugin.cpp)
+target_link_libraries(light_sensor_plugin ${GAZEBO_LIBRARIES}) 
+add_library(ActuatorPlugin SHARED plugins/actuator/ActuatorPlugin.cc)
+target_link_libraries(ActuatorPlugin ${GAZEBO_LIBRARIES})
 
 ###########
 ## Build ##

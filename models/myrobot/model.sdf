@@ -4,6 +4,8 @@
     <static>true</static>
 
     <!-- LINKS --> 
+
+    <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%BODY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     <link name="cube_base">
       <inertial>
         <!-- <mass>0.78</mass>
@@ -162,6 +164,100 @@
       </visual>
     </link>-->
 
+    <link name='left_wheel'>
+      <pose>0. 0.087 0.06825 0 1.5707 1.5707 </pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.00006771</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00006771</iyy>
+          <iyz>0</iyz>
+          <izz>0.000125</izz>
+        </inertia>
+      </inertial>
+        <collision name='  collision'>
+          <geometry>
+            <cylinder>
+              <radius>.06825</radius>
+              <length>0.035</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.05</mu>
+                <mu2>0.05</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+
+        <!--<visual name='visual'>
+          <geometry>
+            <cylinder>
+              <radius>.06825</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          
+          <material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0.1 0.1 0.2 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual> -->
+    </link>
+      
+    <link name='right_wheel'>
+      <pose>0. -0.087 0.06825 0 1.5707 1.5707 </pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.00006771</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00006771</iyy>
+          <iyz>0</iyz>
+          <izz>0.000125</izz>
+        </inertia>
+      </inertial>
+        <collision name='  collision'>
+          <geometry>
+            <cylinder>
+              <radius>.06825</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.05</mu>
+                <mu2>0.05</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <!--<visual name='visual'>
+          <geometry>
+            <cylinder>
+              <radius>.06825</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0.1 0.1 0.2 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0 1</emissive>
+        </material>
+        </visual> -->
+    </link>
+
+    
+    <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%SUPPORTS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     <link name="BaseBoards">
       <inertial>
         <!-- <mass>0.78</mass>
@@ -407,98 +503,7 @@
       </visual>
     </link>
     
-    <link name='left_wheel'>
-      <pose>0. 0.087 0.06825 0 1.5707 1.5707 </pose>
-      <inertial>
-        <mass>0.1</mass>
-        <inertia>
-          <ixx>0.00006771</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>0.00006771</iyy>
-          <iyz>0</iyz>
-          <izz>0.000125</izz>
-        </inertia>
-      </inertial>
-        <collision name='  collision'>
-          <geometry>
-            <cylinder>
-              <radius>.06825</radius>
-              <length>0.035</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>0.05</mu>
-                <mu2>0.05</mu2>
-              </ode>
-            </friction>
-          </surface>
-        </collision>
-
-        <!--<visual name='visual'>
-          <geometry>
-            <cylinder>
-              <radius>.06825</radius>
-              <length>0.04</length>
-            </cylinder>
-          </geometry>
-          
-          <material>
-            <ambient>0.1 0.1 0.1 1</ambient>
-            <diffuse>0.1 0.1 0.2 1</diffuse>
-            <specular>0 0 0 0</specular>
-            <emissive>0 0 0 1</emissive>
-          </material>
-        </visual> -->
-    </link>
-      
-    <link name='right_wheel'>
-      <pose>0. -0.087 0.06825 0 1.5707 1.5707 </pose>
-      <inertial>
-        <mass>0.1</mass>
-        <inertia>
-          <ixx>0.00006771</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
-          <iyy>0.00006771</iyy>
-          <iyz>0</iyz>
-          <izz>0.000125</izz>
-        </inertia>
-      </inertial>
-        <collision name='  collision'>
-          <geometry>
-            <cylinder>
-              <radius>.06825</radius>
-              <length>0.04</length>
-            </cylinder>
-          </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>0.05</mu>
-                <mu2>0.05</mu2>
-              </ode>
-            </friction>
-          </surface>
-        </collision>
-        <!--<visual name='visual'>
-          <geometry>
-            <cylinder>
-              <radius>.06825</radius>
-              <length>0.04</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <ambient>0.1 0.1 0.1 1</ambient>
-            <diffuse>0.1 0.1 0.2 1</diffuse>
-            <specular>0 0 0 0</specular>
-            <emissive>0 0 0 1</emissive>
-        </material>
-        </visual> -->
-    </link>
-
+    
     <link name="supporto_sg90">
       <inertial>
 
@@ -538,6 +543,7 @@
       </visual>
     </link>
 
+    <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%SENSORS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     <link name='RealSense'>
       <pose>0.035 0.0 0.1535 0 0 0</pose>
       <inertial>
@@ -769,6 +775,8 @@
       <kinematic>0</kinematic>
       <gravity>1</gravity>
     </link>
+    <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%BOARDS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+    <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MISCELLANEOUS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
 
     <!-- JOINTS -->
     <joint type='revolute' name='left_wheel_hinge'>

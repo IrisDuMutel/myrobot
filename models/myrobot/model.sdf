@@ -493,7 +493,7 @@
           <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/YellowTransparent</name>
+              <name>Gazebo/DarkOrangeTransparentOverlay</name>
             </script>
             <!--<ambient>0.1 0.1 0.1 1</ambient>
             <diffuse>1 1 0.5 1.0</diffuse>
@@ -777,7 +777,86 @@
     </link>
     <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%BOARDS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MISCELLANEOUS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+    <link name='sg90'>
+      <pose>0.096 -0.005 0.092 1.5707 0 0 </pose>
+        <collision name='  collision'>
+          <geometry>
+            <box>
+              <size>0.012 0.022 0.022</size>
+            </box>
+          </geometry>
+        </collision>
 
+        <visual name='visual'>
+        <pose> 0 -0.011 0 0 0 0</pose>
+          <geometry>
+            <mesh><uri>model://myrobot/meshes/Misc/sg90.dae</uri></mesh>
+          </geometry>
+          <!--<geometry>
+            <box>
+              <size>0.012 0.022 0.022</size>
+            </box>
+          </geometry>-->
+
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/GreenTransparent</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+
+      <link name='sg90_axis'>
+        <pose>0.096 0.0005 0.106 0 0 0</pose>
+        <collision name='collision'>
+          <geometry>
+            <cylinder>
+              <radius>0.002</radius>
+              <length>0.01</length>
+            </cylinder>
+          </geometry>
+        </collision>
+
+        <visual name='visual'>
+          <geometry>
+            <cylinder>
+              <radius>0.002</radius>
+              <length>0.01</length>
+            </cylinder>
+          </geometry>
+
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+    </link>
+
+    <!--PlUGINS-->
+    <!--                SG90 axis                             -->
+
+  <!-- ROS Control plugin for Gazebo -->
+  
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/simple_model</robotNamespace>
+  </plugin>
+  
+
+  <!-- transmission -->
+  <transmission name="base_to_second_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <actuator name="motor1">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+    <joint name="sg90_to_axis">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+  </transmission>
+
+      
     <!-- JOINTS -->
     <joint type='revolute' name='left_wheel_hinge'>
       <pose>0 0 -0.03 0 0 0</pose>
@@ -838,6 +917,20 @@
       <child>LightSensor</child>
       <parent>cube_base</parent>
     </joint>
+
+    <joint type='fixed' name='sg90_joint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>sg90</child>
+      <parent>supporto_sg90</parent>
+    </joint>
+
+    <joint name="sg90_to_axis" type="continuous">
+      <pose>0 0 0 0 0 0</pose>
+      <child>sg90_axis</child>
+      <parent>sg90</parent>
+      <axis xyz="0 0 1"/>
+  </joint>
+
     
     <!-- PLUGINS -->
     <plugin name="cube_moving_code" filename="libgazebo_ros_diff_drive.so">

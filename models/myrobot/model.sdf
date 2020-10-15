@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
   <model name = "myrobot">
-    <static>true</static>
+    <static>false</static>
 
     <!-- LINKS --> 
 
@@ -184,14 +184,14 @@
               <length>0.035</length>
             </cylinder>
           </geometry>
-          <surface>
+          <!--<surface>
             <friction>
               <ode>
                 <mu>0.05</mu>
                 <mu2>0.05</mu2>
               </ode>
             </friction>
-          </surface>
+          </surface>-->
         </collision>
 
         <!--<visual name='visual'>
@@ -231,14 +231,14 @@
               <length>0.04</length>
             </cylinder>
           </geometry>
-          <surface>
+          <!--<surface>
             <friction>
               <ode>
                 <mu>0.05</mu>
                 <mu2>0.05</mu2>
               </ode>
             </friction>
-          </surface>
+          </surface>-->
         </collision>
         <!--<visual name='visual'>
           <geometry>
@@ -840,12 +840,12 @@
 
   <!-- ROS Control plugin for Gazebo -->
   
-  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+  <!--<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <robotNamespace>/simple_model</robotNamespace>
   </plugin>
   
 
-  <!-- transmission -->
+   transmission 
   <transmission name="base_to_second_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <actuator name="motor1">
@@ -854,7 +854,7 @@
     <joint name="sg90_to_axis">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-  </transmission>
+  </transmission>-->
 
       
     <!-- JOINTS -->
@@ -924,7 +924,7 @@
       <parent>supporto_sg90</parent>
     </joint>
 
-    <joint name="sg90_to_axis" type="continuous">
+    <joint name="sg90_to_axis" type="fixed">
       <pose>0 0 0 0 0 0</pose>
       <child>sg90_axis</child>
       <parent>sg90</parent>

@@ -15,8 +15,8 @@
  *
 */
 
-#ifndef GAZEBO_PLUGINS_ACTUATORPLUGIN_
-#define GAZEBO_PLUGINS_ACTUATORPLUGIN_
+#ifndef GAZEBO_PLUGINS_MOTORPLUGIN_
+#define GAZEBO_PLUGINS_MOTORPLUGIN_
 
 #include <functional>
 #include <vector>
@@ -26,16 +26,16 @@
 #include <gazebo/gazebo.hh>
 
 /// Example SDF:
-///       <plugin name="actuator_plugin" filename="libActuatorPlugin.so">
-///        <actuator>
-///          <name>actuator_0</name> <!-- optional -->
+///       <plugin name="motor_plugin" filename="libMotorPlugin.so">
+///        <motor>
+///          <name>motor_0</name> <!-- optional -->
 ///          <joint>JOINT_0</joint> <!-- name of joint to actuate -->
 ///          <index>0</index> <!-- needed for multi-DOF joints -->
 ///          <type>electric_motor</type> <!-- motor model type -->
 ///          <power>20</power> <!-- parameters for motor model -->
 ///          <max_velocity>6</max_velocity>
 ///          <max_torque>10.0</max_torque>
-///        </actuator>
+///        </motor>
 ///      </plugin>
 ///    </model>
 ///
@@ -55,7 +55,7 @@
 namespace gazebo
 {
   /// \brief Properties for a model of a rotational actuator
-  class ActuatorProperties
+  class MotorProperties
   {
     /// \brief An identifier for the actuator.
     public: std::string name;
@@ -77,12 +77,12 @@ namespace gazebo
     /// \param[in] float2 Input torque.
     /// \param[in] ActuatorProperties Static properties of this actuator
     /// \return Torque according to the model.
-    public: std::function<float (float, float, const ActuatorProperties&)>
+    public: std::function<float (float, float, const MotorProperties&)>
               modelFunction;
   };
 
   /// \brief Plugin for simulating a torque-speed curve for actuators.
-  class GZ_PLUGIN_VISIBLE ActuatorPlugin : public ModelPlugin
+  class GZ_PLUGIN_VISIBLE MotorPlugin : public ModelPlugin
   {
     /// Documentation inherited
     public: void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
@@ -94,14 +94,14 @@ namespace gazebo
     private: std::vector<physics::JointPtr> joints;
 
     /// \brief Corresponding actuator properties (power, max torque, etc.)
-    private: std::vector<ActuatorProperties> actuators;
+    private: std::vector<MotorProperties> motors;
 
     /// \brief Connections to events associated with this class.
     private: std::vector<event::ConnectionPtr> connections;
   };
 
   // Register this plugin with the simulator
-  GZ_REGISTER_MODEL_PLUGIN(ActuatorPlugin)
+  GZ_REGISTER_MODEL_PLUGIN(MotorPlugin)
 }
 
 #endif

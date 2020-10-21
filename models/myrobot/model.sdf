@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
   <model name = "myrobot">
-    <static>true</static>
+    <static>false</static>
 
     <!-- LINKS --> 
 
@@ -604,7 +604,7 @@
           </box>
         </geometry>
       </collision>
-      <visual name='visual'>
+      <!-- <visual name='visual'>
       <pose>0.0375 0 -0.003 0 0 0</pose>
         <geometry>
           <mesh><uri>model://myrobot/meshes/Supports/supporto_pitch_servo_1.dae</uri></mesh>
@@ -615,8 +615,8 @@
             <name>Gazebo/RedTransparent</name>
           </script>
         </material>
-      </visual>
-      <!-- <visual name='visual'>
+      </visual> -->
+      <visual name='visual'>
         <geometry>
           <box>
             <size>0.04 0.035 0.003</size>
@@ -628,7 +628,7 @@
             <name>Gazebo/BlueTransparent</name>
           </script>
         </material>
-      </visual> -->
+      </visual>
 
       <collision name='collision_tronco'>
       <pose>0.0 0.0 -0.001 0 0 0</pose>
@@ -686,7 +686,7 @@
       </visual> -->
     </link>
 
-    <link name='supporto_pitch_servo_2c'>
+    <link name='supporto_pitch_servo_2'>
       <pose>0.15 0.0005 0.116 0 0 3.14</pose>
       <collision name='collision'>
         <geometry>
@@ -992,14 +992,14 @@
 
         <visual name='visual'>
         <pose> 0 -0.011 0 0 0 0</pose>
-          <geometry>
+          <!-- <geometry>
             <mesh><uri>model://myrobot/meshes/Misc/sg90.dae</uri></mesh>
-          </geometry>
-          <!--<geometry>
+          </geometry> -->
+          <geometry>
             <box>
               <size>0.012 0.022 0.022</size>
             </box>
-          </geometry>-->
+          </geometry>
 
           <material>
             <script>
@@ -1120,10 +1120,16 @@
       <parent>sg90_shaft</parent>
     </joint>
 
-    <joint name="piastr_albero_to_pitch_servo1" type="fixed">
+    <joint name="piastra_albero_to_pitch_servo1" type="fixed">
       <pose>0 0 0 0 0 0</pose>
       <child>supporto_pitch_servo_1</child>
       <parent>supporto_piastra_albero</parent>
+    </joint>
+
+    <joint name="pitch_servo1_to_pitch_servo2" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>supporto_pitch_servo_2</child>
+      <parent>supporto_pitch_servo_1</parent>
     </joint>
 
 
@@ -1150,20 +1156,21 @@
         <rosDebugLevel>na</rosDebugLevel>
       </plugin>
       
-      <!-- <plugin name="rotate" filename="libActuatorPlugin.so">
-        <actuatorJoint>sg90_shaft</actuatorJoint>
+      <plugin name="rotatesg90" filename="libActuatorPlugin.so">
         <motor>
-          <name>actuator_0</name> 
-          <joint>JOINT_0</joint> 
-          <index>0</index>
+          <name>sg90_1</name> 
+          <joint>sg90_to_shaft</joint> 
+          <velocity>25</velocity>
+          <joint_index>0</joint_index>
+          <!-- <index>0</index>
           <type>electric_motor</type> 
           <power>20</power> 
           <max_velocity>6</max_velocity>
           <max_torque>10.0</max_torque>
           <commandTopic>motor_vel</commandTopic>
-          <odometryTopic>motor_odom</odometryTopic>
+          <odometryTopic>motor_odom</odometryTopic> -->
         </motor> 
-      </plugin>-->
+      </plugin>
   </model>
 </sdf>
 

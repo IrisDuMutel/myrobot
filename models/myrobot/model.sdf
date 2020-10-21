@@ -1135,7 +1135,7 @@
 
     
     <!-- PLUGINS -->
-    <plugin name="cube_moving_code" filename="libgazebo_ros_diff_drive.so">
+    <!-- <plugin name="cube_moving_code" filename="libgazebo_ros_diff_drive.so">
         <commandTopic>cmd_vel</commandTopic>
         <odometryTopic>odom</odometryTopic>
         <odometryFrame>odom</odometryFrame>
@@ -1154,7 +1154,7 @@
         <wheelAcceleration>1</wheelAcceleration>
         <wheelTorque>10</wheelTorque>
         <rosDebugLevel>na</rosDebugLevel>
-      </plugin>
+      </plugin> -->
       
       <plugin name="rotatesg90" filename="libActuatorPlugin.so">
         <motor>

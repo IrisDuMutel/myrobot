@@ -126,7 +126,7 @@ CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 link_directories(${GAZEBO_LIBRARY_DIRS})
-include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${std_msgs_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS} ${roscpp_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 # set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
@@ -149,7 +149,7 @@ target_link_libraries(ContactPlugin ${GAZEBO_LIBRARIES}) # found in /home/iris/c
 add_library(light_sensor_plugin SHARED plugins/light/src/light_sensor_plugin.cpp)
 target_link_libraries(light_sensor_plugin ${GAZEBO_LIBRARIES}) 
 add_library(ActuatorPlugin SHARED plugins/actuator/test.cpp)
-target_link_libraries(ActuatorPlugin ${GAZEBO_LIBRARIES})
+target_link_libraries(ActuatorPlugin ${GAZEBO_LIBRARIES} ${roscpp_LIBRARIES})
 
 ###########
 ## Build ##

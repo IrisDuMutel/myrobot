@@ -1,6 +1,5 @@
 #ifndef _ACTUATOR_PLUGIN_HH_
 #define _ACTUATOR_PLUGIN_HH_
-
 #include <functional>
 #include <gazebo/gazebo.hh>
 #include <gazebo/physics/physics.hh>
@@ -8,7 +7,12 @@
 #include <gazebo/msgs/msgs.hh>
 #include <vector>
 #include <string>
-#include <ros/ros.h>
+#include <thread>
+#include "ros/ros.h"
+#include "ros/callback_queue.h"
+#include "ros/subscribe_options.h"
+#include "std_msgs/Float32.h"
+
 namespace gazebo
 {
   /// \brief A plugin to control a Velodyne sensor.
@@ -25,6 +29,12 @@ namespace gazebo
     public: virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
     {
       // Safety check
+      if (_model->GetJointCount() == 0)
+      {
+        std::cerr << "Invalid joint count, Actuator plugin not loaded\n";
+        return;
+      }
+
       std::string joint_name = "";
       if ( _sdf->HasElement("motor") ) 
       {
@@ -59,10 +69,12 @@ namespace gazebo
       // Get the first joint. We are making an assumption about the model
       // having one joint that is the rotational joint.
       // Store pointer to the joint we will actuate
-      physics::JointPtr joints = _model->GetJoint(joint_name);// Store pointer to the joint we will actuate
-      joints->SetEffortLimit(jointIndex, maximumTorque);
-      this->joint = joints;
-      
+      this->joint = this->model->GetJoint(joint_name);
+      // physics::JointPtr joints = _model->GetJoint(joint_name);// Store pointer to the joint we will actuate
+      // joints->SetEffortLimit(jointIndex, maximumTorque);
+      // this->joint = joints;
+
+
       // Setup a P-controller, with a gain of 0.1.
       this->pid = common::PID(0.1, 0, 0);
       
@@ -70,11 +82,7 @@ namespace gazebo
       this->model->GetJointController()->SetVelocityPID(
           this->joint->GetScopedName(), this->pid);
 
-      // Set the joint's target velocity. This target velocity is just
-      // for demonstration purposes.
-      this->model->GetJointController()->SetVelocityTarget(
-          this->joint->GetScopedName(), 10.0);
-    
+      
       // Default to zero velocity
       double velocity = 0;
       ROS_INFO_NAMED("actuator_plugin", "Getting velocity from sdf");
@@ -82,44 +90,83 @@ namespace gazebo
       if (_sdf->HasElement("velocity"))
         velocity = _sdf->Get<double>("velocity");
       
-      // Set the joint's target velocity. This target velocity is just
-      // for demonstration purposes.
-      this->model->GetJointController()->SetVelocityTarget(
-          this->joint->GetScopedName(), velocity);
+      this->SetVelocity(velocity);
+
       // Create the node
       this->node = transport::NodePtr(new transport::Node());
-      #if GAZEBO_MAJOR_VERSION < 8
-      this->node->Init(this->model->GetWorld()->GetName());
-      #else
-      this->node->Init(this->model->GetWorld()->Name());
-      #endif
-      
+      this->node->Init("sg90node");
       // Create a topic name
-      std::string topicName = "/sg90_vel";
-      
+      std::string subName = "/sg90_vel";
       // Subscribe to the topic, and register a callback
-      this->sub = this->node->Subscribe(topicName,
+      this->sub = this->node->Subscribe(subName,
          &ActuatorPlugin::OnMsg, this);
+      
+      // Initialize ros, if it has not already bee initialized.
+      if (!ros::isInitialized())
+      {
+        int argc = 0;
+        char **argv = NULL;
+        ros::init(argc, argv, "gazebo_client",
+            ros::init_options::NoSigintHandler);
+      }
+      
+      // Create our ROS node. This acts in a similar manner to
+      // the Gazebo node
+      this->rosNode.reset(new ros::NodeHandle("gazebo_client"));
+      
+      // Create a named topic, and subscribe to it.
+      ros::SubscribeOptions so =
+        ros::SubscribeOptions::create<std_msgs::Float32>(
+            "/" + this->model->GetName() + "/vel_cmd",
+            1,
+            boost::bind(&ActuatorPlugin::OnRosMsg, this, _1),
+            ros::VoidPtr(), &this->rosQueue);
+      this->rosSub = this->rosNode->subscribe(so);
+      
+      // Spin up the queue helper thread.
+      this->rosQueueThread =
+        std::thread(std::bind(&ActuatorPlugin::QueueThread, this));
      
    }
    /// \brief Set the velocity of the Velodyne
-/// \param[in] _vel New target velocity
+   /// \param[in] _vel New target velocity
    public: void SetVelocity(const double &_vel)
    {
      // Set the joint's target velocity.
      this->model->GetJointController()->SetVelocityTarget(
-         this->joint->GetScopedName(), _vel);
+         "sg90_to_shaft", _vel);
    }
+
+
    /// \brief Handle incoming message
-/// \param[in] _msg Repurpose a vector3 message. This function will
-/// only use the x component.
+   /// \param[in] _msg Repurpose a vector3 message. This function will
+   /// only use the x component.
    private: void OnMsg(ConstVector3dPtr &_msg)
    {
      this->SetVelocity(_msg->x());
    }
-  /// \brief Pointer to the model.
+
+       /// \brief Handle an incoming message from ROS
+    /// \param[in] _msg A float value that is used to set the velocity
+    /// of the Velodyne.
+    public: void OnRosMsg(const std_msgs::Float32ConstPtr &_msg)
+    {
+      this->SetVelocity(_msg->data);
+    }
+    
+    /// \brief ROS helper function that processes messages
+    private: void QueueThread()
+    {
+      static const double timeout = 0.01;
+      while (this->rosNode->ok())
+      {
+        this->rosQueue.callAvailable(ros::WallDuration(timeout));
+      }
+    }
+   /// \brief Pointer to the model.
   private: physics::ModelPtr model;
   
+  public: double current_joint_angle;
   /// \brief Pointer to the joint.
   private: physics::JointPtr joint;
   
@@ -134,6 +181,17 @@ namespace gazebo
   private: std::vector<physics::JointPtr> joints;
   /// \brief Which joint index is actuated by this actuator.
   public: int jointIndex;
+  /// \brief A node use for ROS transport
+  private: std::unique_ptr<ros::NodeHandle> rosNode;
+  
+  /// \brief A ROS subscriber
+  private: ros::Subscriber rosSub;
+  
+  /// \brief A ROS callbackqueue that helps process messages
+  private: ros::CallbackQueue rosQueue;
+  
+  /// \brief A thread the keeps running the rosQueue
+  private: std::thread rosQueueThread;
   };
 
 // Tell Gazebo about this plugin, so that Gazebo can call Load on this plugin.

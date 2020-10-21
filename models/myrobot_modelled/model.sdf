@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
-  <model name = "myrobot">
+  <model name = "myrobot_modelled">
     <static>false</static>
 
     <!-- LINKS --> 

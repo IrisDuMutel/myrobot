@@ -18,7 +18,7 @@
   <!-- loads the controllers -->
   <!-- Find model and launch it as 'gazebo_ros' node -->
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find myrobot)/models/myrobot/$(arg model).sdf" />
-  <node pkg="gazebo_ros" type="spawn_model" name="spawn_sdf" args="-sdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_sdf"  output="screen" args="-sdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
   
 <!-- OTHER NODES -->
   

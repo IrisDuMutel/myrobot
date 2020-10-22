@@ -6,7 +6,13 @@
 #include <thread>
 #include "std_msgs/Float32.h"
 #include <map>
-
+#include <algorithm>
+#include <assert.h>
+#include <ignition/math/Angle.hh>
+#include <ignition/math/Pose3.hh>
+#include <ignition/math/Quaternion.hh>
+#include <ignition/math/Vector3.hh>
+#include <sdf/sdf.hh>
 // Gazebo
 #include <gazebo/gazebo.hh>
 #include <gazebo/common/common.hh>
@@ -23,11 +29,12 @@
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Pose2D.h>
 #include <nav_msgs/Odometry.h>
-#include <sensor_msgs/JointState.h>
 #include "ros/subscribe_options.h"
-#include "ros/callback_queue.h"
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/JointState.h>
+// Custom Callback Queue
+#include <ros/callback_queue.h>
+#include <ros/advertise_options.h>
 
 // Boost
 #include <boost/thread.hpp>
@@ -67,41 +74,22 @@ namespace gazebo
     /// attached to.
     /// \param[in] _sdf A pointer to the plugin's SDF element.
     public: void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
-    {
+    {ROS_INFO("BBBBBBB");
       
-      std::string joint_name = "";
-      if ( _sdf->HasElement("motor") ) 
-      {
-        for (sdf::ElementPtr elem = _sdf->GetElement("motor"); elem != NULL;
-           elem = elem->GetNextElement("motor"))
-        {
-          if (!elem->HasElement("joint"))
-          {
-          gzwarn << "Invalid SDF: got motor without joint."
-                 << std::endl;
-          continue;
-          }
-          std::string joint_name = elem->Get<std::string>("joint");
-          robot_namespace_ = "a";
-          if (_sdf->HasElement("robotNamespace")) {
-            robot_namespace_ = _sdf->GetElement("robotNamespace")->Get<std::string>();
-          }
-          if (_sdf->HasElement("commandTopicServo")) {
-            command_topic_ = _sdf->GetElement("commandTopicServo")->Get<std::string>();
-          }
-          if (_sdf->HasElement("servoTorque")) {
-            servo_torque = elem->Get<double>("servoTorque");
-          }
-          if (_sdf->HasElement("diameter_servo")) {
-            servo_diameter = elem->Get<double>("diameter_servo");
-          }
-          gazebo_ros_->getParameter<double> ( update_rate_, "updateRate", 100.0 );
-        }
-      }
-      else 
-        {
-            ROS_WARN_NAMED("ActuatorPlugin", "ActuatorPlugin missing <motor>!!!");
-        }
+      // Store the model pointer for convenience.
+      this->model = _model;
+      gazebo_ros_ = GazeboRosPtr ( new GazeboRos ( _model, _sdf, "ActuPlug" ) );
+      
+      // Make sure the ROS node for Gazebo has already been initialized
+      gazebo_ros_->isInitialized();
+          
+      // gazebo_ros_->getParameter<std::string> ( joint_name, "motor_joint", "motor_joint" );
+      gazebo_ros_->getParameter<std::string> ( robot_namespace_, "robotNamespace", "/" );
+      gazebo_ros_->getParameter<std::string> ( command_topic_, "commandTopicServo", "cmd_servo" );
+      gazebo_ros_->getParameter<double> ( servo_torque, "servoTorque", 10 );
+      gazebo_ros_->getParameter<double> ( servo_diameter, "diameter_servo", 0.004 );
+      gazebo_ros_->getParameter<double> ( update_rate_, "updateRate", 100.0 );
+       
       
 
       std::map<std::string, OdomSource> odomOptions;
@@ -109,21 +97,10 @@ namespace gazebo
       odomOptions["world"] = WORLD;
       gazebo_ros_->getParameter<OdomSource> ( odom_source_, "odometrySource", odomOptions, WORLD );
 
-      // Store the model pointer for convenience.
-      this->model = _model;
-      gazebo_ros_ = GazeboRosPtr ( new GazeboRos ( _model, _sdf, "ActuPlug" ) );
       
       
-      // Initialize ros, if it has not already bee initialized.
-      if (!ros::isInitialized())
-      {
-        int argc = 0;
-        char **argv = NULL;
-        ros::init(argc, argv, "gazebo_client",
-            ros::init_options::NoSigintHandler);
-      }
-      joints_=gazebo_ros_->getJoint(model, "joint", "joint");
-      joints_->SetParam ( "fmax", 0, servo_torque );
+      joints_=gazebo_ros_->getJoint(model, "motor_joint", "joint");
+      joints_->SetParam ( "fservomax", 0, servo_torque );
       // Initialize update rate stuff
       if ( this->update_rate_ > 0.0 ) this->update_period_ = 1.0 / this->update_rate_;
       else this->update_period_ = 0.0;
@@ -132,34 +109,30 @@ namespace gazebo
       #else
           last_update_time_ = model->GetWorld()->GetSimTime();
       #endif
-
+      // Initialize velocity stuff
+      servo_speed_ = 0;
+      // Initialize velocity support stuff
+      servo_speed_instr_ = 0;
       x_ = 0;
       rot_ = 0;
       alive_ = true;
-      transform_broadcaster_ = boost::shared_ptr<tf::TransformBroadcaster>(new tf::TransformBroadcaster());
+      // transform_broadcaster_ = boost::shared_ptr<tf::TransformBroadcaster>(new tf::TransformBroadcaster());
 
-      // Initialize velocity stuff
-      servo_speed_ = 0;
       
-  
-      // Initialize velocity support stuff
-      servo_speed_instr_ = 0;
       
-      // Get the first joint. We are making an assumption about the model
-      // having one joint that is the rotational joint.
-      // Store pointer to the joint we will actuate
+
       ROS_INFO("AAAAAAAAAAAAAAAAAAAAAAAAAAAA \n");
 
 
-
-      // Create a topic name
-      std::string subName = "/sg90_velcmd";
+      // ROS: Subscribe to the velocity command topic (usually "cmd_vel")
+      ROS_INFO_NAMED("diff_drive", "%s: Try to subscribe to %s", gazebo_ros_->info(), command_topic_.c_str());
       ros::SubscribeOptions so =
         ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic_, 1,
-                boost::bind(&ActuatorPlugin::cmdVelCallback, this, _1),
-                ros::VoidPtr(), &queue_);
+                boost::bind(&ActuatorPlugin::cmdVelCallback, this, _1), ros::VoidPtr(), &queue_);
 
       cmd_vel_subscriber_ = gazebo_ros_->node()->subscribe(so);
+      ROS_INFO_NAMED("diff_drive", "%s: Subscribe to %s", gazebo_ros_->info(), command_topic_.c_str());
+
       ROS_INFO("Actuator plugin ready");
 
       // start custom queue for actuator plugin
@@ -190,8 +163,8 @@ namespace gazebo
            (this seems to be solved in https://bitbucket.org/osrf/gazebo/commits/ec8801d8683160eccae22c74bf865d59fac81f1e)
         */
         
-        if ( fabs(servo_torque -joints_->GetParam ( "fmax", 0 )) > 1e-6 ) {
-          joints_->SetParam ( "fmax", 0, servo_torque );
+        if ( fabs(servo_torque -joints_->GetParam ( "fservomax", 0 )) > 1e-6 ) {
+          joints_->SetParam ( "fservomax", 0, servo_torque );
         }
         
     
@@ -219,7 +192,7 @@ namespace gazebo
             if ( servo_accel == 0 ||
                     ( fabs ( servo_speed_ - current_speed ) < 0.01 )) {
                 //if max_accel == 0, or target speed is reached
-                joints_->SetParam ( "vel", 0, servo_speed_/ ( servo_diameter / 2.0 ) );
+                joints_->SetParam ( "velservo", 0, servo_speed_/ ( servo_diameter / 2.0 ) );
             } else {
                 if ( servo_speed_>=current_speed)
                     servo_speed_instr_+=fmin ( servo_speed_-current_speed,  servo_accel * seconds_since_last_update );
@@ -228,7 +201,7 @@ namespace gazebo
                 // ROS_INFO_NAMED("diff_drive", "actual wheel speed = %lf, issued wheel speed= %lf", current_speed[LEFT], wheel_speed_[LEFT]);
                 // ROS_INFO_NAMED("diff_drive", "actual wheel speed = %lf, issued wheel speed= %lf", current_speed[RIGHT],wheel_speed_[RIGHT]);
     
-                joints_->SetParam ( "vel", 0, servo_speed_instr_ / ( servo_diameter / 2.0 ) );
+                joints_->SetParam ( "velservo", 0, servo_speed_instr_ / ( servo_diameter / 2.0 ) );
             }
         last_update_time_+= common::Time ( update_period_ );
     }
@@ -312,7 +285,7 @@ namespace gazebo
       pose_encoder_.theta = 0;
       x_ = 0;
       rot_ = 0;
-      joints_->SetParam ( "fmax", 0, servo_torque );
+      joints_->SetParam ( "fservomax", 0, servo_torque );
     }
 
     /// \brief ROS helper function that processes messages

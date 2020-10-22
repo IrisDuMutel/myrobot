@@ -6,9 +6,30 @@
 
 
   <maintainer email="rdaneel@todo.todo">rdaneel</maintainer>
-
   <license>TODO</license>
+  <build_depend>gazebo_dev</build_depend>
+  <!--
+    Need to use gazebo_dev since run script needs pkg-config
+    See: https://github.com/ros-simulation/gazebo_ros_pkgs/issues/323 for more info
+  -->
+  <exec_depend>gazebo_dev</exec_depend>
 
+  <depend>geometry_msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>nodelet</depend>
+  <depend>angles</depend>
+  <depend>urdf</depend>
+  <depend>tf</depend>
+  <depend>tf2_ros</depend>
+  <depend>dynamic_reconfigure</depend>
+  <depend>rosgraph_msgs</depend>
+  <depend>rosconsole</depend>
+  <depend>polled_camera</depend>
+  <depend>diagnostic_updater</depend>
+  <depend>camera_info_manager</depend>
+
+  <test_depend>rostest</test_depend>
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>controller_manager</build_depend>
   <build_depend>gazebo_ros</build_depend>

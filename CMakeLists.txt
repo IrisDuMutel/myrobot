@@ -10,6 +10,21 @@ project(myrobot)
 
 
 find_package(catkin REQUIRED COMPONENTS
+    gazebo_dev
+    message_generation
+    nodelet
+    angles
+    std_srvs
+    urdf
+    tf
+    tf2_ros
+    dynamic_reconfigure
+    rosgraph_msgs
+    trajectory_msgs
+    image_transport
+    polled_camera
+    diagnostic_updater
+    camera_info_manager
     roscpp
     rospy
     gazebo_ros
@@ -21,18 +36,17 @@ find_package(catkin REQUIRED COMPONENTS
     rviz
     std_msgs
     gazebo_msgs
-    image_transport
     cv_bridge
     sensor_msgs
-    message_generation
-    image_transport
     nav_msgs
     genmsg 
+    geometry_msgs
+    rosconsole
      
 
 )
 find_package(gazebo REQUIRED)
-
+find_package(Boost REQUIRED COMPONENTS thread)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -95,7 +109,30 @@ catkin_package(INCLUDE_DIRS plugins/light/include
                             plugins/actuator
                         
                             # plugins/simpletrackedvehicle
-CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp)
+              CATKIN_DEPENDS 
+                            message_runtime
+                            rospy
+                            nodelet
+                            angles
+                            std_srvs
+                            geometry_msgs
+                            nav_msgs
+                            urdf
+                            tf
+                            tf2_ros
+                            dynamic_reconfigure
+                            rosgraph_msgs
+                            trajectory_msgs
+                            image_transport
+                            camera_info_manager
+                            gazebo_plugins 
+                            gazebo_ros 
+                            roscpp 
+                            std_msgs
+                            sensor_msgs
+                            nav_msgs
+                            gazebo_msgs
+                            rosconsole)
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
@@ -126,7 +163,8 @@ CATKIN_DEPENDS gazebo_plugins gazebo_ros roscpp)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 link_directories(${GAZEBO_LIBRARY_DIRS})
-include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${std_msgs_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS} ${roscpp_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${std_msgs_INCLUDE_DIRS} 
+                    ${GAZEBO_INCLUDE_DIRS} ${roscpp_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 # set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
@@ -149,7 +187,7 @@ target_link_libraries(ContactPlugin ${GAZEBO_LIBRARIES}) # found in /home/iris/c
 add_library(light_sensor_plugin SHARED plugins/light/src/light_sensor_plugin.cpp)
 target_link_libraries(light_sensor_plugin ${GAZEBO_LIBRARIES}) 
 add_library(ActuatorPlugin SHARED plugins/actuator/ActuatorPlugin.cpp)
-target_link_libraries(ActuatorPlugin ${GAZEBO_LIBRARIES} ${roscpp_LIBRARIES})
+target_link_libraries(ActuatorPlugin ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
 
 ###########
 ## Build ##
@@ -221,6 +259,12 @@ catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py script
 # install(TARGETS ${PROJECT_NAME}_node
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
+
+install(TARGETS
+  ActuatorPlugin
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  )
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html

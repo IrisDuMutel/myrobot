@@ -982,6 +982,15 @@
     <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MISCELLANEOUS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     <link name='sg90'>
       <pose>0.096 -0.005 0.092 1.5707 0 0 </pose>
+      <inertial>
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
         <collision name='  collision'>
           <geometry>
             <box>
@@ -1012,6 +1021,15 @@
 
       <link name='sg90_shaft'>
         <pose>0.096 0.0005 0.106 0 0 0</pose>
+        <inertial>
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
         <collision name='collision'>
           <geometry>
             <cylinder>
@@ -1156,15 +1174,13 @@
         <rosDebugLevel>na</rosDebugLevel>
       </plugin> -->
       
-      <plugin name="rotatesg90" filename="libActuatorPlugin.so">
-        <motor>
-          <name>sg90_1</name> 
-          <joint>sg90_to_shaft</joint> 
-          <velocity>25</velocity>
+      <plugin name="aaaaaaaaa" filename="libActuatorPlugin.so">
+          <motor_joint>sg90_to_shaft</motor_joint> 
           <commandTopicServo>cmd_servo</commandTopicServo>
           <servoTorque>10</servoTorque>
           <diameter_servo>0.004</diameter_servo>
           <updateRate>30</updateRate>
+          <robotNamespace>sg90plugin</robotNamespace>
           <!-- <index>0</index>
           <type>electric_motor</type> 
           <power>20</power> 
@@ -1172,7 +1188,7 @@
           <max_torque>10.0</max_torque>
           <commandTopic>motor_vel</commandTopic>
           <odometryTopic>motor_odom</odometryTopic> -->
-        </motor> 
+        
       </plugin>
   </model>
 </sdf>

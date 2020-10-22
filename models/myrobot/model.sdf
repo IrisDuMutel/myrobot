@@ -1161,7 +1161,6 @@
           <name>sg90_1</name> 
           <joint>sg90_to_shaft</joint> 
           <velocity>25</velocity>
-          <joint_index>0</joint_index>
           <commandTopicServo>cmd_servo</commandTopicServo>
           <servoTorque>10</servoTorque>
           <diameter_servo>0.004</diameter_servo>

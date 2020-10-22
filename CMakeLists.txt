@@ -148,7 +148,7 @@ add_library(ContactPlugin SHARED plugins/contact/ContactPlugin.cc)
 target_link_libraries(ContactPlugin ${GAZEBO_LIBRARIES}) # found in /home/iris/catkin_ws/devel/lib/libContactPlugin.so
 add_library(light_sensor_plugin SHARED plugins/light/src/light_sensor_plugin.cpp)
 target_link_libraries(light_sensor_plugin ${GAZEBO_LIBRARIES}) 
-add_library(ActuatorPlugin SHARED plugins/actuator/test.cpp)
+add_library(ActuatorPlugin SHARED plugins/actuator/ActuatorPlugin.cpp)
 target_link_libraries(ActuatorPlugin ${GAZEBO_LIBRARIES} ${roscpp_LIBRARIES})
 
 ###########

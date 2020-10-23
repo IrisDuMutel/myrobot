@@ -171,9 +171,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 include_directories(plugins/light/include)
 include_directories(plugins/contact)
 include_directories(plugins/actuator)
+include_directories(models/myrobot/plugins/actuator)
 include_directories(plugins/keys2cmdvel)
 include_directories(plugins/simpletrackedvehicle)
 include_directories(plugins/trackedvehicle)
+include_directories(plugins/template)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}
@@ -188,6 +190,8 @@ add_library(light_sensor_plugin SHARED plugins/light/src/light_sensor_plugin.cpp
 target_link_libraries(light_sensor_plugin ${GAZEBO_LIBRARIES}) 
 add_library(ActuatorPlugin SHARED plugins/actuator/ActuatorPlugin.cpp)
 target_link_libraries(ActuatorPlugin ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
+add_library(TemplatePlugin SHARED plugins/template/TemplatePlugin.cpp)
+target_link_libraries(TemplatePlugin ${GAZEBO_LIBRARIES})
 
 ###########
 ## Build ##
@@ -261,7 +265,7 @@ catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py script
 # )
 
 install(TARGETS
-  ActuatorPlugin
+  # ActuatorPlugin
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   )

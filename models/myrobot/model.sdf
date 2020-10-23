@@ -337,7 +337,7 @@
         <material>
           <script>
             <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Silver</name>
+            <name>Gazebo/Grey</name>
           </script>
         </material>
       </visual> <!---->
@@ -372,7 +372,7 @@
         <material>
           <script>
             <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Silver</name>
+            <name>Gazebo/Grey</name>
           </script>
         </material>
       </visual> <!---->
@@ -406,7 +406,7 @@
         <material>
           <script>
             <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Silver</name>
+            <name>Gazebo/Grey</name>
           </script>
         </material>
       </visual> <!---->
@@ -441,7 +441,7 @@
         <material>
           <script>
             <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Silver</name>
+            <name>Gazebo/Grey</name>
           </script>
         </material>
       </visual> <!---->
@@ -506,7 +506,13 @@
     
     <link name="supporto_sg90">
       <inertial>
-
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
       </inertial>
       <pose>0.094 -0.004 0.0995 0 0 0</pose>
       <!--<pose>0 0 0 0 0 0</pose>-->
@@ -546,7 +552,13 @@
 
     <link name="supporto_piastra_albero">
       <inertial>
-
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
       </inertial>
       <pose>0.096 0.0005 0.109 0 0 0</pose>
       <!--<pose>0 0 0 0 0 0</pose>-->
@@ -597,6 +609,15 @@
 
     <link name='supporto_pitch_servo_1'>
       <pose>0.133 0.0005 0.114 0 0 3.14</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
       <collision name='collision'>
         <geometry>
           <box>
@@ -688,6 +709,15 @@
 
     <link name='supporto_pitch_servo_2'>
       <pose>0.15 0.0005 0.116 0 0 3.14</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
       <collision name='collision'>
         <geometry>
           <box>
@@ -1153,7 +1183,7 @@
 
     
     <!-- PLUGINS -->
-    <!-- <plugin name="cube_moving_code" filename="libgazebo_ros_diff_drive.so">
+    <plugin name="cube_moving_code" filename="libgazebo_ros_diff_drive.so">
         <commandTopic>cmd_vel</commandTopic>
         <odometryTopic>odom</odometryTopic>
         <odometryFrame>odom</odometryFrame>
@@ -1172,23 +1202,42 @@
         <wheelAcceleration>1</wheelAcceleration>
         <wheelTorque>10</wheelTorque>
         <rosDebugLevel>na</rosDebugLevel>
-      </plugin> -->
+      </plugin>
       
-      <plugin name="aaaaaaaaa" filename="libActuatorPlugin.so">
-          <motor_joint>sg90_to_shaft</motor_joint> 
-          <commandTopicServo>cmd_servo</commandTopicServo>
-          <servoTorque>10</servoTorque>
-          <diameter_servo>0.004</diameter_servo>
-          <updateRate>30</updateRate>
-          <robotNamespace>sg90plugin</robotNamespace>
-          <!-- <index>0</index>
-          <type>electric_motor</type> 
-          <power>20</power> 
-          <max_velocity>6</max_velocity>
-          <max_torque>10.0</max_torque>
-          <commandTopic>motor_vel</commandTopic>
-          <odometryTopic>motor_odom</odometryTopic> -->
-        
+      <!-- <plugin name="ActuatorPlugin" filename="libActuatorPlugin.so">
+        <motor_joint>sg90_to_shaft</motor_joint> 
+        <commandTopicServo>cmd_servo</commandTopicServo>
+        <servoTorque>10</servoTorque>
+        <diameter_servo>0.004</diameter_servo>
+        <updateRatesg90>30</updateRatesg90>
+        <robotNamespace>sg90plugin</robotNamespace>
+        <servoodometryFrame>odom</servoodometryFrame>
+        <servoodometrySource>world</servoodometrySource>
+        <publishservoOdomTF>true</publishservoOdomTF>
+        <servoBaseFrame>sg90</servoBaseFrame>
+        <publishServoTF>false</publishServoTF>
+        <publishTF>true</publishTF>
+        <publishServoJointState>true</publishServoJointState>
+        <servolegacyMode>false</servolegacyMode>
+      </plugin> -->
+
+      <plugin name="TemplatePlugin" filename="libTemplatePlugin.so">
+        <motor_joint>sg90_to_shaft</motor_joint> 
+        <commandTopicServo>cmd_servo</commandTopicServo>
+        <servoTorque>10</servoTorque>
+        <diameter_servo>0.004</diameter_servo>
+        <updateRatesg90>30</updateRatesg90>
+        <robotNamespace>sg90plugin</robotNamespace>
+        <servoodometryFrame>odom</servoodometryFrame>
+        <servoodometrySource>world</servoodometrySource>
+        <publishservoOdomTF>true</publishservoOdomTF>
+        <servoBaseFrame>sg90</servoBaseFrame>
+        <publishServoTF>false</publishServoTF>
+        <publishTF>true</publishTF>
+        <publishServoJointState>true</publishServoJointState>
+        <servolegacyMode>false</servolegacyMode>
+        <rosDebugLevel>na</rosDebugLevel>
+      
       </plugin>
   </model>
 </sdf>

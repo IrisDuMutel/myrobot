@@ -32,6 +32,7 @@
 #include "ros/subscribe_options.h"
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/JointState.h>
+
 // Custom Callback Queue
 #include <ros/callback_queue.h>
 #include <ros/advertise_options.h>
@@ -43,6 +44,8 @@
 
 namespace gazebo
 {
+  class Joint;
+  class Entity;
   /// \brief A plugin to control a Velodyne sensor.
   class ActuatorPlugin : public ModelPlugin
   {
@@ -74,12 +77,12 @@ namespace gazebo
     /// attached to.
     /// \param[in] _sdf A pointer to the plugin's SDF element.
     public: void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
-    {ROS_INFO("BBBBBBB");
+    {
+      ROS_WARN("BBBBBBB");
       
       // Store the model pointer for convenience.
       this->model = _model;
       gazebo_ros_ = GazeboRosPtr ( new GazeboRos ( _model, _sdf, "ActuPlug" ) );
-      
       // Make sure the ROS node for Gazebo has already been initialized
       gazebo_ros_->isInitialized();
           
@@ -88,14 +91,28 @@ namespace gazebo
       gazebo_ros_->getParameter<std::string> ( command_topic_, "commandTopicServo", "cmd_servo" );
       gazebo_ros_->getParameter<double> ( servo_torque, "servoTorque", 10 );
       gazebo_ros_->getParameter<double> ( servo_diameter, "diameter_servo", 0.004 );
-      gazebo_ros_->getParameter<double> ( update_rate_, "updateRate", 100.0 );
-       
+      gazebo_ros_->getParameter<double> ( update_rate_, "updateRatesg90", 100.0 );
+      gazebo_ros_->getParameter<std::string> ( odometry_frame_, "servoodometryFrame", "odom" );
+      gazebo_ros_->getParameter<std::string> ( robot_base_frame_, "servoBaseFrame", "base_footprint" );
+      gazebo_ros_->getParameterBoolean ( publishWheelTF_, "publishServoTF", false );
+      gazebo_ros_->getParameterBoolean ( publishOdomTF_, "publishservoOdomTF", true);
+      gazebo_ros_->getParameterBoolean ( publishWheelJointState_, "publishServoJointState", false );
+      gazebo_ros_->getParameterBoolean ( legacy_mode_, "servolegacyMode", true );
       
-
+      if (!_sdf->HasElement("legacyMode"))
+          {
+            ROS_ERROR_NAMED("Act_plugin", "ActuatorPlugin Plugin missing <legacyMode>, defaults to true\n"
+      	       "This setting assumes you have a old package, where the right and left wheel are changed to fix a former code issue\n"
+      	       "To get rid of this error just set <legacyMode> to false if you just created a new package.\n"
+      	       "To fix an old package you have to exchange left wheel by the right wheel.\n"
+      	       "If you do not want to fix this issue in an old package or your z axis points down instead of the ROS standard defined in REP 103\n"
+      	       "just set <legacyMode> to true.\n"
+            );
+          }
       std::map<std::string, OdomSource> odomOptions;
       odomOptions["encoder"] = ENCODER;
       odomOptions["world"] = WORLD;
-      gazebo_ros_->getParameter<OdomSource> ( odom_source_, "odometrySource", odomOptions, WORLD );
+      gazebo_ros_->getParameter<OdomSource> ( odom_source_, "servoodometrySource", odomOptions, WORLD );
 
       
       
@@ -153,7 +170,7 @@ namespace gazebo
    
    
     // Update the controller
-    protected: void UpdateChild()
+    protected: virtual void UpdateChild()
     {
     
         /* force reset SetParam("fmax") since Joint::Reset reset MaxForce to zero at
@@ -336,13 +353,20 @@ namespace gazebo
     std::string tf_prefix_;
     std::string command_topic_;
     std::string robot_namespace_;
+    std::string odometry_topic_;
+    std::string odometry_frame_;
+    std::string robot_base_frame_;
     GazeboRosPtr gazebo_ros_;
     ros::Publisher pub_;
     transport::SubscriberPtr sub;
     physics::JointPtr joints_;
-
-
     physics::ModelPtr model;
+    // Flags
+    bool publishWheelTF_;
+    bool publishOdomTF_;
+    bool publishWheelJointState_;
+    bool publish_tf_;
+    bool legacy_mode_;
   
 
   };

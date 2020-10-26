@@ -133,6 +133,8 @@ namespace gazebo
         void QueueThread();
         // DiffDrive stuff
         void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
+        void getServoVelocity();
+        void UpdateOdometryEncoder();
 
 
    };

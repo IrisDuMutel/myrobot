@@ -255,7 +255,7 @@ include_directories(include
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py scripts/arbiter.py 
-                               scripts/force.py scripts/light.py scripts/vector_fcn.py 
+                               scripts/force.py scripts/light.py scripts/vector_fcn.py scripts/move_head.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## Mark executables for installation

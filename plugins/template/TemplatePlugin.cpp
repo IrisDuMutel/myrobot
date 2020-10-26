@@ -120,9 +120,9 @@ void TemplatePlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
         // start custom queue for actuator plugin
       this->callback_queue_thread_ =
           boost::thread ( boost::bind ( &TemplatePlugin::QueueThread, this ) );
-      //  // listen to the update event (broadcast every simulation iteration)
-      // this->update_connection_ =
-      //     event::Events::ConnectWorldUpdateBegin ( boost::bind ( &TemplatePlugin::UpdateChild, this ) );
+       // listen to the update event (broadcast every simulation iteration)
+      this->update_connection_ =
+          event::Events::ConnectWorldUpdateBegin ( boost::bind ( &TemplatePlugin::UpdateChild, this ) );
   
       
 
@@ -142,10 +142,119 @@ void TemplatePlugin::cmdVelCallback ( const geometry_msgs::Twist::ConstPtr& cmd_
   x_ = cmd_msg->linear.x;
   rot_ = cmd_msg->angular.z;
 }
+
+void TemplatePlugin::getServoVelocity()
+    {
+        boost::mutex::scoped_lock scoped_lock ( lock );
+    
+        double vr = x_;
+        double va = rot_;
+
+        servo_speed_ = vr - va * servo_diameter / 2.0;
+        
+       
+    }
 ////////////////////////////////////////////////////////////////////////////////
 // Update the controller
 void TemplatePlugin::UpdateChild()
 {
+    
+        /* force reset SetParam("fmax") since Joint::Reset reset MaxForce to zero at
+           https://bitbucket.org/osrf/gazebo/src/8091da8b3c529a362f39b042095e12c94656a5d1/gazebo/physics/Joint.cc?at=gazebo2_2.2.5#cl-331
+           (this has been solved in https://bitbucket.org/osrf/gazebo/diff/gazebo/physics/Joint.cc?diff2=b64ff1b7b6ff&at=issue_964 )
+           and Joint::Reset is called after ModelPlugin::Reset, so we need to set maxForce to wheel_torque other than GazeboRosDiffDrive::Reset
+           (this seems to be solved in https://bitbucket.org/osrf/gazebo/commits/ec8801d8683160eccae22c74bf865d59fac81f1e)
+        */
+        
+        if ( fabs(servo_torque -servo_joint_->GetParam ( "fservomax", 0 )) > 1e-6 ) {
+          servo_joint_->SetParam ( "fservomax", 0, servo_torque );
+        }
+        
+    
+    
+        if ( odom_source_ == ENCODER ) UpdateOdometryEncoder();
+        common::Time current_time = parent->GetWorld()->SimTime();
+    
+        double seconds_since_last_update = ( current_time - last_update_time_ ).Double();
+    
+        if ( seconds_since_last_update > update_period_ ) {
+            // if (this->publish_tf_) publishOdometry ( seconds_since_last_update );
+            // if ( publishWheelTF_ ) publishWheelTF();
+            // if ( publishWheelJointState_ ) publishWheelJointState();
+    
+            // Update robot in case new velocities have been requested
+            getServoVelocity();
+    
+            double current_speed;
+    
+            current_speed = servo_joint_->GetVelocity ( 0 )   * ( servo_diameter / 2.0 );
+    
+            if ( servo_accel == 0 ||
+                    ( fabs ( servo_speed_ - current_speed ) < 0.01 )) {
+                //if max_accel == 0, or target speed is reached
+                servo_joint_->SetParam ( "velservo", 0, servo_speed_/ ( servo_diameter / 2.0 ) );
+            } else {
+                if ( servo_speed_>=current_speed)
+                    servo_speed_instr_+=fmin ( servo_speed_-current_speed,  servo_accel * seconds_since_last_update );
+                else
+                    servo_speed_instr_+=fmax ( servo_speed_-current_speed, -servo_accel * seconds_since_last_update );
+                // ROS_INFO_NAMED("diff_drive", "actual wheel speed = %lf, issued wheel speed= %lf", current_speed[LEFT], wheel_speed_[LEFT]);
+                // ROS_INFO_NAMED("diff_drive", "actual wheel speed = %lf, issued wheel speed= %lf", current_speed[RIGHT],wheel_speed_[RIGHT]);
+    
+                servo_joint_->SetParam ( "velservo", 0, servo_speed_instr_ / ( servo_diameter / 2.0 ) );
+        }
+    last_update_time_+= common::Time ( update_period_ );
+  }
+}
+void TemplatePlugin::UpdateOdometryEncoder()
+{
+    double vel = servo_joint_->GetVelocity ( 0 );
+    common::Time current_time = parent->GetWorld()->SimTime();
+
+    double seconds_since_last_update = ( current_time - last_odom_update_ ).Double();
+    last_odom_update_ = current_time;
+
+    
+
+    // Book: Sigwart 2011 Autonompus Mobile Robots page:337
+    double s = vel * ( servo_diameter / 2.0 ) * seconds_since_last_update;
+    // double sr = vr * ( wheel_diameter_ / 2.0 ) * seconds_since_last_update;
+    double ssum = s;
+
+    double sdiff;
+    
+
+    sdiff = s ;
+    
+
+    double dx = 0;
+    double dy = 0;
+    double dtheta = sdiff* ( servo_diameter / 2.0 );
+
+    pose_encoder_.x += dx;
+    pose_encoder_.y += dy;
+    pose_encoder_.theta += dtheta;
+
+    double w = dtheta/seconds_since_last_update;
+    double v = sqrt ( dx*dx+dy*dy ) /seconds_since_last_update;
+
+    tf::Quaternion qt;
+    tf::Vector3 vt;
+    qt.setRPY ( 0,0,pose_encoder_.theta );
+    vt = tf::Vector3 ( pose_encoder_.x, pose_encoder_.y, 0 );
+
+    odom_.pose.pose.position.x = vt.x();
+    odom_.pose.pose.position.y = vt.y();
+    odom_.pose.pose.position.z = vt.z();
+
+    odom_.pose.pose.orientation.x = qt.x();
+    odom_.pose.pose.orientation.y = qt.y();
+    odom_.pose.pose.orientation.z = qt.z();
+    odom_.pose.pose.orientation.w = qt.w();
+
+    odom_.twist.twist.angular.z = w;
+    odom_.twist.twist.linear.x = dx/seconds_since_last_update;
+    odom_.twist.twist.linear.y = dy/seconds_since_last_update;
 }
 
 }

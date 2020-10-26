@@ -191,7 +191,7 @@ target_link_libraries(light_sensor_plugin ${GAZEBO_LIBRARIES})
 add_library(ActuatorPlugin SHARED plugins/actuator/ActuatorPlugin.cpp)
 target_link_libraries(ActuatorPlugin ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
 add_library(TemplatePlugin SHARED plugins/template/TemplatePlugin.cpp)
-target_link_libraries(TemplatePlugin ${GAZEBO_LIBRARIES})
+target_link_libraries(TemplatePlugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
 
 ###########
 ## Build ##

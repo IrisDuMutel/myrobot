@@ -73,7 +73,7 @@ namespace gazebo
 
       /// \brief Update the controller
       protected: virtual void UpdateChild();
-
+      
 
       public: 
         double current_joint_angle;  
@@ -83,9 +83,7 @@ namespace gazebo
         double x_;
         double rot_;
         bool alive_;
-        // Custom Callback Queue
-        ros::CallbackQueue queue_;
-        boost::thread callback_queue_thread_;
+        
 
         // Update Rate
         double update_rate_;
@@ -98,7 +96,7 @@ namespace gazebo
         event::ConnectionPtr update_connection_;    
 
         double servo_speed_;
-	    double servo_accel;
+	      double servo_accel;
         double servo_diameter;
         double servo_speed_instr_;
         double servo_torque;
@@ -120,12 +118,21 @@ namespace gazebo
         transport::SubscriberPtr sub;
         physics::JointPtr servo_joint_;
         physics::ModelPtr model;
+        physics::ModelPtr parent;
          // Flags
         bool publishWheelTF_;
         bool publishOdomTF_;
         bool publishWheelJointState_;
         bool publish_tf_;
         bool legacy_mode_;
+
+        boost::mutex lock;
+        // Custom Callback Queue
+        ros::CallbackQueue queue_;
+        boost::thread callback_queue_thread_;
+        void QueueThread();
+        // DiffDrive stuff
+        void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
 
 
    };

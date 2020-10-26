@@ -53,7 +53,7 @@
 #include <boost/bind.hpp>
 
 namespace gazebo
-{
+{  class Joint;
 
    class TemplatePlugin : public ModelPlugin
    {
@@ -117,14 +117,16 @@ namespace gazebo
         ros::Publisher pub_;
         transport::SubscriberPtr sub;
         physics::JointPtr servo_joint_;
+        std::vector<physics::JointPtr> joints_;
         physics::ModelPtr model;
         physics::ModelPtr parent;
          // Flags
-        bool publishWheelTF_;
+        bool publishServoTF_;
         bool publishOdomTF_;
         bool publishWheelJointState_;
         bool publish_tf_;
         bool legacy_mode_;
+        bool publishServoJointState_;
 
         boost::mutex lock;
         // Custom Callback Queue
@@ -135,6 +137,9 @@ namespace gazebo
         void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
         void getServoVelocity();
         void UpdateOdometryEncoder();
+        void publishServoJointState();
+        void publishOdometry ( double step_time );
+        void publishServoTF();
 
 
    };

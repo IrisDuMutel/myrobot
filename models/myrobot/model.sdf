@@ -625,7 +625,7 @@
           </box>
         </geometry>
       </collision>
-      <!-- <visual name='visual'>
+      <visual name='visual'>
       <pose>0.0375 0 -0.003 0 0 0</pose>
         <geometry>
           <mesh><uri>model://myrobot/meshes/Supports/supporto_pitch_servo_1.dae</uri></mesh>
@@ -636,8 +636,8 @@
             <name>Gazebo/RedTransparent</name>
           </script>
         </material>
-      </visual> -->
-      <visual name='visual'>
+      </visual>
+      <!-- <visual name='visual'>
         <geometry>
           <box>
             <size>0.04 0.035 0.003</size>
@@ -649,7 +649,7 @@
             <name>Gazebo/BlueTransparent</name>
           </script>
         </material>
-      </visual>
+      </visual> -->
 
       <collision name='collision_tronco'>
       <pose>0.0 0.0 -0.001 0 0 0</pose>
@@ -1031,14 +1031,14 @@
 
         <visual name='visual'>
         <pose> 0 -0.011 0 0 0 0</pose>
-          <!-- <geometry>
-            <mesh><uri>model://myrobot/meshes/Misc/sg90.dae</uri></mesh>
-          </geometry> -->
           <geometry>
+            <mesh><uri>model://myrobot/meshes/Misc/sg90.dae</uri></mesh>
+          </geometry>
+          <!-- <geometry>
             <box>
               <size>0.012 0.022 0.022</size>
             </box>
-          </geometry>
+          </geometry> -->
 
           <material>
             <script>
@@ -1204,36 +1204,22 @@
         <rosDebugLevel>na</rosDebugLevel>
       </plugin> -->
       
-      <!-- <plugin name="ActuatorPlugin" filename="libActuatorPlugin.so">
-        <motor_joint>sg90_to_shaft</motor_joint> 
-        <commandTopicServo>cmd_servo</commandTopicServo>
-        <servoTorque>10</servoTorque>
-        <diameter_servo>0.004</diameter_servo>
-        <updateRatesg90>30</updateRatesg90>
-        <robotNamespace>sg90plugin</robotNamespace>
-        <servoodometryFrame>odom</servoodometryFrame>
-        <servoodometrySource>world</servoodometrySource>
-        <publishservoOdomTF>true</publishservoOdomTF>
-        <servoBaseFrame>sg90</servoBaseFrame>
-        <publishServoTF>false</publishServoTF>
-        <publishTF>true</publishTF>
-        <publishServoJointState>true</publishServoJointState>
-        <servolegacyMode>false</servolegacyMode>
-      </plugin> -->
+     
 
       <plugin name="TemplatePlugin" filename="libTemplatePlugin.so">
         <motor_joint>sg90_to_shaft</motor_joint> 
         <commandTopicServo>cmd_servo</commandTopicServo>
         <servoTorque>10</servoTorque>
+        <servoodometryTopic>odom</servoodometryTopic>
+        <servoodometryFrame>odom</servoodometryFrame>
         <diameter_servo>0.004</diameter_servo>
         <updateRatesg90>30</updateRatesg90>
         <robotNamespace>sg90</robotNamespace>
-        <servoodometryFrame>odom</servoodometryFrame>
         <servoodometrySource>world</servoodometrySource>
-        <publishservoOdomTF>true</publishservoOdomTF>
         <servoBaseFrame>sg90</servoBaseFrame>
-        <publishServoTF>false</publishServoTF>
+        <publishServoTF>true</publishServoTF>
         <publishTF>true</publishTF>
+        <publishservoOdomTF>true</publishservoOdomTF>
         <publishServoJointState>true</publishServoJointState>
         <servolegacyMode>false</servolegacyMode>
         <rosDebugLevel>na</rosDebugLevel>

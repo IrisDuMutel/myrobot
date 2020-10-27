@@ -54,7 +54,7 @@
 
 namespace gazebo
 {  class Joint;
-
+   class Entity;
    class TemplatePlugin : public ModelPlugin
    {
        enum OdomSource
@@ -64,13 +64,11 @@ namespace gazebo
     };
       /// \brief Constructor
       public: TemplatePlugin();
-
       /// \brief Destructor
-      public: virtual ~TemplatePlugin();
-
+              ~TemplatePlugin();
       /// \brief Load the controller
-      public: void Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf );
-
+              void Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf );
+              void Reset();
       /// \brief Update the controller
       protected: virtual void UpdateChild();
       

@@ -68,7 +68,6 @@ TemplatePlugin::~TemplatePlugin()
 // Load the controller
 void TemplatePlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 {
-    ROS_INFO("Template plugin is working FINEEEEE");
     this->parent = _parent;
     gazebo_ros_ = GazeboRosPtr ( new GazeboRos ( _parent, _sdf, "Template" ) );
     gazebo_ros_->isInitialized();
@@ -77,7 +76,7 @@ void TemplatePlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
     gazebo_ros_->getParameter<std::string> ( command_topic_, "commandTopicServo", "cmd_servo" );
     gazebo_ros_->getParameter<double> ( servo_torque, "servoTorque", 10 );
     gazebo_ros_->getParameter<double> ( servo_diameter, "diameter_servo", 0.004 );
-    gazebo_ros_->getParameter<double> ( servo_accel, "servoAcceleration", 1 );
+    gazebo_ros_->getParameter<double> ( servo_accel, "servoAcceleration", 0);
     gazebo_ros_->getParameter<double> ( update_rate_, "updateRatesg90", 100.0 );
     gazebo_ros_->getParameter<std::string> ( odometry_frame_, "servoodometryFrame", "odom" );
     gazebo_ros_->getParameter<std::string> ( odometry_topic_, "servoodometryTopic", "odom" );
@@ -97,56 +96,66 @@ void TemplatePlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
     
     ROS_INFO( "Advertise command topic: %s ", command_topic_.c_str());
   // Make sure the ROS node for Gazebo has already been initalized
-  if (!ros::isInitialized())
-  {
+    if (!ros::isInitialized())
+    {
     ROS_FATAL_STREAM_NAMED("template", "A ROS node for Gazebo has not been initialized, unable to load plugin. "
       << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
     return;
-  }
+    }
   // Initialize update rate stuff
-      if ( this->update_rate_ > 0.0 ) this->update_period_ = 1.0 / this->update_rate_;
-      else this->update_period_ = 0.0;
-      last_update_time_ = parent->GetWorld()->SimTime();
-      
-      // Initialize velocity stuff
-      servo_speed_ = 0;
-      // Initialize velocity support stuff
-      servo_speed_instr_ = 0;
-      x_ = 0;
-      rot_ = 0;
-      alive_ = true;
+    if ( this->update_rate_ > 0.0 ) this->update_period_ = 1.0 / this->update_rate_;
+    else this->update_period_ = 0.0;
+    last_update_time_ = parent->GetWorld()->SimTime();
+    ROS_INFO("Last update time: SSSSSSSSSSSSSSSSSSSSSSSSSSSSS ");
+    // Initialize velocity stuff
+    servo_speed_ = 0;
+    // Initialize velocity support stuff
+    servo_speed_instr_ = 0;
+    x_ = 0;
+    rot_ = 0;
+    alive_ = true;
 
-      if (this->publishServoJointState_)
-      {
-          joint_state_publisher_ = gazebo_ros_->node()->advertise<sensor_msgs::JointState>("servo_joint_states", 1000);
-          ROS_INFO("%s: Advertise joint_states", gazebo_ros_->info());
-      }
+    if (this->publishServoJointState_)
+    {
+      joint_state_publisher_ = gazebo_ros_->node()->advertise<sensor_msgs::JointState>("servo_joint_states", 1000);
+      ROS_INFO("%s: Advertise joint_states", gazebo_ros_->info());
+    }
 
-      // ROS: Subscribe to the velocity command topic (usually "cmd_vel")
-      ROS_INFO( "%s: Try to subscribe to %s", gazebo_ros_->info(), command_topic_.c_str());
-      ros::SubscribeOptions so =
-        ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic_, 1,
-                boost::bind(&TemplatePlugin::cmdVelCallback, this, _1), ros::VoidPtr(), &queue_);
+    // ROS: Subscribe to the velocity command topic (usually "cmd_vel")
+    ROS_INFO( "%s: Try to subscribe to %s", gazebo_ros_->info(), command_topic_.c_str());
+    ros::SubscribeOptions so =
+      ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic_, 1,
+              boost::bind(&TemplatePlugin::cmdVelCallback, this, _1), ros::VoidPtr(), &queue_);
+    cmd_vel_subscriber_ = gazebo_ros_->node()->subscribe(so);
+    ROS_INFO( "%s: Subscribe to %s", gazebo_ros_->info(), command_topic_.c_str());
+    ROS_INFO("Actuator plugin ready");
 
-      cmd_vel_subscriber_ = gazebo_ros_->node()->subscribe(so);
-      ROS_INFO( "%s: Subscribe to %s", gazebo_ros_->info(), command_topic_.c_str());
-      ROS_INFO("Actuator plugin ready");
 
-      if (this->publishServoTF_)
-      {
-        odometry_publisher_ = gazebo_ros_->node()->advertise<nav_msgs::Odometry>(odometry_topic_, 1);
-        ROS_INFO_NAMED("actuator", "%s: Advertise odom on %s ", gazebo_ros_->info(), odometry_topic_.c_str());
-      }
+    if (this->publishServoTF_)
+    {
+      odometry_publisher_ = gazebo_ros_->node()->advertise<nav_msgs::Odometry>(odometry_topic_, 1);
+      ROS_INFO_NAMED("actuator", "%s: Advertise odom on %s ", gazebo_ros_->info(), odometry_topic_.c_str());
+    }
 
-        // start custom queue for actuator plugin
-      this->callback_queue_thread_ =
-          boost::thread ( boost::bind ( &TemplatePlugin::QueueThread, this ) );
-       // listen to the update event (broadcast every simulation iteration)
-      this->update_connection_ =
-          event::Events::ConnectWorldUpdateBegin ( boost::bind ( &TemplatePlugin::UpdateChild, this ) );
+    // start custom queue for actuator plugin
+    this->callback_queue_thread_ =
+        boost::thread ( boost::bind ( &TemplatePlugin::QueueThread, this ) );
+     // listen to the update event (broadcast every simulation iteration)
+    this->update_connection_ =
+        event::Events::ConnectWorldUpdateBegin ( boost::bind ( &TemplatePlugin::UpdateChild, this ) );
   
       
 
+}
+void TemplatePlugin::Reset()
+{
+  last_update_time_ = parent->GetWorld()->SimTime();
+  pose_encoder_.x = 0;
+  pose_encoder_.y = 0;
+  pose_encoder_.theta = 0;
+  x_ = 0;
+  rot_ = 0;
+  servo_joint_->SetParam ( "fmax", 0, servo_torque );
 }
 //not working for now
 void TemplatePlugin::publishServoJointState()

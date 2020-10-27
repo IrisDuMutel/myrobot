@@ -1183,7 +1183,8 @@
 
     
     <!-- PLUGINS -->
-    <!-- <plugin name="cube_moving_code" filename="libgazebo_ros_diff_drive.so">
+    <!-- Using plugin from this directory-->
+    <!-- <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
         <commandTopic>cmd_vel</commandTopic>
         <odometryTopic>odom</odometryTopic>
         <odometryFrame>odom</odometryFrame>
@@ -1205,8 +1206,8 @@
       </plugin> -->
       
      
-
-      <plugin name="TemplatePlugin" filename="libTemplatePlugin.so">
+      <!-- Using plugin from this directory-->
+      <plugin name="TemplatePlugin" filename="libtemplate_plugin.so">
         <motor_joint>sg90_to_shaft</motor_joint> 
         <commandTopicServo>cmd_servo</commandTopicServo>
         <servoTorque>10</servoTorque>

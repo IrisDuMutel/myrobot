@@ -44,7 +44,7 @@
 #include <ignition/math/Quaternion.hh>
 #include <ignition/math/Vector3.hh>
 #include <sdf/sdf.hh>
-#include <TemplatePlugin.h>
+#include <template_plugin.h>
 #include <ros/ros.h>
 
 namespace gazebo

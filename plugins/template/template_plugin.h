@@ -71,6 +71,7 @@ namespace gazebo
               void Reset();
       /// \brief Update the controller
       protected: virtual void UpdateChild();
+                 virtual void FiniChild();
       
 
       public: 

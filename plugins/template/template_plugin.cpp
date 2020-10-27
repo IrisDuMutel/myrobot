@@ -174,7 +174,7 @@ void TemplatePlugin::Reset()
 
 //not working for now
 void TemplatePlugin::publishServoJointState()
-{ROS_INFO("publishServoJointState");
+{   //ROS_INFO("publishServoJointState");
 //     ros::Time current_time = ros::Time::now();
 //     joint_state_.header.stamp = current_time;
 //     joint_state_.name[0] = servo_joint_->GetName();
@@ -190,24 +190,25 @@ void TemplatePlugin::publishServoJointState()
 
 
 void TemplatePlugin::publishServoTF()
-{ROS_INFO("publishServoTF");
-//     ros::Time current_time = ros::Time::now();
+{
+    // ROS_INFO("publishServoTF");
+    ros::Time current_time = ros::Time::now();
     
 
-//     std::string servo_frame = gazebo_ros_->resolveTF(servo_joint_->GetChild()->GetName ());
-//     std::string servo_parent_frame = gazebo_ros_->resolveTF(servo_joint_->GetParent()->GetName ());
+    std::string servo_frame = gazebo_ros_->resolveTF(servo_joint_->GetChild()->GetName ());
+    std::string servo_parent_frame = gazebo_ros_->resolveTF(servo_joint_->GetParent()->GetName ());
 
-// #if GAZEBO_MAJOR_VERSION >= 8
-//         ignition::math::Pose3d poseServo = servo_joint_->GetChild()->RelativePose();
-// #else
-//         ignition::math::Pose3d poseServo = servo_joint_->GetChild()->GetRelativePose().Ign();
-// #endif
+#if GAZEBO_MAJOR_VERSION >= 8
+        ignition::math::Pose3d poseServo = servo_joint_->GetChild()->RelativePose();
+#else
+        ignition::math::Pose3d poseServo = servo_joint_->GetChild()->GetRelativePose().Ign();
+#endif
 
-//     tf::Quaternion qt ( poseServo.Rot().X(), poseServo.Rot().Y(), poseServo.Rot().Z(), poseServo.Rot().W() );
-//     tf::Vector3 vt ( poseServo.Pos().X(), poseServo.Pos().Y(), poseServo.Pos().Z() );
-//     tf::Transform tfServo ( qt, vt );
-//     transform_broadcaster_->sendTransform (
-//         tf::StampedTransform ( tfServo, current_time, servo_parent_frame, servo_frame ) );
+    tf::Quaternion qt ( poseServo.Rot().X(), poseServo.Rot().Y(), poseServo.Rot().Z(), poseServo.Rot().W() );
+    tf::Vector3 vt ( poseServo.Pos().X(), poseServo.Pos().Y(), poseServo.Pos().Z() );
+    tf::Transform tfServo ( qt, vt );
+    transform_broadcaster_->sendTransform (
+        tf::StampedTransform ( tfServo, current_time, servo_parent_frame, servo_frame ) );
     
 }
 

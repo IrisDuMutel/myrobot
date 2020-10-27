@@ -1213,6 +1213,7 @@
         <servoodometryTopic>odom</servoodometryTopic>
         <servoodometryFrame>odom</servoodometryFrame>
         <diameter_servo>0.004</diameter_servo>
+        <servoAcceleration>1</servoAcceleration>
         <updateRatesg90>30</updateRatesg90>
         <robotNamespace>sg90</robotNamespace>
         <servoodometrySource>world</servoodometrySource>

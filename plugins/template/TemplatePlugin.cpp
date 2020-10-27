@@ -77,6 +77,7 @@ void TemplatePlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
     gazebo_ros_->getParameter<std::string> ( command_topic_, "commandTopicServo", "cmd_servo" );
     gazebo_ros_->getParameter<double> ( servo_torque, "servoTorque", 10 );
     gazebo_ros_->getParameter<double> ( servo_diameter, "diameter_servo", 0.004 );
+    gazebo_ros_->getParameter<double> ( servo_accel, "servoAcceleration", 1 );
     gazebo_ros_->getParameter<double> ( update_rate_, "updateRatesg90", 100.0 );
     gazebo_ros_->getParameter<std::string> ( odometry_frame_, "servoodometryFrame", "odom" );
     gazebo_ros_->getParameter<std::string> ( odometry_topic_, "servoodometryTopic", "odom" );
@@ -147,7 +148,7 @@ void TemplatePlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
       
 
 }
-
+//not working for now
 void TemplatePlugin::publishServoJointState()
 {
     ros::Time current_time = ros::Time::now();
@@ -228,14 +229,14 @@ void TemplatePlugin::UpdateChild()
                     servo_speed_instr_+=fmin ( servo_speed_-current_speed,  servo_accel * seconds_since_last_update );
                 else
                     servo_speed_instr_+=fmax ( servo_speed_-current_speed, -servo_accel * seconds_since_last_update );
-                // ROS_INFO_NAMED("diff_drive", "actual wheel speed = %lf, issued wheel speed= %lf", current_speed[LEFT], wheel_speed_[LEFT]);
-                // ROS_INFO_NAMED("diff_drive", "actual wheel speed = %lf, issued wheel speed= %lf", current_speed[RIGHT],wheel_speed_[RIGHT]);
-    
+
                 servo_joint_->SetParam ( "velservo", 0, servo_speed_instr_ );/// ( servo_diameter / 2.0 ) );
         }
     last_update_time_+= common::Time ( update_period_ );
   }
 }
+
+// not used for now
 void TemplatePlugin::UpdateOdometryEncoder()
 {
     double vel = servo_joint_->GetVelocity ( 0 );
@@ -287,6 +288,7 @@ void TemplatePlugin::UpdateOdometryEncoder()
     odom_.twist.twist.linear.y = dy/seconds_since_last_update;
 }
 
+//not working for now
 // void TemplatePlugin::publishServoTF()
 // {
 //     ros::Time current_time = ros::Time::now();
@@ -306,6 +308,7 @@ void TemplatePlugin::UpdateOdometryEncoder()
     
 // }
 
+//not working for now
 void TemplatePlugin::publishOdometry ( double step_time )
 {
 

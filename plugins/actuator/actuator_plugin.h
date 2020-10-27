@@ -20,8 +20,8 @@
  * Date: 10 June 2008
  */
 
-#ifndef GAZEBO_ROS_TEMPLATE_HH
-#define GAZEBO_ROS_TEMPLATE_HH
+#ifndef GAZEBO_ROS_ACTUATOR_HH
+#define GAZEBO_ROS_ACTUATOR_HH
 
 #include <map>
 
@@ -55,7 +55,7 @@
 namespace gazebo
 {  class Joint;
    class Entity;
-   class TemplatePlugin : public ModelPlugin
+   class ActuatorPlugin : public ModelPlugin
    {
        enum OdomSource
     {
@@ -63,9 +63,9 @@ namespace gazebo
         WORLD = 1,
     };
       /// \brief Constructor
-      public: TemplatePlugin();
+      public: ActuatorPlugin();
       /// \brief Destructor
-              ~TemplatePlugin();
+              ~ActuatorPlugin();
       /// \brief Load the controller
               void Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf );
               void Reset();

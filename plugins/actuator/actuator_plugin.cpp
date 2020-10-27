@@ -44,7 +44,7 @@
 #include <ignition/math/Quaternion.hh>
 #include <ignition/math/Vector3.hh>
 #include <sdf/sdf.hh>
-#include <template_plugin.h>
+#include <actuator_plugin.h>
 #include <ros/ros.h>
 
 namespace gazebo
@@ -53,20 +53,20 @@ namespace gazebo
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constructor
-TemplatePlugin::TemplatePlugin()
+ActuatorPlugin::ActuatorPlugin()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Destructor
-TemplatePlugin::~TemplatePlugin()
+ActuatorPlugin::~ActuatorPlugin()
 {
     FiniChild();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Load the controller
-void TemplatePlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
+void ActuatorPlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 {
     this->parent = _parent;
     gazebo_ros_ = GazeboRosPtr ( new GazeboRos ( _parent, _sdf, "Template" ) );
@@ -99,7 +99,7 @@ void TemplatePlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
     // Make sure the ROS node for Gazebo has already been initalized
     if (!ros::isInitialized())
     {
-    ROS_FATAL_STREAM_NAMED("template", "A ROS node for Gazebo has not been initialized, unable to load plugin. "
+    ROS_FATAL_STREAM_NAMED("actuator", "A ROS node for Gazebo has not been initialized, unable to load plugin. "
       << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
     return;
     }
@@ -133,7 +133,7 @@ void TemplatePlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
     ROS_INFO( "%s: Try to subscribe to %s", gazebo_ros_->info(), command_topic_.c_str());
     ros::SubscribeOptions so =
       ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic_, 1,
-              boost::bind(&TemplatePlugin::cmdVelCallback, this, _1), ros::VoidPtr(), &queue_);
+              boost::bind(&ActuatorPlugin::cmdVelCallback, this, _1), ros::VoidPtr(), &queue_);
     cmd_vel_subscriber_ = gazebo_ros_->node()->subscribe(so);
     ROS_INFO( "%s: Subscribe to %s", gazebo_ros_->info(), command_topic_.c_str());
 
@@ -148,15 +148,15 @@ void TemplatePlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 
     // start custom queue for actuator plugin
     this->callback_queue_thread_ =
-        boost::thread ( boost::bind ( &TemplatePlugin::QueueThread, this ) );
+        boost::thread ( boost::bind ( &ActuatorPlugin::QueueThread, this ) );
      // listen to the update event (broadcast every simulation iteration)
     this->update_connection_ =
-        event::Events::ConnectWorldUpdateBegin ( boost::bind ( &TemplatePlugin::UpdateChild, this ) );
+        event::Events::ConnectWorldUpdateBegin ( boost::bind ( &ActuatorPlugin::UpdateChild, this ) );
 
 }
 
 
-void TemplatePlugin::Reset()
+void ActuatorPlugin::Reset()
 {
   #if GAZEBO_MAJOR_VERSION >= 8
     last_update_time_ = parent->GetWorld()->SimTime();
@@ -173,7 +173,7 @@ void TemplatePlugin::Reset()
 
 
 //not working for now
-void TemplatePlugin::publishServoJointState()
+void ActuatorPlugin::publishServoJointState()
 {   //ROS_INFO("publishServoJointState");
 //     ros::Time current_time = ros::Time::now();
 //     joint_state_.header.stamp = current_time;
@@ -189,7 +189,7 @@ void TemplatePlugin::publishServoJointState()
 
 
 
-void TemplatePlugin::publishServoTF()
+void ActuatorPlugin::publishServoTF()
 {
     // ROS_INFO("publishServoTF");
     ros::Time current_time = ros::Time::now();
@@ -217,7 +217,7 @@ void TemplatePlugin::publishServoTF()
 
 ////////////////////////////////////////////////////////////////////////////////
 // Update the controller
-void TemplatePlugin::UpdateChild()
+void ActuatorPlugin::UpdateChild()
 {
     
         /* force reset SetParam("fmax") since Joint::Reset reset MaxForce to zero at
@@ -271,7 +271,7 @@ void TemplatePlugin::UpdateChild()
 
 
 // Finalize the controller
-void TemplatePlugin::FiniChild()
+void ActuatorPlugin::FiniChild()
 {
     alive_ = false;
     queue_.clear();
@@ -281,7 +281,7 @@ void TemplatePlugin::FiniChild()
 }
 
 
-void TemplatePlugin::getServoVelocity()
+void ActuatorPlugin::getServoVelocity()
 {
     boost::mutex::scoped_lock scoped_lock ( lock );
 
@@ -291,7 +291,7 @@ void TemplatePlugin::getServoVelocity()
 }
 
 
-void TemplatePlugin::cmdVelCallback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
+void ActuatorPlugin::cmdVelCallback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
 {
   boost::mutex::scoped_lock scoped_lock ( lock );
   x_ = cmd_msg->linear.x;
@@ -300,7 +300,7 @@ void TemplatePlugin::cmdVelCallback ( const geometry_msgs::Twist::ConstPtr& cmd_
 
 
 /// \brief ROS helper function that processes messages
-void TemplatePlugin::QueueThread()
+void ActuatorPlugin::QueueThread()
 {
 static const double timeout = 0.01;
   while ( alive_ && gazebo_ros_->node()->ok() ) {
@@ -310,7 +310,7 @@ static const double timeout = 0.01;
 
 
 // not used for now
-void TemplatePlugin::UpdateOdometryEncoder()
+void ActuatorPlugin::UpdateOdometryEncoder()
 {
     double vel = servo_joint_->GetVelocity ( 0 );
 #if GAZEBO_MAJOR_VERSION >= 8
@@ -363,8 +363,8 @@ void TemplatePlugin::UpdateOdometryEncoder()
 
 
 //not working for now
-void TemplatePlugin::publishOdometry ( double step_time )
-{ ROS_INFO("publishOdometry");
+void ActuatorPlugin::publishOdometry ( double step_time )
+{ //ROS_INFO("publishOdometry");
 
 //     ros::Time current_time = ros::Time::now();
 //     std::string odom_frame = gazebo_ros_->resolveTF ( odometry_frame_ );
@@ -442,5 +442,5 @@ void TemplatePlugin::publishOdometry ( double step_time )
 //     odometry_publisher_.publish ( odom_ );
 }
 // Register this plugin with the simulator
-GZ_REGISTER_MODEL_PLUGIN(TemplatePlugin);
+GZ_REGISTER_MODEL_PLUGIN(ActuatorPlugin);
 }

@@ -1207,7 +1207,7 @@
       
      
       <!-- Using plugin from this directory-->
-      <plugin name="TemplatePlugin" filename="libtemplate_plugin.so">
+      <plugin name="ActuatorPlugin" filename="libactuator_plugin.so">
         <motor_joint>sg90_to_shaft</motor_joint> 
         <commandTopicServo>cmd_servo</commandTopicServo>
         <servoTorque>10</servoTorque>

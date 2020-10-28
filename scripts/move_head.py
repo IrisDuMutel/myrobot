@@ -43,7 +43,7 @@ def talker():
 
     while not rospy.is_shutdown():
         # Transform into velocity commands
-        cmd.linear.x = 0
+        # cmd.linear.x = 0
         cmd.angular.z = 0.5
         # Publishing
         pub.publish(cmd)

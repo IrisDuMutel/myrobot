@@ -171,12 +171,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 
 include_directories(plugins/light/include)
 include_directories(plugins/contact)
-include_directories(plugins/actuator)
-include_directories(models/myrobot/plugins/actuator)
 include_directories(plugins/keys2cmdvel)
-include_directories(plugins/simpletrackedvehicle)
 include_directories(plugins/trackedvehicle)
 include_directories(plugins/actuator)
+include_directories(plugins/template)
 include_directories(plugins/diff_drive)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
@@ -194,7 +192,8 @@ add_library(actuator_plugin SHARED plugins/actuator/actuator_plugin.cpp)
 target_link_libraries(actuator_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(diff_drive_plugin SHARED plugins/diff_drive/diff_drive_plugin.cpp)
 target_link_libraries(diff_drive_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-
+# add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
+# target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
 ###########template
 ## Build ##
 ###########

@@ -625,7 +625,7 @@
           </box>
         </geometry>
       </collision>
-      <visual name='visual'>
+      <!-- <visual name='visual'>
       <pose>0.0375 0 -0.003 0 0 0</pose>
         <geometry>
           <mesh><uri>model://myrobot/meshes/Supports/supporto_pitch_servo_1.dae</uri></mesh>
@@ -636,8 +636,8 @@
             <name>Gazebo/RedTransparent</name>
           </script>
         </material>
-      </visual>
-      <!-- <visual name='visual'>
+      </visual> -->
+      <visual name='visual'>
         <geometry>
           <box>
             <size>0.04 0.035 0.003</size>
@@ -649,7 +649,7 @@
             <name>Gazebo/BlueTransparent</name>
           </script>
         </material>
-      </visual> -->
+      </visual>
 
       <collision name='collision_tronco'>
       <pose>0.0 0.0 -0.001 0 0 0</pose>
@@ -663,7 +663,7 @@
           </polyline>
         </geometry>
       </collision>
-      <!-- <visual name='collision_tronco'>
+      <visual name='collision_tronco'>
       <pose>0.0 0.0 -0.001 0 0 0</pose>
         <geometry>
           <polyline>
@@ -680,7 +680,7 @@
             <name>Gazebo/YellowTransparent</name>
           </script>
         </material>
-      </visual> -->
+      </visual>
       <collision name='collision_cil'>
       <pose>0.038 0.0 0 0 0 0</pose>
         <geometry>
@@ -690,7 +690,7 @@
           </cylinder>
         </geometry>
       </collision>
-      <!-- <visual name='collision_cil'>
+      <visual name='collision_cil'>
       <pose>0.038 0.0 0 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -704,7 +704,7 @@
             <name>Gazebo/GreenTransparent</name>
           </script>
         </material>
-      </visual> -->
+      </visual>
     </link>
 
     <link name='supporto_pitch_servo_2'>
@@ -725,7 +725,7 @@
           </box>
         </geometry>
       </collision>
-      <visual name='visual'>
+      <!-- <visual name='visual'>
       <pose>0.039 0 -0.001 0 0 0</pose>
         <geometry>
           <mesh><uri>model://myrobot/meshes/Supports/supporto_pitch_servo_2.dae</uri></mesh>
@@ -736,8 +736,8 @@
             <name>Gazebo/GreenTransparent</name>
           </script>
         </material>
-      </visual>
-      <!-- <visual name='visual'>
+      </visual> -->
+      <visual name='visual'>
       <pose>0 0 0 0 0 0 </pose>
         <geometry>
           <box>
@@ -750,7 +750,7 @@
             <name>Gazebo/RedTransparent</name>
           </script>
         </material>
-      </visual> -->
+      </visual>
       <collision name='collision_vertical'>
       <pose>-0.002375 0 0.018 0 0 0 </pose>
         <geometry>
@@ -759,7 +759,7 @@
           </box>
         </geometry>
       </collision>
-      <!-- <visual name='collision_vertical'>
+      <visual name='collision_vertical'>
       <pose>-0.002375 0 0.018 0 0 0 </pose>
         <geometry>
           <box>
@@ -772,7 +772,7 @@
             <name>Gazebo/RedTransparent</name>
           </script>
         </material>
-      </visual> -->
+      </visual>
     </link>
     
 
@@ -1184,7 +1184,7 @@
     
     <!-- PLUGINS -->
     <!-- Using plugin from this directory-->
-    <!-- <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
+    <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
         <commandTopic>cmd_vel</commandTopic>
         <odometryTopic>odom</odometryTopic>
         <odometryFrame>odom</odometryFrame>
@@ -1203,7 +1203,7 @@
         <wheelAcceleration>1</wheelAcceleration>
         <wheelTorque>10</wheelTorque>
         <rosDebugLevel>na</rosDebugLevel>
-      </plugin> -->
+      </plugin>
       
      
       <!-- Using plugin from this directory-->
@@ -1222,8 +1222,8 @@
         <publishServoTF>true</publishServoTF>
         <publishTF>true</publishTF>
         <publishservoOdomTF>true</publishservoOdomTF>
-        <publishServoJointState>true</publishServoJointState>
-        <servolegacyMode>false</servolegacyMode>
+        <!-- <publishServoJointState>true</publishServoJointState> -->
+        <!-- <servolegacyMode>false</servolegacyMode> -->
         <rosDebugLevel>na</rosDebugLevel>
       
       </plugin>

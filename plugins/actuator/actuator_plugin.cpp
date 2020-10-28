@@ -83,9 +83,8 @@ void ActuatorPlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
     gazebo_ros_->getParameter<std::string> ( robot_base_frame_, "servoBaseFrame", "base_footprint" );
     gazebo_ros_->getParameterBoolean ( publishServoTF_, "publishServoTF", false );
     gazebo_ros_->getParameterBoolean ( publishOdomTF_, "publishservoOdomTF", true);
-    gazebo_ros_->getParameterBoolean ( publishServoJointState_, "publishServoJointState", false );
-    gazebo_ros_->getParameterBoolean ( legacy_mode_, "servolegacyMode", true );
-    gazebo_ros_->getParameterBoolean ( publishServoJointState_, "publishServoJointState", false );
+    // gazebo_ros_->getParameterBoolean ( publishServoJointState_, "publishServoJointState", false );
+    // gazebo_ros_->getParameterBoolean ( legacy_mode_, "servolegacyMode", true );
 
     std::map<std::string, OdomSource> odomOptions;
     odomOptions["encoder"] = ENCODER;
@@ -117,15 +116,15 @@ void ActuatorPlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
     servo_speed_ = 0;
     // Initialize velocity support stuff
     servo_speed_instr_ = 0;
-    // x_ = 0;
+
     rot_ = 0;
     alive_ = true;
 
-    if (this->publishServoJointState_)
-    {
-      joint_state_publisher_ = gazebo_ros_->node()->advertise<sensor_msgs::JointState>("servo_joint_states", 1000);
-      ROS_INFO("%s: Advertise joint_states", gazebo_ros_->info());
-    }
+    // if (this->publishServoJointState_)
+    // {
+    //   joint_state_publisher_ = gazebo_ros_->node()->advertise<sensor_msgs::JointState>("servo_joint_states", 1000);
+    //   ROS_INFO("%s: Advertise joint_states", gazebo_ros_->info());
+    // }
 
     transform_broadcaster_ = boost::shared_ptr<tf::TransformBroadcaster>(new tf::TransformBroadcaster());
 
@@ -166,34 +165,31 @@ void ActuatorPlugin::Reset()
   pose_encoder_.x = 0;
   pose_encoder_.y = 0;
   pose_encoder_.theta = 0;
-  // x_ = 0;
   rot_ = 0;
   servo_joint_->SetParam ( "fmax", 0, servo_torque );
 }
 
 
-//not working for now
-void ActuatorPlugin::publishServoJointState()
-{   //ROS_INFO("publishServoJointState");
+// //not working for now
+// void ActuatorPlugin::publishServoJointState()
+// {   //ROS_INFO("publishServoJointState");
 //     ros::Time current_time = ros::Time::now();
 //     joint_state_.header.stamp = current_time;
-//     joint_state_.name[0] = servo_joint_->GetName();
-// #if GAZEBO_MAJOR_VERSION >= 8
-//         double position = servo_joint_->Position ( 0 );
-// #else
-//         double position = servo_joint_->GetAngle ( 0 ).Radian();
-// #endif
-//     joint_state_.position[0] = position;
+//     joint_state_.name[0] = "servo_joint_->GetName()";
+// // #if GAZEBO_MAJOR_VERSION >= 8
+// //         double position = servo_joint_->Position ( 0 );
+// // #else
+// //         double position = servo_joint_->GetAngle ( 0 ).Radian();
+// // #endif
+//     // joint_state_.position[0] = position;
 //     joint_state_publisher_.publish ( joint_state_ );
-} 
+// } 
 
 
 
 void ActuatorPlugin::publishServoTF()
 {
-    // ROS_INFO("publishServoTF");
     ros::Time current_time = ros::Time::now();
-    
 
     std::string servo_frame = gazebo_ros_->resolveTF(servo_joint_->GetChild()->GetName ());
     std::string servo_parent_frame = gazebo_ros_->resolveTF(servo_joint_->GetParent()->GetName ());
@@ -209,61 +205,48 @@ void ActuatorPlugin::publishServoTF()
     tf::Transform tfServo ( qt, vt );
     transform_broadcaster_->sendTransform (
         tf::StampedTransform ( tfServo, current_time, servo_parent_frame, servo_frame ) );
-    
 }
 
 
 
-
-////////////////////////////////////////////////////////////////////////////////
 // Update the controller
 void ActuatorPlugin::UpdateChild()
-{
-    
-        /* force reset SetParam("fmax") since Joint::Reset reset MaxForce to zero at
-           https://bitbucket.org/osrf/gazebo/src/8091da8b3c529a362f39b042095e12c94656a5d1/gazebo/physics/Joint.cc?at=gazebo2_2.2.5#cl-331
-           (this has been solved in https://bitbucket.org/osrf/gazebo/diff/gazebo/physics/Joint.cc?diff2=b64ff1b7b6ff&at=issue_964 )
-           and Joint::Reset is called after ModelPlugin::Reset, so we need to set maxForce to wheel_torque other than GazeboRosDiffDrive::Reset
-           (this seems to be solved in https://bitbucket.org/osrf/gazebo/commits/ec8801d8683160eccae22c74bf865d59fac81f1e)
-        */
-        
-        if ( fabs(servo_torque -servo_joint_->GetParam ( "fmax", 0 )) > 1e-6 ) {
-          servo_joint_->SetParam ( "fmax", 0, servo_torque );
-        }
-        
+{   //Set paremterers 'fmax' and 'vel' depending on desired values from subscription and sdf
     
     
-        if ( odom_source_ == ENCODER ) UpdateOdometryEncoder();
-#if GAZEBO_MAJOR_VERSION >= 8
-    common::Time current_time = parent->GetWorld()->SimTime();
-#else
-    common::Time current_time = parent->GetWorld()->GetSimTime();
-#endif    
-        double seconds_since_last_update = ( current_time - last_update_time_ ).Double();
-    //TODO different from diff drive
-        if ( seconds_since_last_update > update_period_ ) {
-            if (this->publishServoTF_) publishOdometry ( seconds_since_last_update );
-            if ( publishServoTF_ ) publishServoTF();
-            if ( publishServoJointState_ ) publishServoJointState();
-    
-            // Update robot in case new velocities have been requested
-            getServoVelocity();
-    
-            double current_speed;
-    
-            current_speed = servo_joint_->GetVelocity ( 0 ) ;//  * ( servo_diameter / 2.0 );
-    
-            if ( servo_accel == 0 ||
-                    ( fabs ( servo_speed_ - current_speed ) < 0.01 )) {
-                //if max_accel == 0, or target speed is reached
-                servo_joint_->SetParam ( "vel", 0, servo_speed_);/// ( servo_diameter / 2.0 ) );
-            } else {
-                if ( servo_speed_>=current_speed)
-                    servo_speed_instr_+=fmin ( servo_speed_-current_speed,  servo_accel * seconds_since_last_update );
-                else
-                    servo_speed_instr_+=fmax ( servo_speed_-current_speed, -servo_accel * seconds_since_last_update );
+    if ( fabs(servo_torque -servo_joint_->GetParam ( "fmax", 0 )) > 1e-6 ) {
+      servo_joint_->SetParam ( "fmax", 0, servo_torque );
+    } 
 
-                servo_joint_->SetParam ( "vel", 0, servo_speed_instr_ );/// ( servo_diameter / 2.0 ) );
+    #if GAZEBO_MAJOR_VERSION >= 8
+        common::Time current_time = parent->GetWorld()->SimTime();
+    #else
+        common::Time current_time = parent->GetWorld()->GetSimTime();
+    #endif    
+    double seconds_since_last_update = ( current_time - last_update_time_ ).Double();
+    //TODO different from diff drive
+    if ( seconds_since_last_update > update_period_ ) {
+        if (this->publishServoTF_) publishOdometry ( seconds_since_last_update );
+        if ( publishServoTF_ ) publishServoTF();
+        // if ( publishServoJointState_ ) publishServoJointState();
+
+        // Update servo in case new velocities have been requested
+        getServoVelocity();
+
+        double current_speed;
+
+        current_speed = servo_joint_->GetVelocity ( 0 ) ;//  * ( servo_diameter / 2.0 );
+
+        if ( servo_accel == 0 ||
+                ( fabs ( servo_speed_ - current_speed ) < 0.01 )) {
+            //if max_accel == 0, or target speed is reached
+            servo_joint_->SetParam ( "vel", 0, servo_speed_);
+        } else {
+            if ( servo_speed_>=current_speed)
+                servo_speed_instr_+=fmin ( servo_speed_-current_speed,  servo_accel * seconds_since_last_update );
+            else
+                servo_speed_instr_+=fmax ( servo_speed_-current_speed, -servo_accel * seconds_since_last_update );
+            servo_joint_->SetParam ( "vel", 0, servo_speed_instr_ );/// ( servo_diameter / 2.0 ) );
         }
     last_update_time_+= common::Time ( update_period_ );
   }
@@ -281,20 +264,19 @@ void ActuatorPlugin::FiniChild()
 }
 
 
+// Obtained desired velocity
 void ActuatorPlugin::getServoVelocity()
 {
     boost::mutex::scoped_lock scoped_lock ( lock );
-
-    // double vr = x_;
     double va = rot_;
-    servo_speed_ = va;// vr - va;// * servo_diameter / 2.0; 
+    servo_speed_ = va;
 }
 
-
+// Subscriber callback function
 void ActuatorPlugin::cmdVelCallback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
 {
   boost::mutex::scoped_lock scoped_lock ( lock );
-  x_ = cmd_msg->linear.x;
+//   x_ = cmd_msg->linear.x;
   rot_ = cmd_msg->angular.z;
 }
 
@@ -309,63 +291,10 @@ static const double timeout = 0.01;
 }
 
 
-// not used for now
-void ActuatorPlugin::UpdateOdometryEncoder()
-{
-    double vel = servo_joint_->GetVelocity ( 0 );
-#if GAZEBO_MAJOR_VERSION >= 8
-    common::Time current_time = parent->GetWorld()->SimTime();
-#else
-    common::Time current_time = parent->GetWorld()->GetSimTime();
-#endif
-    double seconds_since_last_update = ( current_time - last_odom_update_ ).Double();
-    last_odom_update_ = current_time;
 
-    
-
-    // Book: Sigwart 2011 Autonompus Mobile Robots page:337
-    double s = vel  * seconds_since_last_update;//* ( servo_diameter / 2.0 );
-    // double sr = vr * ( wheel_diameter_ / 2.0 ) * seconds_since_last_update;
-    double sdiff;
-    sdiff = s;
-    
-
-    double dx = 0;
-    double dy = 0;
-    double dtheta = sdiff;//* ( servo_diameter / 2.0 );
-
-    pose_encoder_.x += dx;
-    pose_encoder_.y += dy;
-    pose_encoder_.theta += dtheta;
-
-    double w = dtheta/seconds_since_last_update;
-    double v = sqrt ( dx*dx+dy*dy ) /seconds_since_last_update;
-
-    tf::Quaternion qt;
-    tf::Vector3 vt;
-    qt.setRPY ( 0,0,pose_encoder_.theta );
-    vt = tf::Vector3 ( pose_encoder_.x, pose_encoder_.y, 0 );
-
-    odom_.pose.pose.position.x = vt.x();
-    odom_.pose.pose.position.y = vt.y();
-    odom_.pose.pose.position.z = vt.z();
-
-    odom_.pose.pose.orientation.x = qt.x();
-    odom_.pose.pose.orientation.y = qt.y();
-    odom_.pose.pose.orientation.z = qt.z();
-    odom_.pose.pose.orientation.w = qt.w();
-
-    odom_.twist.twist.angular.z = w;
-    odom_.twist.twist.linear.x = dx/seconds_since_last_update;
-    odom_.twist.twist.linear.y = dy/seconds_since_last_update;
-}
-
-
-
-//not working for now
+// Obtain and publish position and velocity in odometry topic 
 void ActuatorPlugin::publishOdometry ( double step_time )
-{ //ROS_INFO("publishOdometry");
-
+{
     ros::Time current_time = ros::Time::now();
     std::string odom_frame = gazebo_ros_->resolveTF ( odometry_frame_ );
     std::string base_footprint_frame = gazebo_ros_->resolveTF ( robot_base_frame_ );
@@ -381,32 +310,30 @@ void ActuatorPlugin::publishOdometry ( double step_time )
     }
     if ( odom_source_ == WORLD ) {
         // getting data from gazebo world
-#if GAZEBO_MAJOR_VERSION >= 8
+    #if GAZEBO_MAJOR_VERSION >= 8
         ignition::math::Pose3d pose = parent->WorldPose();
-#else
-        ignition::math::Pose3d pose = parent->GetWorldPose().Ign();
-#endif        
-        qt = tf::Quaternion ( pose.Rot().X(), pose.Rot().Y(), pose.Rot().Z(), pose.Rot().W() );
-        vt = tf::Vector3 ( pose.Pos().X(), pose.Pos().Y(), pose.Pos().Z() );
+    #else
+            ignition::math::Pose3d pose = parent->GetWorldPose().Ign();
+    #endif        
+    qt = tf::Quaternion ( pose.Rot().X(), pose.Rot().Y(), pose.Rot().Z(), pose.Rot().W() );
+    vt = tf::Vector3 ( pose.Pos().X(), pose.Pos().Y(), pose.Pos().Z() );
+    odom_.pose.pose.position.x = vt.x();
+    odom_.pose.pose.position.y = vt.y();
+    odom_.pose.pose.position.z = vt.z();
+    odom_.pose.pose.orientation.x = qt.x();
+    odom_.pose.pose.orientation.y = qt.y();
+    odom_.pose.pose.orientation.z = qt.z();
+    odom_.pose.pose.orientation.w = qt.w();
 
-        odom_.pose.pose.position.x = vt.x();
-        odom_.pose.pose.position.y = vt.y();
-        odom_.pose.pose.position.z = vt.z();
-
-        odom_.pose.pose.orientation.x = qt.x();
-        odom_.pose.pose.orientation.y = qt.y();
-        odom_.pose.pose.orientation.z = qt.z();
-        odom_.pose.pose.orientation.w = qt.w();
-
-        // get velocity in /odom frame
-        ignition::math::Vector3d linear;
-#if GAZEBO_MAJOR_VERSION >= 8
-        linear = parent->WorldLinearVel();
-        odom_.twist.twist.angular.z = parent->WorldAngularVel().Z();
-#else
-        linear = parent->GetWorldLinearVel().Ign();
-        odom_.twist.twist.angular.z = parent->GetWorldAngularVel().Ign().Z();
-#endif
+    // get velocity in /odom frame
+    ignition::math::Vector3d linear;
+    #if GAZEBO_MAJOR_VERSION >= 8
+            linear = parent->WorldLinearVel();
+            odom_.twist.twist.angular.z = parent->WorldAngularVel().Z();
+    #else
+            linear = parent->GetWorldLinearVel().Ign();
+            odom_.twist.twist.angular.z = parent->GetWorldAngularVel().Ign().Z();
+    #endif
         linear = parent->WorldLinearVel();
         odom_.twist.twist.angular.z = parent->WorldAngularVel().Z();
 
@@ -440,7 +367,7 @@ void ActuatorPlugin::publishOdometry ( double step_time )
     odom_.child_frame_id = base_footprint_frame;
 
     odometry_publisher_.publish ( odom_ );
-}
+}  
 // Register this plugin with the simulator
 GZ_REGISTER_MODEL_PLUGIN(ActuatorPlugin);
 }

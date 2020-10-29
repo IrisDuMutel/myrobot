@@ -303,7 +303,7 @@
             <ambient>0.1 0.1 0.1 1</ambient>
             <diffuse>0 0 0.75 1</diffuse>
             <specular>0 0 0 0</specular>
-            <emissive>0 0 0 1</emissive>
+            <emissive>0 0 0.2 0</emissive>
           </material>
       </visual>
 
@@ -335,11 +335,11 @@
           </cylinder>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Grey</name>
-          </script>
-        </material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0 0 0.75 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0.2 0</emissive>
+          </material>
       </visual> <!---->
 
       <collision name = 'stick2_collision'>
@@ -439,11 +439,11 @@
           </cylinder>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Grey</name>
-          </script>
-        </material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0 0 0.75 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0.2 0</emissive>
+          </material>
       </visual> <!---->
     </link>
     
@@ -491,14 +491,10 @@
           </box> -->
         </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/DarkOrangeTransparentOverlay</name>
-            </script>
-            <!--<ambient>0.1 0.1 0.1 1</ambient>
-            <diffuse>1 1 0.5 1.0</diffuse>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0 0 0.75 1</diffuse>
             <specular>0 0 0 0</specular>
-            <emissive>0 0 0 1</emissive>-->
+            <emissive>0 0 0.2 0</emissive>
           </material>
       </visual>
     </link>
@@ -541,11 +537,11 @@
           </box> -->
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/RedTransparent</name>
-          </script>
-        </material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0 0 0.75 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0.2 0</emissive>
+          </material>
       </visual>
     </link>
     
@@ -579,16 +575,16 @@
         </surface>
       </collision>
       <visual name="visual">
-        <pose>0 0 -0.002 1.5707 0 0</pose>
+        <pose>0 0 -0.002 1.5707 0 4.71238</pose>
         <geometry>
           <mesh><uri>model://myrobot/meshes/Supports/Supporto_piastra_albero.dae</uri></mesh>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/BlueTransparent</name>
-          </script>
-        </material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0 0 0.75 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0.2 0</emissive>
+          </material>
       </visual>
       <!--<visual name="visual">
         <pose>0 0 0 0 0 0</pose>
@@ -608,7 +604,7 @@
     </link>
 
     <link name='supporto_pitch_servo_1'>
-      <pose>0.133 0.0005 0.114 0 0 3.14</pose>
+      <pose>0.096 0.038 0.114 0 0 4.71238</pose>
       <inertial>
         <mass>0.1</mass>
         <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
@@ -625,19 +621,19 @@
           </box>
         </geometry>
       </collision>
-      <!-- <visual name='visual'>
+      <visual name='visual'>
       <pose>0.0375 0 -0.003 0 0 0</pose>
         <geometry>
           <mesh><uri>model://myrobot/meshes/Supports/supporto_pitch_servo_1.dae</uri></mesh>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/RedTransparent</name>
-          </script>
-        </material>
-      </visual> -->
-      <visual name='visual'>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0 0 0.75 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0.2 0</emissive>
+          </material>
+      </visual>
+      <!-- <visual name='visual'>
         <geometry>
           <box>
             <size>0.04 0.035 0.003</size>
@@ -649,7 +645,7 @@
             <name>Gazebo/BlueTransparent</name>
           </script>
         </material>
-      </visual>
+      </visual> -->
 
       <collision name='collision_tronco'>
       <pose>0.0 0.0 -0.001 0 0 0</pose>
@@ -663,7 +659,7 @@
           </polyline>
         </geometry>
       </collision>
-      <visual name='collision_tronco'>
+      <!-- <visual name='collision_tronco'>
       <pose>0.0 0.0 -0.001 0 0 0</pose>
         <geometry>
           <polyline>
@@ -680,7 +676,7 @@
             <name>Gazebo/YellowTransparent</name>
           </script>
         </material>
-      </visual>
+      </visual> -->
       <collision name='collision_cil'>
       <pose>0.038 0.0 0 0 0 0</pose>
         <geometry>
@@ -690,7 +686,7 @@
           </cylinder>
         </geometry>
       </collision>
-      <visual name='collision_cil'>
+      <!-- <visual name='collision_cil'>
       <pose>0.038 0.0 0 0 0 0</pose>
         <geometry>
           <cylinder>
@@ -704,11 +700,11 @@
             <name>Gazebo/GreenTransparent</name>
           </script>
         </material>
-      </visual>
+      </visual> -->
     </link>
 
     <link name='supporto_pitch_servo_2'>
-      <pose>0.15 0.0005 0.116 0 0 3.14</pose>
+      <pose>0.096 0.056 0.116 0 0 4.71238</pose>
       <inertial>
         <mass>0.1</mass>
         <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
@@ -725,19 +721,19 @@
           </box>
         </geometry>
       </collision>
-      <!-- <visual name='visual'>
+      <visual name='visual'>
       <pose>0.039 0 -0.001 0 0 0</pose>
         <geometry>
           <mesh><uri>model://myrobot/meshes/Supports/supporto_pitch_servo_2.dae</uri></mesh>
         </geometry>
         <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/GreenTransparent</name>
-          </script>
-        </material>
-      </visual> -->
-      <visual name='visual'>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0 0 0.75 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0.2 0</emissive>
+          </material>
+      </visual>
+      <!-- <visual name='visual'>
       <pose>0 0 0 0 0 0 </pose>
         <geometry>
           <box>
@@ -750,7 +746,7 @@
             <name>Gazebo/RedTransparent</name>
           </script>
         </material>
-      </visual>
+      </visual> -->
       <collision name='collision_vertical'>
       <pose>-0.002375 0 0.018 0 0 0 </pose>
         <geometry>
@@ -759,7 +755,7 @@
           </box>
         </geometry>
       </collision>
-      <visual name='collision_vertical'>
+      <!-- <visual name='collision_vertical'>
       <pose>-0.002375 0 0.018 0 0 0 </pose>
         <geometry>
           <box>
@@ -772,13 +768,13 @@
             <name>Gazebo/RedTransparent</name>
           </script>
         </material>
-      </visual>
+      </visual> -->
     </link>
     
 
     <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%SENSORS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     <link name='RealSense'>
-      <pose>0.035 0.0 0.1535 0 0 0</pose>
+      <pose>0.095 0.0 0.13 0 0 0</pose>
       <inertial>
         <mass>0.1</mass>
         <inertia>
@@ -790,15 +786,26 @@
         <collision name='collision'>
           <geometry>
             <box>
-              <size>0.03 0.05 0.02</size>
+              <size>0.025 0.087 0.02</size>
             </box>
           </geometry>
         </collision>
-
         <visual name='visual'>
+        <pose>0.0125 0.0 0 1.5707 0 1.5707</pose>
+          <geometry>
+            <mesh><uri>model://myrobot/meshes/Sensors/IntelRealsense_D435_Multibody.dae</uri></mesh>
+          </geometry>
+          <material>  
+            <ambient>1 1 1 1</ambient>
+            <diffuse>.7 .9 0 1</diffuse>
+            <specular>.2 .2 .2 64</specular>
+            <emissive>0.1 0 0.1 1</emissive>
+          </material>
+        </visual>
+        <!-- <visual name='visual'>
           <geometry>
             <box>
-              <size>0.03 0.05 0.02</size>
+              <size>0.025 0.087 0.02</size>
             </box>
           </geometry>
           <material> 
@@ -807,7 +814,7 @@
             <specular>0 0 0 0</specular>
             <emissive>0 1 0 1</emissive>
           </material> 
-        </visual><!---->
+        </visual> -->
         <sensor name="camera" type="depth">
           <update_rate>20</update_rate>
           <camera>
@@ -851,6 +858,8 @@
           </plugin> -->
         </sensor>
     </link>
+
+
 
     <link name='rightfront_force_sensor'>
       <pose>0.11 0.05 0.07 0 0 0</pose>
@@ -1009,8 +1018,107 @@
       <gravity>1</gravity>
     </link>
     <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%BOARDS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+
+    <link name='LattePanda'>
+      <pose>-0.012 0.001 0.153 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+        <collision name='  collision'>
+          <geometry>
+            <box>
+              <size>0.12 0.08 0.01</size>
+            </box>
+          </geometry>
+        </collision>
+
+        <!-- <visual name='visual'>
+        <pose> 0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.12 0.08 0.01</size>
+            </box>
+          </geometry>
+
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/GreenTransparent</name>
+            </script>
+          </material>
+        </visual> -->
+        <visual name='visual'>
+        <pose> 0 0 -0.01 1.5707 0 0</pose>
+          <geometry>
+            <mesh><uri>model://myrobot/meshes/Boards/LattePanda_delta.dae</uri></mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+
+
+      <link name='K64F'>
+      <pose>0 0 0.138 3.1415 0 1.5707</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+        <collision name='  collision'>
+          <geometry>
+            <box>
+              <size>0.085 0.055 0.015</size>
+            </box>
+          </geometry>
+        </collision>
+
+        <!-- <visual name='visual'>
+        <pose> 0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.085 0.055 0.015</size>
+            </box>
+          </geometry>
+
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/GreenTransparent</name>
+            </script>
+          </material>
+        </visual> -->
+        <visual name='visual'>
+        <pose> -0.037 -0.027 -0.007 0 0 0</pose>
+          <geometry>
+            <mesh><uri>model://myrobot/meshes/Boards/K64F.dae</uri></mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+
+     
     <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MISCELLANEOUS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
-    <link name='sg90'>
+    <link name='sg90h'>
       <pose>0.096 -0.005 0.092 1.5707 0 0 </pose>
       <inertial>
         <mass>0.1</mass>
@@ -1040,16 +1148,16 @@
             </box>
           </geometry> -->
 
-          <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/GreenTransparent</name>
-            </script>
+          <material> 
+            <ambient>0 0.1 0.1 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 .3 .3 0</emissive>
           </material>
         </visual>
       </link>
 
-      <link name='sg90_shaft'>
+      <link name='sg90h_shaft'>
         <pose>0.096 0.0005 0.106 0 0 0</pose>
         <inertial>
         <mass>0.1</mass>
@@ -1085,6 +1193,126 @@
           </material>
         </visual>
     </link>
+
+
+<link name='sg90v'>
+      <pose>0.096 0.06595 0.136 3.1415 0 0 </pose>
+      <!-- <inertial>
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial> -->
+        <collision name='  collision'>
+          <geometry>
+            <box>
+              <size>0.012 0.022 0.022</size>
+            </box>
+          </geometry>
+        </collision>
+
+        <visual name='visual'>
+        <pose> 0 -0.011 0 0 0 0</pose>
+          <geometry>
+            <mesh><uri>model://myrobot/meshes/Misc/sg90.dae</uri></mesh>
+          </geometry>
+          <!-- <geometry>
+            <box>
+              <size>0.012 0.022 0.022</size>
+            </box>
+          </geometry> -->
+
+          <material> 
+            <ambient>0 0.1 0.1 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 .3 .3 0</emissive>
+          </material>
+        </visual>
+      </link>
+
+      <link name='sg90v_shaft'>
+      <pose>0.096 0.048 0.141 1.5707 0 0 </pose>
+      <!-- <inertial>
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial> -->
+        <collision name='collision'>
+          <geometry>
+            <cylinder>
+              <radius>0.002</radius>
+              <length>0.01</length>
+            </cylinder>
+          </geometry>
+        </collision>
+
+        <visual name='visual'>
+          <geometry>
+            <cylinder>
+              <radius>0.002</radius>
+              <length>0.01</length>
+            </cylinder>
+          </geometry>
+
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+    </link>
+
+    <link name='batteria'>
+      <pose>-0.02 0 0.075 0 0 0 </pose>
+      <inertial>
+        <mass>0.1</mass>
+        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+        <inertia>
+          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
+          <iyy>0.001</iyy> <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+        <collision name='  collision'>
+          <geometry>
+            <box>
+              <size>0.102 0.035 0.025</size>
+            </box>
+          </geometry>
+        </collision>
+
+        <visual name='visual'>
+        <!-- <pose> 0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.102 0.035 0.025</size>
+            </box> 
+          </geometry>-->
+        <pose> 0 0 -0.012 0 0 0</pose>
+          <geometry>
+            <mesh><uri>model://myrobot/meshes/Misc/Turnigy_2200mAh_3S_20C_Lipo_Pack.dae</uri></mesh>
+          </geometry>
+
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+
+    
+
 
     <!-- JOINTS -->
     <joint type='revolute' name='left_wheel_hinge'>
@@ -1126,7 +1354,7 @@
     <joint type='fixed' name='RealSenseJoint'>
       <pose>0 0 0 0 0 0</pose>
       <child>RealSense</child>
-      <parent>BaseBoards</parent>
+      <parent>supporto_pitch_servo_2</parent>
     </joint>
 
     <joint type='fixed' name='RigthFrontForceJoint'>
@@ -1147,16 +1375,32 @@
       <parent>cube_base</parent>
     </joint>
 
-    <joint type='fixed' name='sg90_joint'>
+    <joint type='fixed' name='sg90h_joint'>
       <pose>0 0 0 0 0 0</pose>
-      <child>sg90</child>
+      <child>sg90h</child>
       <parent>supporto_sg90</parent>
     </joint>
 
-    <joint name="sg90_to_shaft" type="revolute">
+
+    <joint type='fixed' name='sg90v_joint'>
       <pose>0 0 0 0 0 0</pose>
-      <child>sg90_shaft</child>
-      <parent>sg90</parent>
+      <child>sg90v</child>
+      <parent>supporto_pitch_servo_2</parent>
+    </joint>
+
+    <joint name="sg90h_to_shaft" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <child>sg90h_shaft</child>
+      <parent>sg90h</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint name="sg90v_to_shaft" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <child>sg90v_shaft</child>
+      <parent>sg90v</parent>
       <axis>
         <xyz>0 0 1</xyz>
       </axis>
@@ -1180,11 +1424,27 @@
       <parent>supporto_pitch_servo_1</parent>
     </joint>
 
+    <joint name="LattePanda_to_baseboards" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>LattePanda</child>
+      <parent>BaseBoards</parent>
+    </joint>
 
-    
+    <joint name="Batteria_to_cube" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>batteria</child>
+      <parent>cube_base</parent>
+    </joint>
+
+    <joint name="K64F_to_BaseBoards" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>K64F</child>
+      <parent>BaseBoards</parent>
+    </joint>
+
     <!-- PLUGINS -->
     <!-- Using plugin from this directory-->
-    <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
+    <!-- <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
         <commandTopic>cmd_vel</commandTopic>
         <odometryTopic>odom</odometryTopic>
         <odometryFrame>odom</odometryFrame>
@@ -1203,12 +1463,12 @@
         <wheelAcceleration>1</wheelAcceleration>
         <wheelTorque>10</wheelTorque>
         <rosDebugLevel>na</rosDebugLevel>
-      </plugin>
+      </plugin> -->
       
      
       <!-- Using plugin from this directory-->
-      <plugin name="ActuatorPlugin" filename="libactuator_plugin.so">
-        <motor_joint>sg90_to_shaft</motor_joint> 
+      <plugin name="ActuatorPlugin_horizontal" filename="libactuator_plugin.so">
+        <motor_joint>sg90h_to_shaft</motor_joint> 
         <commandTopicServo>cmd_servo</commandTopicServo>
         <servoTorque>10</servoTorque>
         <servoodometryTopic>odom</servoodometryTopic>
@@ -1216,16 +1476,13 @@
         <diameter_servo>0.004</diameter_servo>
         <servoAcceleration>1</servoAcceleration>
         <updateRatesg90>30</updateRatesg90>
-        <robotNamespace>sg90</robotNamespace>
+        <robotNamespace>sg90h</robotNamespace>
         <servoodometrySource>world</servoodometrySource>
-        <servoBaseFrame>sg90</servoBaseFrame>
+        <servoBaseFrame>sg90h</servoBaseFrame>
         <publishServoTF>true</publishServoTF>
         <publishTF>true</publishTF>
         <publishservoOdomTF>true</publishservoOdomTF>
-        <!-- <publishServoJointState>true</publishServoJointState> -->
-        <!-- <servolegacyMode>false</servolegacyMode> -->
-        <rosDebugLevel>na</rosDebugLevel>
-      
+        <rosDebugLevel>na</rosDebugLevel> 
       </plugin>
   </model>
 </sdf>

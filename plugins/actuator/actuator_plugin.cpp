@@ -69,7 +69,7 @@ ActuatorPlugin::~ActuatorPlugin()
 void ActuatorPlugin::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 {
     this->parent = _parent;
-    gazebo_ros_ = GazeboRosPtr ( new GazeboRos ( _parent, _sdf, "Template" ) );
+    gazebo_ros_ = GazeboRosPtr ( new GazeboRos ( _parent, _sdf, "Actuator" ) );
     gazebo_ros_->isInitialized();
 
     gazebo_ros_->getParameter<std::string> ( robot_namespace_, "robotNamespace", "/" );

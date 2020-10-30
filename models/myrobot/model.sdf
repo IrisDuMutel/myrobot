@@ -2,7 +2,7 @@
 <sdf version="1.5">
   <model name = "myrobot">
     <static>false</static>
-
+    <self_collide>false</self_collide>
     <!-- LINKS --> 
 
     <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%BODY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
@@ -451,13 +451,13 @@
     
     <link name="piastra_anteriore">
       <inertial>
-        <!-- <mass>0.78</mass>
+        <mass>0.78</mass>
         <origin xyz="0.0 0 0.047" rpy=" 0 0 0"/>
         <inertia>
           <ixx>0.0025285</ixx> <ixy>0</ixy> <ixz>0</ixz>
           <iyy>0.003489</iyy> <iyz>0</iyz>
           <izz>0.004718</izz>
-        </inertia> -->
+        </inertia>
         <mass>0.1</mass>
         <inertia>
           <ixx>.0001</ixx> <ixy>0</ixy> <ixz>0</ixz>
@@ -1148,6 +1148,12 @@
             </box>
           </geometry> -->
 
+          <!-- <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/GreenTransparent</name>
+            </script>
+          </material> -->
           <material> 
             <ambient>0 0.1 0.1 1</ambient>
             <diffuse>0 0 0 1</diffuse>
@@ -1197,7 +1203,7 @@
 
 <link name='sg90v'>
       <pose>0.096 0.06595 0.136 3.1415 0 0 </pose>
-      <!-- <inertial>
+      <inertial>
         <mass>0.1</mass>
         <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
         <inertia>
@@ -1205,7 +1211,7 @@
           <iyy>0.001</iyy> <iyz>0</iyz>
           <izz>0.001</izz>
         </inertia>
-      </inertial> -->
+      </inertial>
         <collision name='  collision'>
           <geometry>
             <box>
@@ -1236,7 +1242,7 @@
 
       <link name='sg90v_shaft'>
       <pose>0.096 0.048 0.141 1.5707 0 0 </pose>
-      <!-- <inertial>
+      <inertial>
         <mass>0.1</mass>
         <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
         <inertia>
@@ -1244,7 +1250,7 @@
           <iyy>0.001</iyy> <iyz>0</iyz>
           <izz>0.001</izz>
         </inertia>
-      </inertial> -->
+      </inertial>
         <collision name='collision'>
           <geometry>
             <cylinder>
@@ -1354,7 +1360,7 @@
     <joint type='fixed' name='RealSenseJoint'>
       <pose>0 0 0 0 0 0</pose>
       <child>RealSense</child>
-      <parent>supporto_pitch_servo_2</parent>
+      <parent>sg90v_shaft</parent>
     </joint>
 
     <joint type='fixed' name='RigthFrontForceJoint'>
@@ -1374,6 +1380,8 @@
       <child>LightSensor</child>
       <parent>cube_base</parent>
     </joint>
+
+    
 
     <joint type='fixed' name='sg90h_joint'>
       <pose>0 0 0 0 0 0</pose>
@@ -1409,7 +1417,7 @@
     <joint name="shaft_to_piastra_albero" type="fixed">
       <pose>0 0 0 0 0 0</pose>
       <child>supporto_piastra_albero</child>
-      <parent>sg90_shaft</parent>
+      <parent>sg90h_shaft</parent>
     </joint>
 
     <joint name="piastra_albero_to_pitch_servo1" type="fixed">
@@ -1479,6 +1487,25 @@
         <robotNamespace>sg90h</robotNamespace>
         <servoodometrySource>world</servoodometrySource>
         <servoBaseFrame>sg90h</servoBaseFrame>
+        <publishServoTF>true</publishServoTF>
+        <publishTF>true</publishTF>
+        <publishservoOdomTF>true</publishservoOdomTF>
+        <rosDebugLevel>na</rosDebugLevel> 
+      </plugin>
+
+      <!-- Using plugin from this directory-->
+      <plugin name="ActuatorPlugin_vertical" filename="libactuator_plugin.so">
+        <motor_joint>sg90v_to_shaft</motor_joint> 
+        <commandTopicServo>cmd_servo</commandTopicServo>
+        <servoTorque>10</servoTorque>
+        <servoodometryTopic>odom</servoodometryTopic>
+        <servoodometryFrame>odom</servoodometryFrame>
+        <diameter_servo>0.004</diameter_servo>
+        <servoAcceleration>1</servoAcceleration>
+        <updateRatesg90>30</updateRatesg90>
+        <robotNamespace>sg90v</robotNamespace>
+        <servoodometrySource>world</servoodometrySource>
+        <servoBaseFrame>sg90v</servoBaseFrame>
         <publishServoTF>true</publishServoTF>
         <publishTF>true</publishTF>
         <publishservoOdomTF>true</publishservoOdomTF>

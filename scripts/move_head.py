@@ -36,7 +36,7 @@ from matplotlib import pyplot as plt
 
 
 def talker():
-    pub = rospy.Publisher('/sg90/cmd_servo', Twist, queue_size=10)
+    pub = rospy.Publisher('/sg90v/cmd_servo', Twist, queue_size=10)
     rospy.init_node('plotter', anonymous=True)
     rate = rospy.Rate(30) # 10hz
     cmd=Twist()

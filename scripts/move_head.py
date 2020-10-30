@@ -36,7 +36,7 @@ from matplotlib import pyplot as plt
 
 
 def talker():
-    pub = rospy.Publisher('/sg90v/cmd_servo', Twist, queue_size=10)
+    pub = rospy.Publisher('/sg90h/cmd_servo', Twist, queue_size=10)
     rospy.init_node('plotter', anonymous=True)
     rate = rospy.Rate(30) # 10hz
     cmd=Twist()
@@ -44,7 +44,7 @@ def talker():
     while not rospy.is_shutdown():
         # Transform into velocity commands
         # cmd.linear.x = 0
-        cmd.angular.z = -0.5
+        cmd.angular.z = 0.5
         # Publishing
         pub.publish(cmd)
         rospy.loginfo("In the loop")

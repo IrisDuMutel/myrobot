@@ -944,12 +944,11 @@
             </clip>
           </camera>
           <!-- Realsense plugin -->
-          <!--<plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
           <plugin name="camera_plugin" filename="libdepth_camera_plugin.so">
             <baseline>0.2</baseline>
             <alwaysOn>true</alwaysOn>
-             Keep this zero, update_rate in the parent <sensor> tag
-              will control the frame rate.
+             <!-- Keep this zero, update_rate in the parent <sensor> tag
+              will control the frame rate. -->
             <updateRate>0.0</updateRate>
             <cameraName>camera_ir</cameraName>
             <imageTopicName>/camera/color/image_raw</imageTopicName>
@@ -970,7 +969,7 @@
             <Cy>0</Cy>
             <focalLength>0</focalLength>
             <hackBaseline>0</hackBaseline>
-          </plugin> -->
+          </plugin><!-- -->
         </sensor>
     </link>
 
@@ -1005,13 +1004,12 @@
             <collision>collision_rightfront_collision</collision>
           </contact>
           <!-- Contact sensor plugin -->
-          <!-- <plugin name="gazebo_ros_bumper_controller" filename="libContactPlugin.so">
-          
+          <plugin name="gazebo_ros_bumper_controller" filename="libcontact_plugin.so">
             <alwaysOn>true</alwaysOn>
             <updateRate>30.0</updateRate>
             <bumperTopicName>/force/rightfront_sensor</bumperTopicName>
             <frameName>rightfront_force_sensor</frameName>
-          </plugin> -->
+          </plugin> <!-- -->
         </sensor>
     </link>
 
@@ -1044,12 +1042,12 @@
             <collision>collision_leftfront_collision</collision>
           </contact>
           <!-- Contact sensor plugin -->
-          <!-- <plugin name="gazebo_ros_bumper_controller" filename="libContactPlugin.so">
+          <plugin name="gazebo_ros_bumper_controller" filename="libcontact_plugin.so">
             <alwaysOn>true</alwaysOn>
             <updateRate>30.0</updateRate>
             <bumperTopicName>/force/leftfront_sensor</bumperTopicName>
             <frameName>leftfront_force_sensor</frameName>
-          </plugin> -->
+          </plugin> <!-- -->
         </sensor>
     </link>
     
@@ -1109,7 +1107,7 @@
           </clip>
         </camera>
         <!-- Light sensor plugin -->
-        <!-- <plugin name="myrobot" filename="libgazebo_light_sensor_plugin.so">
+        <plugin name="myrobot" filename="liblight_sensor_plugin.so">
           <cameraName>camera2</cameraName>
           <alwaysOn>true</alwaysOn>
           <updateRate>10</updateRate>
@@ -1127,7 +1125,7 @@
           <distortion_t2>0.0</distortion_t2>
           <pointCloudCutoff>0.4</pointCloudCutoff>
           <robotNamespace>/</robotNamespace>
-        </plugin> -->
+        </plugin> <!-- -->
       </sensor>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
@@ -1574,7 +1572,7 @@
 
     <!-- PLUGINS -->
     <!-- Using plugin from this directory-->
-    <!-- <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
+    <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
         <commandTopic>cmd_vel</commandTopic>
         <odometryTopic>odom</odometryTopic>
         <odometryFrame>odom</odometryFrame>
@@ -1593,10 +1591,10 @@
         <wheelAcceleration>1</wheelAcceleration>
         <wheelTorque>10</wheelTorque>
         <rosDebugLevel>na</rosDebugLevel>
-      </plugin> -->
+      </plugin><!--  -->
       
      
-      <!-- Using plugin from this directory-->
+      <!-- Using plugin from this directory
       <plugin name="ActuatorPlugin_horizontal" filename="libactuator_plugin.so">
         <motor_joint>sg90h_to_shaft</motor_joint> 
         <commandTopicServo>cmd_servo</commandTopicServo>
@@ -1613,7 +1611,7 @@
         <publishTF>true</publishTF>
         <publishservoOdomTF>true</publishservoOdomTF>
         <rosDebugLevel>na</rosDebugLevel> 
-      </plugin>
+      </plugin>-->
 
       <!-- Using plugin from this directory-->
       <!-- <plugin name="ActuatorPlugin_vertical" filename="libactuator_plugin.so">

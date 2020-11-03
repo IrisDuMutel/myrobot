@@ -38,7 +38,7 @@
 
 #include <tf/tf.h>
 
-#include <ContactPlugin.hh>
+#include <contact_plugin.hh>
 #include <gazebo_plugins/gazebo_ros_utils.h>
 
 namespace gazebo

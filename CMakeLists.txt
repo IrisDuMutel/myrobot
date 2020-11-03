@@ -103,7 +103,7 @@ find_package(Boost REQUIRED COMPONENTS thread)
 #   std_msgs
 # )
 generate_messages(DEPENDENCIES std_msgs nav_msgs)
-catkin_package(INCLUDE_DIRS plugins/light/include
+catkin_package(INCLUDE_DIRS plugins/light
                             plugins/contact
                             plugins/depth_camera
                             plugins/actuator
@@ -171,7 +171,7 @@ include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${std_msgs_INCLU
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 # set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
-include_directories(plugins/light/include)
+include_directories(plugins/light)
 include_directories(plugins/contact)
 include_directories(plugins/depth_camera)
 include_directories(plugins/trackedvehicle)
@@ -186,10 +186,10 @@ include_directories( ${catkin_INCLUDE_DIRS}
 # add_library(contact SHARED plugins/actuator/ActuatorPlugin.cc)
 
 # Build our plugin
-add_library(ContactPlugin SHARED plugins/contact/ContactPlugin.cc)
-target_link_libraries(ContactPlugin ${GAZEBO_LIBRARIES}) # found in /home/iris/catkin_ws/devel/lib/libContactPlugin.so
-add_library(light_sensor_plugin SHARED plugins/light/src/light_sensor_plugin.cpp)
-target_link_libraries(light_sensor_plugin ${GAZEBO_LIBRARIES}) 
+add_library(contact_plugin SHARED plugins/contact/contact_plugin.cc)
+target_link_libraries(contact_plugin  ${Boost_LIBRARIES} ContactPlugin ${catkin_LIBRARIES}) # found in /home/iris/catkin_ws/devel/lib/libContactPlugin.so
+add_library(light_sensor_plugin SHARED plugins/light/light_sensor_plugin.cpp)
+target_link_libraries(light_sensor_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} CameraPlugin ) 
 add_library(actuator_plugin SHARED plugins/actuator/actuator_plugin.cpp)
 target_link_libraries(actuator_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(diff_drive_plugin SHARED plugins/diff_drive/diff_drive_plugin.cpp)
@@ -197,8 +197,7 @@ target_link_libraries(diff_drive_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} 
 add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
 target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
 add_library(depth_camera_plugin SHARED plugins/depth_camera/depth_camera_plugin.cpp)
-target_link_libraries(depth_camera_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
-###########template
+target_link_libraries(depth_camera_plugin  DepthCameraPlugin ${catkin_LIBRARIES})###########template
 ## Build ##
 ###########
 find_package(OpenCV REQUIRED)

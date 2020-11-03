@@ -945,6 +945,7 @@
           </camera>
           <!-- Realsense plugin -->
           <!--<plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
+          <plugin name="camera_plugin" filename="libdepth_camera_plugin.so">
             <baseline>0.2</baseline>
             <alwaysOn>true</alwaysOn>
              Keep this zero, update_rate in the parent <sensor> tag
@@ -1004,7 +1005,8 @@
             <collision>collision_rightfront_collision</collision>
           </contact>
           <!-- Contact sensor plugin -->
-          <!-- <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+          <!-- <plugin name="gazebo_ros_bumper_controller" filename="libContactPlugin.so">
+          
             <alwaysOn>true</alwaysOn>
             <updateRate>30.0</updateRate>
             <bumperTopicName>/force/rightfront_sensor</bumperTopicName>
@@ -1042,7 +1044,7 @@
             <collision>collision_leftfront_collision</collision>
           </contact>
           <!-- Contact sensor plugin -->
-          <!-- <plugin name="gazebo_ros_bumper_controller" filename="libgazebo_ros_bumper.so">
+          <!-- <plugin name="gazebo_ros_bumper_controller" filename="libContactPlugin.so">
             <alwaysOn>true</alwaysOn>
             <updateRate>30.0</updateRate>
             <bumperTopicName>/force/leftfront_sensor</bumperTopicName>

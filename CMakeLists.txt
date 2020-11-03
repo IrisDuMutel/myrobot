@@ -105,9 +105,11 @@ find_package(Boost REQUIRED COMPONENTS thread)
 generate_messages(DEPENDENCIES std_msgs nav_msgs)
 catkin_package(INCLUDE_DIRS plugins/light/include
                             plugins/contact
-                            plugins/keys2cmdvel
+                            plugins/depth_camera
                             plugins/actuator
                             plugins/diff_drive
+                            plugins/template
+
                         
                             # plugins/simpletrackedvehicle
               CATKIN_DEPENDS 
@@ -171,7 +173,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 
 include_directories(plugins/light/include)
 include_directories(plugins/contact)
-include_directories(plugins/keys2cmdvel)
+include_directories(plugins/depth_camera)
 include_directories(plugins/trackedvehicle)
 include_directories(plugins/actuator)
 include_directories(plugins/template)
@@ -194,6 +196,8 @@ add_library(diff_drive_plugin SHARED plugins/diff_drive/diff_drive_plugin.cpp)
 target_link_libraries(diff_drive_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
 target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
+add_library(depth_camera_plugin SHARED plugins/depth_camera/depth_camera_plugin.cpp)
+target_link_libraries(depth_camera_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
 ###########template
 ## Build ##
 ###########

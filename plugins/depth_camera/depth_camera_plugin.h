@@ -20,8 +20,8 @@
  * Date: 24 Sept 2008
  */
 
-#ifndef GAZEBO_ROS_DEPTH_CAMERA_HH
-#define GAZEBO_ROS_DEPTH_CAMERA_HH
+#ifndef GAZEBO_ROS_OPENNI_KINECT_HH
+#define GAZEBO_ROS_OPENNI_KINECT_HH
 
 // ros stuff
 #include <ros/ros.h>
@@ -46,7 +46,7 @@
 #include <gazebo/plugins/DepthCameraPlugin.hh>
 
 // dynamic reconfigure stuff
-#include <gazebo_plugins/GazeboRosCameraConfig.h>
+#include <gazebo_plugins/GazeboRosOpenniKinectConfig.h>
 #include <dynamic_reconfigure/server.h>
 
 // boost stuff
@@ -79,16 +79,11 @@ namespace gazebo
                    unsigned int _depth, const std::string &_format);
 
     /// \brief Update the controller
-    protected: virtual void OnNewRGBPointCloud(const float *_pcd,
-                    unsigned int _width, unsigned int _height,
-                    unsigned int _depth, const std::string &_format);
-
-    /// \brief Update the controller
     protected: virtual void OnNewImageFrame(const unsigned char *_image,
                    unsigned int _width, unsigned int _height,
                    unsigned int _depth, const std::string &_format);
 
-    /// \brief Put camera data to the ROS topic
+    /// \brief push point cloud data into ros topic
     private: void FillPointdCloud(const float *_src);
 
     /// \brief push depth image data into ros topic
@@ -103,15 +98,14 @@ namespace gazebo
     private: int depth_image_connect_count_;
     private: void DepthImageConnect();
     private: void DepthImageDisconnect();
-    private: common::Time last_depth_image_camera_info_update_time_;
 
     private: bool FillPointCloudHelper(sensor_msgs::PointCloud2 &point_cloud_msg,
                                   uint32_t rows_arg, uint32_t cols_arg,
                                   uint32_t step_arg, void* data_arg);
 
     private: bool FillDepthImageHelper( sensor_msgs::Image& image_msg,
-                                  uint32_t rows_arg, uint32_t cols_arg,
-                                  uint32_t step_arg, void* data_arg);
+                                  uint32_t height, uint32_t width,
+                                  uint32_t step, void* data_arg);
 
     /// \brief A pointer to the ROS node.  A node will be instantiated if it does not exist.
     private: ros::Publisher point_cloud_pub_;
@@ -121,27 +115,29 @@ namespace gazebo
     private: sensor_msgs::PointCloud2 point_cloud_msg_;
     private: sensor_msgs::Image depth_image_msg_;
 
+    /// \brief Minimum range of the point cloud
     private: double point_cloud_cutoff_;
+    /// \brief Maximum range of the point cloud
+    private: double point_cloud_cutoff_max_;
 
     /// \brief ROS image topic name
     private: std::string point_cloud_topic_name_;
 
-    private: void InfoConnect();
-    private: void InfoDisconnect();
 
-    using GazeboRosCameraUtils::PublishCameraInfo;
-    protected: virtual void PublishCameraInfo();
-
-    /// \brief image where each pixel contains the depth information
+    /// \brief image where each pixel contains the depth data
     private: std::string depth_image_topic_name_;
+    private: common::Time depth_sensor_update_time_;
+
+    // overload with our own
     private: std::string depth_image_camera_info_topic_name_;
     private: int depth_info_connect_count_;
     private: void DepthInfoConnect();
     private: void DepthInfoDisconnect();
-
-    // overload with our own
-    private: common::Time depth_sensor_update_time_;
+    private: common::Time last_depth_image_camera_info_update_time_;
     protected: ros::Publisher depth_image_camera_info_pub_;
+
+    using GazeboRosCameraUtils::PublishCameraInfo;
+    protected: virtual void PublishCameraInfo();
 
     private: event::ConnectionPtr load_connection_;
   };

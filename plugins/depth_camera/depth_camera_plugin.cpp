@@ -14,6 +14,7 @@
  * limitations under the License.
  *
 */
+
 /*
    Desc: DCPlugin plugin for simulating cameras in Gazebo
    Author: John Hsu
@@ -45,8 +46,8 @@ GZ_REGISTER_SENSOR_PLUGIN(DCPlugin)
 DCPlugin::DCPlugin()
 {
   this->point_cloud_connect_count_ = 0;
-  this->depth_image_connect_count_ = 0;
   this->depth_info_connect_count_ = 0;
+  this->depth_image_connect_count_ = 0;
   this->last_depth_image_camera_info_update_time_ = common::Time(0);
 }
 
@@ -61,14 +62,6 @@ DCPlugin::~DCPlugin()
 void DCPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
 {
   DepthCameraPlugin::Load(_parent, _sdf);
-
-  // Make sure the ROS node for Gazebo has already been initialized
-  if (!ros::isInitialized())
-  {
-    ROS_FATAL_STREAM_NAMED("depth_camera", "A ROS node for Gazebo has not been initialized, unable to load plugin. "
-      << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
-    return;
-  }
 
   // copying from DepthCameraPlugin into GazeboRosCameraUtils
   this->parentSensor_ = this->parentSensor;
@@ -105,6 +98,10 @@ void DCPlugin::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
     this->point_cloud_cutoff_ = 0.4;
   else
     this->point_cloud_cutoff_ = _sdf->GetElement("pointCloudCutoff")->Get<double>();
+  if (!_sdf->HasElement("pointCloudCutoffMax"))
+    this->point_cloud_cutoff_max_ = 5.0;
+  else
+    this->point_cloud_cutoff_max_ = _sdf->GetElement("pointCloudCutoffMax")->Get<double>();
 
   load_connection_ = GazeboRosCameraUtils::OnLoad(boost::bind(&DCPlugin::Advertise, this));
   GazeboRosCameraUtils::Load(_parent, _sdf);
@@ -136,7 +133,6 @@ void DCPlugin::Advertise()
         ros::VoidPtr(), &this->camera_queue_);
   this->depth_image_camera_info_pub_ = this->rosnode_->advertise(depth_image_camera_info_ao);
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Increment count
@@ -193,7 +189,6 @@ void DCPlugin::OnNewDepthFrame(const float *_image,
     return;
 
   this->depth_sensor_update_time_ = this->parentSensor->LastMeasurementTime();
-
   if (this->parentSensor->IsActive())
   {
     if (this->point_cloud_connect_count_ <= 0 &&
@@ -221,72 +216,6 @@ void DCPlugin::OnNewDepthFrame(const float *_image,
   PublishCameraInfo();
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Update the controller
-void DCPlugin::OnNewRGBPointCloud(const float *_pcd,
-    unsigned int _width, unsigned int _height, unsigned int _depth,
-    const std::string &_format)
-{
-  if (!this->initialized_ || this->height_ <=0 || this->width_ <=0)
-    return;
-
-  this->depth_sensor_update_time_ = this->parentSensor->LastMeasurementTime();
-
-  if (!this->parentSensor->IsActive())
-  {
-    if (this->point_cloud_connect_count_ > 0)
-      // do this first so there's chance for sensor to run 1 frame after activate
-      this->parentSensor->SetActive(true);
-  }
-  else
-  {
-    if (this->point_cloud_connect_count_ > 0)
-    {
-      this->lock_.lock();
-      this->point_cloud_msg_.header.frame_id = this->frame_name_;
-      this->point_cloud_msg_.header.stamp.sec = this->depth_sensor_update_time_.sec;
-      this->point_cloud_msg_.header.stamp.nsec = this->depth_sensor_update_time_.nsec;
-      this->point_cloud_msg_.width = this->width;
-      this->point_cloud_msg_.height = this->height;
-      this->point_cloud_msg_.row_step = this->point_cloud_msg_.point_step * this->width;
-
-      sensor_msgs::PointCloud2Modifier pcd_modifier(point_cloud_msg_);
-      pcd_modifier.setPointCloud2FieldsByString(2, "xyz", "rgb");
-      pcd_modifier.resize(_width*_height);
-
-      point_cloud_msg_.is_dense = true;
-
-      sensor_msgs::PointCloud2Iterator<float> iter_x(point_cloud_msg_, "x");
-      sensor_msgs::PointCloud2Iterator<float> iter_y(point_cloud_msg_, "y");
-      sensor_msgs::PointCloud2Iterator<float> iter_z(point_cloud_msg_, "z");
-      sensor_msgs::PointCloud2Iterator<float> iter_rgb(point_cloud_msg_, "rgb");
-
-      for (unsigned int i = 0; i < _width; i++)
-      {
-        for (unsigned int j = 0; j < _height; j++, ++iter_x, ++iter_y, ++iter_z, ++iter_rgb)
-        {
-          unsigned int index = (j * _width) + i;
-          *iter_x = _pcd[4 * index];
-          *iter_y = _pcd[4 * index + 1];
-          *iter_z = _pcd[4 * index + 2];
-          *iter_rgb = _pcd[4 * index + 3];
-          if (i == _width /2 && j == _height / 2)
-          {
-            uint32_t rgb = *reinterpret_cast<int*>(&(*iter_rgb));
-            uint8_t r = (rgb >> 16) & 0x0000ff;
-            uint8_t g = (rgb >> 8)  & 0x0000ff;
-            uint8_t b = (rgb)       & 0x0000ff;
-            std::cerr << (int)r << " " << (int)g << " " << (int)b << "\n";
-          }
-        }
-      }
-
-      this->point_cloud_pub_.publish(this->point_cloud_msg_);
-      this->lock_.unlock();
-    }
-  }
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // Update the controller
 void DCPlugin::OnNewImageFrame(const unsigned char *_image,
@@ -296,28 +225,33 @@ void DCPlugin::OnNewImageFrame(const unsigned char *_image,
   if (!this->initialized_ || this->height_ <=0 || this->width_ <=0)
     return;
 
-  //ROS_ERROR_NAMED("depth_camera", "camera_ new frame %s %s",this->parentSensor_->GetName().c_str(),this->frame_name_.c_str());
-  this->sensor_update_time_ = this->parentSensor->LastMeasurementTime();
+  //ROS_ERROR_NAMED("openni_kinect", "camera_ new frame %s %s",this->parentSensor_->Name().c_str(),this->frame_name_.c_str());
+  this->sensor_update_time_ = this->parentSensor_->LastMeasurementTime();
 
-  if (!this->parentSensor->IsActive())
+  if (this->parentSensor->IsActive())
+  {
+    if (this->point_cloud_connect_count_ <= 0 &&
+        this->depth_image_connect_count_ <= 0 &&
+        (*this->image_connect_count_) <= 0)
+    {
+      this->parentSensor->SetActive(false);
+    }
+    else
+    {
+      if ((*this->image_connect_count_) > 0)
+        this->PutCameraData(_image);
+    }
+  }
+  else
   {
     if ((*this->image_connect_count_) > 0)
       // do this first so there's chance for sensor to run 1 frame after activate
       this->parentSensor->SetActive(true);
   }
-  else
-  {
-    if ((*this->image_connect_count_) > 0)
-    {
-      this->PutCameraData(_image);
-      // TODO(lucasw) publish camera info with depth image
-      // this->PublishCameraInfo(sensor_update_time);
-    }
-  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Put camera data to the interface
+// Put point cloud data to the interface
 void DCPlugin::FillPointdCloud(const float *_src)
 {
   this->lock_.lock();
@@ -372,14 +306,14 @@ bool DCPlugin::FillPointCloudHelper(
 {
   sensor_msgs::PointCloud2Modifier pcd_modifier(point_cloud_msg);
   pcd_modifier.setPointCloud2FieldsByString(2, "xyz", "rgb");
+  // convert to flat array shape, we need to reconvert later
   pcd_modifier.resize(rows_arg*cols_arg);
+  point_cloud_msg.is_dense = true;
 
   sensor_msgs::PointCloud2Iterator<float> iter_x(point_cloud_msg_, "x");
   sensor_msgs::PointCloud2Iterator<float> iter_y(point_cloud_msg_, "y");
   sensor_msgs::PointCloud2Iterator<float> iter_z(point_cloud_msg_, "z");
   sensor_msgs::PointCloud2Iterator<uint8_t> iter_rgb(point_cloud_msg_, "rgb");
-
-  point_cloud_msg.is_dense = true;
 
   float* toCopyFrom = (float*)data_arg;
   int index = 0;
@@ -400,17 +334,18 @@ bool DCPlugin::FillPointCloudHelper(
       if (cols_arg>1) yAngle = atan2( (double)i - 0.5*(double)(cols_arg-1), fl);
       else            yAngle = 0.0;
 
-      double depth = toCopyFrom[index++];
+      double depth = toCopyFrom[index++]; // + 0.0*this->myParent->GetNearClip();
 
-      // in optical frame
-      // hardcoded rotation rpy(-M_PI/2, 0, -M_PI/2) is built-in
-      // to urdf, where the *_optical_frame should have above relative
-      // rotation from the physical camera *_frame
-      *iter_x      = depth * tan(yAngle);
-      *iter_y      = depth * tan(pAngle);
-      if(depth > this->point_cloud_cutoff_)
+      if(depth > this->point_cloud_cutoff_ &&
+         depth < this->point_cloud_cutoff_max_)
       {
-        *iter_z    = depth;
+        // in optical frame
+        // hardcoded rotation rpy(-M_PI/2, 0, -M_PI/2) is built-in
+        // to urdf, where the *_optical_frame should have above relative
+        // rotation from the physical camera *_frame
+        *iter_x = depth * tan(yAngle);
+        *iter_y = depth * tan(pAngle);
+        *iter_z = depth;
       }
       else //point in the unseeable range
       {
@@ -444,6 +379,11 @@ bool DCPlugin::FillPointCloudHelper(
     }
   }
 
+  // reconvert to original height and width after the flat reshape
+  point_cloud_msg.height = rows_arg;
+  point_cloud_msg.width = cols_arg;
+  point_cloud_msg.row_step = point_cloud_msg.point_step * point_cloud_msg.width;
+
   return true;
 }
 
@@ -473,7 +413,8 @@ bool DCPlugin::FillDepthImageHelper(
     {
       float depth = toCopyFrom[index++];
 
-      if (depth > this->point_cloud_cutoff_)
+      if (depth > this->point_cloud_cutoff_ &&
+          depth < this->point_cloud_cutoff_max_)
       {
         dest[i + j * cols_arg] = depth;
       }
@@ -488,18 +429,21 @@ bool DCPlugin::FillDepthImageHelper(
 
 void DCPlugin::PublishCameraInfo()
 {
-  ROS_DEBUG_NAMED("depth_camera", "publishing default camera info, then depth camera info");
+  ROS_DEBUG_NAMED("openni_kinect", "publishing default camera info, then openni kinect camera info");
   GazeboRosCameraUtils::PublishCameraInfo();
 
   if (this->depth_info_connect_count_ > 0)
   {
-    common::Time sensor_update_time = this->parentSensor_->LastMeasurementTime();
-
-    this->sensor_update_time_ = sensor_update_time;
-    if (sensor_update_time - this->last_depth_image_camera_info_update_time_ >= this->update_period_)
+    this->sensor_update_time_ = this->parentSensor_->LastMeasurementTime();
+#if GAZEBO_MAJOR_VERSION >= 8
+    common::Time cur_time = this->world_->SimTime();
+#else
+    common::Time cur_time = this->world_->GetSimTime();
+#endif
+    if (this->sensor_update_time_ - this->last_depth_image_camera_info_update_time_ >= this->update_period_)
     {
-      this->PublishCameraInfo(this->depth_image_camera_info_pub_);  // , sensor_update_time);
-      this->last_depth_image_camera_info_update_time_ = sensor_update_time;
+      this->PublishCameraInfo(this->depth_image_camera_info_pub_);
+      this->last_depth_image_camera_info_update_time_ = this->sensor_update_time_;
     }
   }
 }
@@ -508,7 +452,7 @@ void DCPlugin::PublishCameraInfo()
 /*
 #include <stereo_msgs/DisparityImage.h>
 pub_disparity_ = comm_nh.advertise<stereo_msgs::DisparityImage > ("depth/disparity", 5, subscriberChanged2, subscriberChanged2);
-void DCPlugin::PublishDisparityImage(const DepthImage& depth, ros::Time time)
+void GazeboRosDepthCamera::PublishDisparityImage(const DepthImage& depth, ros::Time time)
 {
   stereo_msgs::DisparityImagePtr disp_msg = boost::make_shared<stereo_msgs::DisparityImage > ();
   disp_msg->header.stamp                  = time;
@@ -529,6 +473,5 @@ void DCPlugin::PublishDisparityImage(const DepthImage& depth, ros::Time time)
   pub_disparity_.publish (disp_msg);
 }
 */
-
 
 }

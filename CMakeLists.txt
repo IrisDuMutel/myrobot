@@ -192,8 +192,8 @@ add_library(actuator_plugin SHARED plugins/actuator/actuator_plugin.cpp)
 target_link_libraries(actuator_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(diff_drive_plugin SHARED plugins/diff_drive/diff_drive_plugin.cpp)
 target_link_libraries(diff_drive_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-# add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
-# target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
+add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
+target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
 ###########template
 ## Build ##
 ###########

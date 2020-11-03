@@ -189,7 +189,7 @@ include_directories( ${catkin_INCLUDE_DIRS}
 add_library(contact_plugin SHARED plugins/contact/contact_plugin.cc)
 target_link_libraries(contact_plugin  ${Boost_LIBRARIES} ContactPlugin ${catkin_LIBRARIES}) # found in /home/iris/catkin_ws/devel/lib/libContactPlugin.so
 add_library(light_sensor_plugin SHARED plugins/light/light_sensor_plugin.cpp)
-target_link_libraries(light_sensor_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES} CameraPlugin ) 
+target_link_libraries(light_sensor_plugin CameraPlugin ${catkin_LIBRARIES}) 
 add_library(actuator_plugin SHARED plugins/actuator/actuator_plugin.cpp)
 target_link_libraries(actuator_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(diff_drive_plugin SHARED plugins/diff_drive/diff_drive_plugin.cpp)

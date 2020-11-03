@@ -122,7 +122,6 @@ namespace gazebo
          // Flags
         bool publishServoTF_;
         bool publishOdomTF_;
-        bool publishWheelJointState_;
         bool publish_tf_;
         bool legacy_mode_;
         bool publishServoJointState_;

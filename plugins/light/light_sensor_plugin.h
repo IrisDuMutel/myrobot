@@ -1,3 +1,24 @@
+/*
+ * Copyright 2012 Open Source Robotics Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+*/
+/*
+ * Desc: A dynamic controller plugin that publishes ROS image_raw
+ *    camera_info topic for generic camera sensor.
+*/
+
 #ifndef GAZEBO_ROS_LIGHT_SENSOR_HH
 #define GAZEBO_ROS_LIGHT_SENSOR_HH
 
@@ -7,6 +28,16 @@
 #include <gazebo/plugins/CameraPlugin.hh>
 
 #include <gazebo_plugins/gazebo_ros_camera_utils.h>
+#include <sensor_msgs/Illuminance.h>
+
+#include <ros/ros.h>
+#include <ros/callback_queue.h>
+#include <ros/advertise_options.h>
+
+#include <sys/time.h>
+
+#include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 namespace gazebo
 {
@@ -25,14 +56,26 @@ namespace gazebo
 
     /// \brief Update the controller
     protected: virtual void OnNewFrame(const unsigned char *_image,
-    unsigned int _width, unsigned int _height,
-    unsigned int _depth, const std::string &_format);
+                   unsigned int _width, unsigned int _height,
+                   unsigned int _depth, const std::string &_format);
+    
+    
+
+    private: sensor_msgs::Illuminance msg;
+
 
     ros::NodeHandle _nh;
-    ros::Publisher _sensorPublisher;
-
+    ros::Publisher light_pub_;
+    private: ros::NodeHandle* rosnode_;
+    private: ros::Publisher contact_pub_;
     double _fov;
     double _range;
+    private: ros::CallbackQueue contact_queue_;
+    private: void ContactQueueThread();
+    private: boost::thread callback_queue_thread_;
+
+    // Pointer to the update event connection
+    private: event::ConnectionPtr update_connection_;
   };
 }
 #endif

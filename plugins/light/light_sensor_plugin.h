@@ -23,21 +23,18 @@
 #define GAZEBO_ROS_LIGHT_SENSOR_HH
 
 #include <string>
-
+#include <ros/ros.h>
 // library for processing camera data for gazebo / ros conversions
 #include <gazebo/plugins/CameraPlugin.hh>
 
 #include <gazebo_plugins/gazebo_ros_camera_utils.h>
 #include <sensor_msgs/Illuminance.h>
 
-#include <ros/ros.h>
-#include <ros/callback_queue.h>
+
+
 #include <ros/advertise_options.h>
 
-#include <sys/time.h>
 
-#include <boost/thread.hpp>
-#include <boost/thread/mutex.hpp>
 
 namespace gazebo
 {
@@ -67,15 +64,9 @@ namespace gazebo
     ros::NodeHandle _nh;
     ros::Publisher light_pub_;
     private: ros::NodeHandle* rosnode_;
-    private: ros::Publisher contact_pub_;
     double _fov;
     double _range;
-    private: ros::CallbackQueue contact_queue_;
-    private: void ContactQueueThread();
-    private: boost::thread callback_queue_thread_;
 
-    // Pointer to the update event connection
-    private: event::ConnectionPtr update_connection_;
   };
 }
 #endif

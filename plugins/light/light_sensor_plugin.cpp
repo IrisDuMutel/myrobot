@@ -34,8 +34,7 @@
 #include <gazebo/sensors/CameraSensor.hh>
 #include <gazebo/sensors/SensorTypes.hh>
 
-#include <boost/thread.hpp>
-#include <boost/thread/mutex.hpp>
+
 namespace gazebo
 {
 // Register this plugin with the simulator
@@ -48,7 +47,6 @@ _nh("light_sensor_plugin"),
   _fov(6),
   _range(10)
   {
-    ROS_INFO("Starting light sensor plugin");
   }
 
 
@@ -59,7 +57,6 @@ GazeboRosLight::~GazeboRosLight()
   ROS_DEBUG_STREAM_NAMED("camera","Unloaded");
   this->rosnode_->shutdown();
   this->callback_queue_thread_.join();
-  
   delete this->rosnode_;
 }
 
@@ -83,35 +80,20 @@ void GazeboRosLight::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
   this->camera_ = this->camera;
 
   GazeboRosCameraUtils::Load(_parent, _sdf);
-  this->rosnode_ = new ros::NodeHandle("light_Sensor");
+  this->rosnode_ = new ros::NodeHandle("light_sensor");
   // this->parentSensor = dynamic_pointer_cast<sensors::ContactSensor>(_parent);
   this->light_pub_ = this->rosnode_->advertise<sensor_msgs::Illuminance>(
     std::string("light_data"), 1);
-  
-  ROS_INFO("HEEEEEEEEEEEEEEEEEEEY");
-
-  // Initialize
-  load_connection_ = GazeboRosCameraUtils::OnLoad(boost::bind(&GazeboRosLight::Advertise, this));
-  GazeboRosCameraUtils::Load(_parent, _sdf);
-
-
+  ROS_INFO_NAMED("light_sensor", "Starting light sensor plugin");
+  ROS_INFO("Light sensor ready");
 }
-void DCPlugin::Advertise()
-{
-  ros::AdvertiseOptions light_data =
-    ros::AdvertiseOptions::create<sensor_msgs::Illuminance>(
-      std::string("light_data"),1,
-      boost::bind( &GazeboRosLight::PointCloudConnect,this),
-      boost::bind( &GazeboRosLight::PointCloudDisconnect,this),
-      ros::VoidPtr(), &this->camera_queue_);
-  this->light_pub_ = this->rosnode_->advertise(light_data);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Update the controller
 void GazeboRosLight::OnNewFrame(const unsigned char *_image,
     unsigned int _width, unsigned int _height, unsigned int _depth,
     const std::string &_format)
-{    ROS_INFO("In this part");
+{   
 
   common::Time sensor_update_time = this->parentSensor_->LastMeasurementTime();
 
@@ -147,8 +129,7 @@ void GazeboRosLight::OnNewFrame(const unsigned char *_image,
         }
         this->msg.illuminance = illum/(_fov*_fov);
         this->msg.variance = 0.0;
-        this->contact_pub_.publish(this->msg);
-        // light_pub_.publish(msg);
+        light_pub_.publish(msg);
         seq++;
         this->PutCameraData(_image, sensor_update_time);
         this->PublishCameraInfo(sensor_update_time);
@@ -157,14 +138,5 @@ void GazeboRosLight::OnNewFrame(const unsigned char *_image,
     }
   }
 }
-// Put light data to the interface
-void GazeboRosLight::ContactQueueThread()
-{
-  static const double timeout = 0.01;
 
-  while (this->rosnode_->ok())
-  {
-    this->contact_queue_.callAvailable(ros::WallDuration(timeout));
-  }
-}
 } 

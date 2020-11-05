@@ -38,7 +38,7 @@
 
 #include <tf/tf.h>
 
-#include <contact_plugin.hh>
+#include "contact_plugin.hh"
 #include <gazebo_plugins/gazebo_ros_utils.h>
 
 namespace gazebo
@@ -144,35 +144,11 @@ void ContactPlugin::OnContact()
 
 /*
   /// \TODO: get frame_name_ transforms from tf or gazebo
-  /// and rotate results to local frame.  for now, results are reported in world frame.
+  ///for now, results are reported in world frame.
   // if frameName specified is "world", "/map" or "map" report back
   // inertial values in the gazebo world
-  physics::LinkPtr myFrame;
-  if (myFrame == NULL && this->frame_name_ != "world" &&
-    this->frame_name_ != "/map" && this->frame_name_ != "map")
-  {
-    // lock in case a model is being spawned
-    boost::recursive_mutex::scoped_lock lock(
-      *Simulator::Instance()->GetMRMutex());
-    // look through all models in the world, search for body
-    // name that matches frameName
-    physics::Model_V all_models = World::Instance()->Models();
-    for (physics::Model_V::iterator iter = all_models.begin();
-      iter != all_models.end(); iter++)
-    {
-      if (*iter) myFrame =
-        boost::dynamic_pointer_cast<physics::Link>((*iter)->GetLink(this->frame_name_));
-      if (myFrame) break;
-    }
-    // not found
-    if (!myFrame)
-    {
-      ROS_INFO_NAMED("bumper", "gazebo_ros_bumper plugin: frameName: %s does not exist"
-                " yet, will not publish\n",this->frame_name_.c_str());
-      return;
-    }
-  }
 */
+
   // get reference frame (body(link)) pose and subtract from it to get
   // relative force, torque, position and normal vectors
   ignition::math::Pose3d pose, frame_pose;

@@ -128,43 +128,6 @@
       </visual>-->
     </link>
 
-    <!--<link name="dev">
-      <inertial>
-         
-        <mass>15</mass>
-        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
-        <inertia>
-          <ixx>1</ixx> <ixy>0</ixy> <ixz>0</ixz>
-          <iyy>1</iyy> <iyz>0</iyz>
-          <izz>1</izz>
-        </inertia>
-      </inertial>
-      <pose>0.02 0 0.07 0 0 0</pose>
-      <collision name="collision">
-        <geometry>
-          <box>
-            <size>0.18 0.134 0.047</size>
-          </box>
-        </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
-            </ode>
-          </friction>
-        </surface>
-      </collision>
-      <visual name="visual">
-        <pose>0 0 0 1.5707 0 1.5707</pose>
-        <geometry>
-          <mesh><uri>model://myrobot/meshes/Devastator.dae</uri></mesh>
-          
-        </geometry>
-        
-      </visual>
-    </link>-->
-
     <link name='left_wheel'>
       <pose>0. 0.087 0.06825 0 1.5707 1.5707 </pose>
       <inertial>
@@ -465,7 +428,7 @@
       <collision name="collision">
         <geometry>
           <box>
-            <size>0.075 0.079320 0.003</size>
+            <size>0.086 0.079320 0.003</size>
           </box>
         </geometry>
         <surface>
@@ -568,7 +531,7 @@
       <collision name="collision">
         <geometry>
           <cylinder>
-            <radius>0.08</radius>
+            <radius>0.008</radius>
             <length>0.004</length>
           </cylinder>
         </geometry>
@@ -660,10 +623,10 @@
         <geometry>
           <polyline>
             <point> 0.02 -0.0175</point>
-            <point>0.0375 -0.005</point>
+            <point>0.0375 -0.008</point>
             <point>0.055 -0.0175</point>
             <point>0.055 0.0175</point>
-            <point>0.0375 0.005</point>
+            <point>0.0375 0.008</point>
             <point> 0.02 0.0175</point>
             <height>0.003</height>
           </polyline>
@@ -882,13 +845,13 @@
     
     <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%SENSORS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     <link name='RealSense'>
-      <pose>0.105 0.0 0.13 0 0 0</pose>
+      <pose>0.105 0.0 0.14 0 0 0</pose>
       <inertial>
         <mass>0.1</mass>
         <inertia>
-          <ixx>0.000166667</ixx>
-          <iyy>0.000166667</iyy>
-          <izz>0.000166667</izz>
+          <ixx>0.00001</ixx>
+          <iyy>0.00001</iyy>
+          <izz>0.00001</izz>
         </inertia>
       </inertial>
         <collision name='collision'>
@@ -1052,7 +1015,8 @@
     </link>
     
     <link name='LightSensor'>
-      <pose>0.05 0.05 0.105 0 0 0</pose>
+      <pose>0.055 0.04 0.153 0 -1.5707 0</pose>
+      <!-- <pose>0.055 0.04 0.153 0 -1.5707 0</pose> -->
       <inertial>
         <mass>0.01</mass>
         <inertia>
@@ -1067,7 +1031,7 @@
       <collision name='collision'>
         <geometry>
           <box>
-            <size>0.01 0.01 0.01</size>
+            <size>0.005 0.01 0.01</size>
           </box>
         </geometry>
         <max_contacts>10</max_contacts>
@@ -1081,18 +1045,30 @@
           </friction>
         </surface>
       </collision>
-      <visual name='visual'>
+      <!--<visual name='visual'>
         <geometry>
           <box>
-            <size>0.01 0.01 0.01</size>
+            <size>0.005 0.01 0.01</size>
           </box>
         </geometry>
-        <material> 
-            <ambient>0 0 0 1</ambient>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/RedTransparent</name>
+          </script>
+        </material>
+      </visual>-->
+      <visual name='visual'>
+      <pose> 0.001 0 0 0 0 -1.5707</pose>
+        <geometry>
+          <mesh><uri>model://myrobot/meshes/Sensors/photodiode-Hamamatsu-S1223-01_BL.dae</uri></mesh>
+        </geometry>
+        <material>  
+            <ambient>1 0 0 1</ambient>
             <diffuse>0 0 0 1</diffuse>
             <specular>0 0 0 0</specular>
-            <emissive>1 1 0 1</emissive>
-          </material>
+            <emissive>0 1 1 1</emissive>
+          </material> 
       </visual><!---->
       <sensor name='camera' type='depth'>
         <camera name='camera'>
@@ -1110,7 +1086,7 @@
         <plugin name="myrobot" filename="liblight_sensor_plugin.so">
           <cameraName>camera2</cameraName>
           <alwaysOn>true</alwaysOn>
-          <updateRate>10</updateRate>
+          <updateRate>0.0</updateRate>
           <lightTopicName>lightdata</lightTopicName>
           <imageTopicName>color/image_raw</imageTopicName>
           <depthImageTopicName>depth/image_raw</depthImageTopicName>
@@ -1132,6 +1108,8 @@
       <kinematic>0</kinematic>
       <gravity>1</gravity>
     </link>
+
+ 
     <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%BOARDS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
 
     <link name='LattePanda'>
@@ -1493,7 +1471,7 @@
     <joint type='fixed' name='LightSensorJoint'>
       <pose>0 0 0 0 0 0</pose>
       <child>LightSensor</child>
-      <parent>cube_base</parent>
+      <parent>BaseBoards</parent>
     </joint>
 
     

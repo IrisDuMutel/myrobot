@@ -28,8 +28,8 @@
   <!--<node name="image_view1" pkg="image_view" type="image_view" respawn="false" output="log">
   <remap from="image" to="/camera/color/image_raw" />
   </node>-->
-  <!--<node pkg="myrobot" name="wandering" type="wandering.py" output="screen"/>-->
-  <node pkg="myrobot" name="controller" type="controller.py" output="screen"/>
+  <!--<node pkg="myrobot" name="wandering" type="wandering.py" output="screen"/>
+  <node pkg="myrobot" name="controller" type="controller.py" output="screen"/>-->
 
   <node pkg="myrobot" name="light" type="light.py" output="screen"/> <!---->
   

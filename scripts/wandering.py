@@ -1,18 +1,11 @@
 #!/usr/bin/env python
-# Code property of Matteo Scanavino
-# Minor changes by Iris David Du Mutel
+
 import rospy
-# from std_msgs.msg import Float32MultiArray
 from myrobot.msg import vect_msg
-# import cv2 
-import os
 import math
 import random
-# import numpy as np
-#import pyrealsense2 as rs
 import message_filters
 from sensor_msgs.msg import Image, CameraInfo, Illuminance
-# from cv_bridge import CvBridge, CvBridgeError
 
 def wandering():
     rospy.init_node('wandering', anonymous=True)

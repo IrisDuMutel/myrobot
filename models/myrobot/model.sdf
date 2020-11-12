@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
   <model name = "myrobot">
-    <static>true</static>
+    <static>false</static>
     <self_collide>false</self_collide>
 
     <!-- LINKS --> 
@@ -843,9 +843,9 @@
     </link>
 
     <link name='supp_RS'>
-    <self_collide>false</self_collide>
-      <pose>0.106 -0.056 0.5 0 0 0</pose>
-      <inertial>
+    <!-- <self_collide>false</self_collide> -->
+      <pose>0.106 -0.002 0.128 0 0 3.1415</pose>
+      <!-- <inertial>
         <mass>0.1</mass>
         <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
         <inertia>
@@ -853,18 +853,18 @@
           <iyy>0.001</iyy> <iyz>0</iyz>
           <izz>0.001</izz>
         </inertia>
-      </inertial>
+      </inertial> -->
       <collision name='collision'>
         <geometry>
           <box>
-            <size>0.0075 0.08 0.02</size>
+            <size>0.016 0.105 0.0035</size>
           </box>
         </geometry>
       </collision>
-     <!-- <visual name='visual'>
-      <pose>0.082 0 -0.001 0 0 3.1415</pose>
+     <visual name='visual'>
+      <pose>0.0 0.054 0.013 1.5707 0 1.5707</pose>
         <geometry>
-          <mesh><uri>model://myrobot/meshes/Supports/supporto_pitch_servo_2_noservo.dae</uri></mesh>
+          <mesh><uri>model://myrobot/meshes/Supports/Supp_RS.dae</uri></mesh>
         </geometry>
         <material>  
           <ambient>0 0 0.196 0.490</ambient>
@@ -872,12 +872,18 @@
           <specular>.027 .027 .459 64</specular>
           <emissive>0.047 0.035 0.286 1</emissive>
         </material>
-      </visual>-->
-       <visual name='visual'>
+        <!-- <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/RedTransparent</name>
+          </script>
+        </material> -->
+      </visual>
+       <!-- <visual name='visual'>
       <pose>0 0 0 0 0 0 </pose>
         <geometry>
           <box>
-            <size>0.0035 0.1 0.02</size>
+            <size>0.016 0.105 0.0035</size>
           </box>
         </geometry>
         <material>
@@ -886,20 +892,42 @@
             <name>Gazebo/RedTransparent</name>
           </script>
         </material>
-      </visual> 
-      <!--<collision name='collision_vertical'>
-      <pose>-0.002375 0 0.018 0 0 0 </pose>
+      </visual>  -->
+      <collision name='collision_vertical'>
+      <pose>0 0.05 0.01 0 0 0 </pose>
         <geometry>
           <box>
-            <size>0.002 0.019 0.036</size>
+            <size>0.016 0.0035 0.02</size>
           </box>
         </geometry>
       </collision>
-       <visual name='collision_vertical'>
-      <pose>-0.002375 0 0.018 0 0 0 </pose>
+      <!-- <visual name='collision_vertical'>
+      <pose>0 0.05 0.01 0 0 0 </pose>
         <geometry>
           <box>
-            <size>0.002 0.019 0.036</size>
+            <size>0.016 0.0035 0.02</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/RedTransparent</name>
+          </script>
+        </material>
+      </visual> -->
+      <collision name='collision_vertical2'>
+      <pose>0 -0.05 0.01 0 0 0 </pose>
+        <geometry>
+          <box>
+            <size>0.016 0.0035 0.02</size>
+          </box>
+        </geometry>
+      </collision>
+      <!-- <visual name='collision_vertical2'>
+      <pose>0 -0.05 0.01 0 0 0 </pose>
+        <geometry>
+          <box>
+            <size>0.016 0.0035 0.02</size>
           </box>
         </geometry>
         <material>
@@ -911,86 +939,19 @@
       </visual> -->
     </link>
 
-    <link name='supp_RSvis'>
-    <self_collide>false</self_collide>
-      <pose>0.106 -0.056 0.5 0 0 0</pose>
-      <inertial>
-        <mass>0.1</mass>
-        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
-        <inertia>
-          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
-          <iyy>0.001</iyy> <iyz>0</iyz>
-          <izz>0.001</izz>
-        </inertia>
-      </inertial>
-      <collision name='collision'>
-        <geometry>
-          <box>
-            <size>0.0075 0.035 0.002</size>
-          </box>
-        </geometry>
-      </collision>
-     <visual name='visual'>
-      <pose>0.0 0.055 0 1.5707 0 1.5707</pose>
-        <geometry>
-          <mesh><uri>model://myrobot/meshes/Supports/Supp_RS.dae</uri></mesh>
-        </geometry>
-        <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/BlackTransparent</name>
-          </script>
-        </material>
-      </visual>
-      <!--  <visual name='visual'>
-      <pose>0 0 0 0 0 0 </pose>
-        <geometry>
-          <box>
-            <size>0.0075 0.035 0.002</size>
-          </box>
-        </geometry>
-        <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/RedTransparent</name>
-          </script>
-        </material>
-      </visual> -->
-      <collision name='collision_vertical'>
-      <pose>-0.002375 0 0.018 0 0 0 </pose>
-        <geometry>
-          <box>
-            <size>0.002 0.019 0.036</size>
-          </box>
-        </geometry>
-      </collision>
-       <!--<visual name='collision_vertical'>
-      <pose>-0.002375 0 0.018 0 0 0 </pose>
-        <geometry>
-          <box>
-            <size>0.002 0.019 0.036</size>
-          </box>
-        </geometry>
-        <material>
-          <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/RedTransparent</name>
-          </script>
-        </material>
-      </visual> -->
-    </link>
+    
     
     <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%SENSORS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     <link name='RealSense'>
-      <pose>0.105 0.0 0.14 0 0 0</pose>
-      <inertial>
+      <pose>0.108 -0.0075 0.14 0 0 0</pose>
+      <!-- <inertial>
         <mass>0.1</mass>
         <inertia>
           <ixx>0.00001</ixx>
           <iyy>0.00001</iyy>
           <izz>0.00001</izz>
         </inertia>
-      </inertial>
+      </inertial> -->
         <collision name='collision'>
           <geometry>
             <box>
@@ -1009,13 +970,13 @@
               <name>Gazebo/Grey</name>
             </script>
           </material>
-          <!-- <material>  
+           <!--<material>  
             <ambient>1 1 1 1</ambient>
             <diffuse>.7 .9 0 1</diffuse>
             <specular>.2 .2 .2 64</specular>
             <emissive>0.1 0 0.1 1</emissive>
-          </material> -->
-        </visual>
+          </material>-->
+        </visual> 
         <!-- <visual name='visual'>
           <geometry>
             <box>
@@ -1501,7 +1462,7 @@
           <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Red</name>
+              <name>Gazebo/Green</name>
             </script>
           </material>
         </visual>
@@ -1587,12 +1548,6 @@
       <parent>piastra_anteriore</parent>
     </joint>
 
-    <joint type='fixed' name='RealSenseJoint'>
-      <pose>0 0 0 0 0 0</pose>
-      <child>RealSense</child>
-      <parent>sg90v_shaft</parent>
-    </joint>
-
     <joint type='fixed' name='RigthFrontForceJoint'>
       <pose>0 0 0 0 0 0</pose>
       <child>rightfront_force_sensor</child>
@@ -1644,6 +1599,18 @@
       </axis>
     </joint>
 
+    <joint name="shaft_to_SuppRS" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>supp_RS</child>
+      <parent>sg90v_shaft</parent>
+    </joint>
+
+    <joint type='fixed' name='RealSenseJoint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>RealSense</child>
+      <parent>supp_RS</parent>
+    </joint>
+    
     <joint name="shaft_to_piastra_albero" type="fixed">
       <pose>0 0 0 0 0 0</pose>
       <child>supporto_piastra_albero</child>
@@ -1685,6 +1652,8 @@
       <child>K64F</child>
       <parent>BaseBoards</parent>
     </joint>
+
+
 
     <!-- PLUGINS -->
     <!-- Using plugin from this directory-->
@@ -1749,5 +1718,3 @@
       </plugin> -->
   </model>
 </sdf>
-
-      

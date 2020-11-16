@@ -215,5 +215,5 @@ def trajectory_generation(rx,ry):
     
 if __name__=='__main__':
     print(__file__ + "start!")
-    vx,th,rx,ry = main()
+    main()
     print(__file__ + "Done!")

@@ -47,7 +47,7 @@ def talker():
         cmd.angular.z = 0
         # Publishing
         pub.publish(cmd)
-        rospy.loginfo("In the loop")
+        # rospy.loginfo("In the loop")
         rate.sleep()
 
 

@@ -33,7 +33,7 @@ def controller():
     rospy.init_node('controller',anonymous=True)
     pub = rospy.Publisher('cmd_vel',Twist,queue_size=10)
     x_sub   = message_filters.Subscriber('/odom', Odometry)
-    vel_sub = message_filters.Subscriber('/gb_vect', vect_msg)
+    vel_sub = message_filters.Subscriber('/traj_plann', vect_msg)
     # vel_sub = message_filters.Subscriber('/rs_vect', vect_msg)
     ts = message_filters.ApproximateTimeSynchronizer([vel_sub,x_sub], queue_size=10, slop=0.1)
     ts.registerCallback(callback,pub)
@@ -85,7 +85,7 @@ def callback(vel_sub, x_sub, pub):
     cmd.angular.z = psi_cmd
     # Publishing
     pub.publish(cmd)
-    rospy.loginfo("In the loop")
+    # rospy.loginfo("In the loop")
     show_plot=True
     # if show_plot==True:
     #     stamp = vel_sub.header.stamp

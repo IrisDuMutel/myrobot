@@ -35,7 +35,8 @@ def controller():
     x_sub   = message_filters.Subscriber('/odom', Odometry)
     vel_sub = message_filters.Subscriber('/traj_plann', vect_msg)
     # vel_sub = message_filters.Subscriber('/rs_vect', vect_msg)
-    ts = message_filters.ApproximateTimeSynchronizer([vel_sub,x_sub], queue_size=10, slop=0.1)
+    # ts = message_filters.TimeSynchronizer([vel_sub,x_sub], 10)
+    ts = message_filters.ApproximateTimeSynchronizer([vel_sub,x_sub], queue_size=10, slop=0.5)
     ts.registerCallback(callback,pub)
     # rate=rospy.Rate(30)
     # rate.sleep()
@@ -46,42 +47,42 @@ def controller():
 
 def callback(vel_sub, x_sub, pub):
     U = vect_msg()
-    Xest = Odometry()
+    VxEst = Odometry()
     cmd = Twist()
     U = vel_sub
-    Xest = x_sub
+    VxEst = x_sub
     # Variable assignation:
-    x_ref = U.value                    
-    x_est = Xest.twist.twist.linear.x
-    [yaw, pitch, roll] = get_rotation(Xest)
+    vx_ref = U.value                    
+    vx_est = VxEst.twist.twist.linear.x
+    [yaw, pitch, roll] = get_rotation(VxEst)
     psi_ref = U.angle
     psi_est = yaw*180/math.pi
     # Error computation:
-    x_error = x_ref-x_est
+    vx_error = vx_ref-vx_est
     psi_error = psi_ref-psi_est
     # print('psi_error:',psi_error)
     # print(psi_est)
-    # print('ref_vel:', x_ref)
+    # print('ref_vel:', vx_ref)
 
     # Control
-    x_cmd = x_error*.5
+    vx_cmd = vx_error*.5
     psi_cmd = psi_error*1
     # Normalization
     psi_cmd = psi_cmd/180 #degrees
-    x_cmd = x_cmd/1
+    vx_cmd = vx_cmd/1
     # Saturation
     if psi_cmd > 0.5:
         psi_cmd = 0.5
     if psi_cmd < -0.5:
         psi_cmd = -0.5
     print('psi_cmd: ', psi_cmd)
-    if x_cmd > 1:
-        x_cmd = 1
-    if x_cmd < -1:
-        x_cmd = -1
+    if vx_cmd > 1:
+        vx_cmd = 1
+    if vx_cmd < -1:
+        vx_cmd = -1
     
     # Transform into velocity commands
-    cmd.linear.x = x_cmd
+    cmd.linear.x = vx_cmd
     cmd.angular.z = psi_cmd
     # Publishing
     pub.publish(cmd)
@@ -102,8 +103,8 @@ def callback(vel_sub, x_sub, pub):
 
 
 
-def get_rotation(Xest):
-    orientation_q = Xest.pose.pose.orientation
+def get_rotation(VxEst):
+    orientation_q = VxEst.pose.pose.orientation
     orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
     r = R.from_quat(orientation_list)
     EuAn = r.as_euler('zyx', degrees=False)

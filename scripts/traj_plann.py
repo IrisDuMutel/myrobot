@@ -31,7 +31,7 @@ def get_rotation(Xest):
     return EuAn 
 
 def callback(vel_sub, x_sub, pub):
-    vx,th,rx,ry = pot_field.main()
+    vx,th,rx,ry = pot_field.pot_field()
 
     i = 0
     while i <= len(rx)-1:
@@ -45,7 +45,9 @@ def callback(vel_sub, x_sub, pub):
 
         if np.hypot(next_x-actual_x,next_y-actual_y)>0.2:
             traj_plann_command.value = 0.5
-            traj_plann_command.angle = th[i+1]
+            traj_plann_command.angle = th[i+1]*180/math.pi
+            traj_plann_command.header.stamp = rospy.Time.now()
+
             pub.publish(traj_plann_command)
         else: 
             i += 1

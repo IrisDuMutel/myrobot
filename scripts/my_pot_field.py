@@ -168,7 +168,7 @@ def potential_field_planning(sx, sy, gx, gy, ox, oy, grid_size, robot_radius):
     print("Goal reached, path computed")
 
     return rx, ry, ax1, ax2, ax3
-def main():
+def pot_field():
     print("Starting APF algortihm")
 
     # Positions definition
@@ -179,8 +179,8 @@ def main():
     gy = 10.0 #goal y position [m]
     grid_size = 0.5 # potential grid size [m]
     robot_radius = 2.0 # robot dimensions [m]
-    ox = [5.0] # obstacle x positions list [m]
-    oy = [5.0] # obstacles y positions list [m]
+    ox = [10] # obstacle x positions list [m]
+    oy = [0] # obstacles y positions list [m]
 
 
     rx, ry, ax1, ax2, ax3 = potential_field_planning(sx, sy, gx, gy, ox, oy, grid_size, robot_radius)
@@ -189,6 +189,7 @@ def main():
     return vx,th,rx,ry
     print("vel prof:", vx)
     print("th prof:", th)
+    print("rx:", rx)
     if show_animation:
         ax2.plot(vx)
         ax2.grid()
@@ -215,5 +216,5 @@ def trajectory_generation(rx,ry):
     
 if __name__=='__main__':
     print(__file__ + "start!")
-    main()
+    vx,th,rx,ry=pot_field()
     print(__file__ + "Done!")

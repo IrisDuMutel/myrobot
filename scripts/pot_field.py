@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# STAND ALONE CODE
+
 """
 Potential Field based path planner
 based on code from Atsushi Sakai
@@ -11,13 +11,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-
-kp = 2.5 #attractive pottential gain
+kp = 5 #attractive pottential gain
 eta = 100.0 # repulsive potential gain
 AREA_WIDTH = 30 # potential area width [m]
 OSCILLATIONS_DETECTION_LENGTH = 3
 
-show_animation = True
+show_animation = False
+# to see image, comment return in pot_field() and remove from __main__ the outcome
 
 def get_motion_model():
     # dx, dy
@@ -117,10 +117,10 @@ def potential_field_planning(sx, sy, gx, gy, ox, oy, grid_size, robot_radius):
     iy = round((sy-miny)/grid_size)
     gix = round((gx-minx)/grid_size)
     giy = round((gy-miny)/grid_size)
+    f, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey=False)
 
     if show_animation:
         # draw the potential field with the starting and ending points
-        f, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey=False)
         draw_heatmap(pmap,ax1)
         
         ax1.plot(ix, iy, "*k")
@@ -168,25 +168,25 @@ def potential_field_planning(sx, sy, gx, gy, ox, oy, grid_size, robot_radius):
     print("Goal reached, path computed")
 
     return rx, ry, ax1, ax2, ax3
-def main():
+def pot_field():
     print("Starting APF algortihm")
 
     # Positions definition
 
     sx = 0.0 # start x position [m]
     sy = 0.0 # start y position [m]
-    gx = 10.0 # goal x position [m]
-    gy = 10.0 #goal y position [m]
-    grid_size = 0.5 # potential grid size [m]
-    robot_radius = 2.0 # robot dimensions [m]
-    ox = [10] # obstacle x positions list [m]
-    oy = [0] # obstacles y positions list [m]
+    gx = 2.0 # goal x position [m]
+    gy = 2.0 #goal y position [m]
+    grid_size = 0.3 # potential grid size [m]
+    robot_radius = 0.5 # robot dimensions [m]
+    ox = [0.5] # obstacle x positions list [m]
+    oy = [0.55] # obstacles y positions list [m]
 
 
     rx, ry, ax1, ax2, ax3 = potential_field_planning(sx, sy, gx, gy, ox, oy, grid_size, robot_radius)
     
     vx, th = trajectory_generation(rx,ry)
-    # return vx,th,rx,ry
+    return vx,th,rx,ry
     print("vel prof:", vx)
     print("th prof:", th)
     print("rx:", rx)
@@ -216,5 +216,5 @@ def trajectory_generation(rx,ry):
     
 if __name__=='__main__':
     print(__file__ + "start!")
-    main()
+    pot_field()
     print(__file__ + "Done!")

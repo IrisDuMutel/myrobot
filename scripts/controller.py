@@ -33,7 +33,7 @@ def controller():
     rospy.init_node('controller',anonymous=True)
     pub = rospy.Publisher('cmd_vel',Twist,queue_size=10)
     x_sub   = message_filters.Subscriber('/odom', Odometry)
-    vel_sub = message_filters.Subscriber('/traj_plann', vect_msg)
+    vel_sub = message_filters.Subscriber('/traj_plann', Odometry)
     # vel_sub = message_filters.Subscriber('/rs_vect', vect_msg)
     # ts = message_filters.TimeSynchronizer([vel_sub,x_sub], 10)
     ts = message_filters.ApproximateTimeSynchronizer([vel_sub,x_sub], queue_size=10, slop=0.5)
@@ -46,16 +46,16 @@ def controller():
 
 
 def callback(vel_sub, x_sub, pub):
-    U = vect_msg()
+    U = Odometry()
     VxEst = Odometry()
     cmd = Twist()
     U = vel_sub
     VxEst = x_sub
     # Variable assignation:
-    vx_ref = U.value                    
+    vx_ref = U.twist.twist.linear.x                   
     vx_est = VxEst.twist.twist.linear.x
     [yaw, pitch, roll] = get_rotation(VxEst)
-    psi_ref = U.angle
+    psi_ref = U.pose.pose.orientation.w
     psi_est = yaw*180/math.pi
     # Error computation:
     vx_error = vx_ref-vx_est
@@ -75,7 +75,8 @@ def callback(vel_sub, x_sub, pub):
         psi_cmd = 0.5
     if psi_cmd < -0.5:
         psi_cmd = -0.5
-    print('psi_cmd: ', psi_cmd)
+    # print('psi_cmd: ', psi_cmd)
+    # print('psi_ref: ', psi_ref)
     if vx_cmd > 1:
         vx_cmd = 1
     if vx_cmd < -1:

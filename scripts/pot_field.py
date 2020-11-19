@@ -16,7 +16,7 @@ eta = 100.0 # repulsive potential gain
 AREA_WIDTH = 30 # potential area width [m]
 OSCILLATIONS_DETECTION_LENGTH = 3
 
-show_animation = False
+show_animation = True
 # to see image, comment return in pot_field() and remove from __main__ the outcome
 
 def get_motion_model():
@@ -186,10 +186,11 @@ def pot_field():
     rx, ry, ax1, ax2, ax3 = potential_field_planning(sx, sy, gx, gy, ox, oy, grid_size, robot_radius)
     
     vx, th = trajectory_generation(rx,ry)
-    return vx,th,rx,ry
+    
     print("vel prof:", vx)
     print("th prof:", th)
     print("rx:", rx)
+    print("ry:", ry)
     if show_animation:
         ax2.plot(vx)
         ax2.grid()
@@ -200,6 +201,7 @@ def pot_field():
         ax3.axes.set_ylabel("Heading")
         ax3.axes.set_xlabel("points")
         plt.show()
+    return vx,th,rx,ry
 
 
 def trajectory_generation(rx,ry):

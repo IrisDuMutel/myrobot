@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 Potential Field based path planner
@@ -16,7 +16,7 @@ eta = 100.0 # repulsive potential gain
 AREA_WIDTH = 30 # potential area width [m]
 OSCILLATIONS_DETECTION_LENGTH = 3
 
-show_animation = True
+show_animation = False
 # to see image, comment return in pot_field() and remove from __main__ the outcome
 
 def get_motion_model():
@@ -175,12 +175,12 @@ def pot_field():
 
     sx = 0.0 # start x position [m]
     sy = 0.0 # start y position [m]
-    gx = 2.0 # goal x position [m]
-    gy = 2.0 #goal y position [m]
+    gx = 1.0 # goal x position [m]
+    gy = 0.0 #goal y position [m]
     grid_size = 0.3 # potential grid size [m]
-    robot_radius = 0.5 # robot dimensions [m]
-    ox = [0.5] # obstacle x positions list [m]
-    oy = [0.55] # obstacles y positions list [m]
+    robot_radius = 0.2 # robot dimensions [m]
+    ox = [1] # obstacle x positions list [m]
+    oy = [1] # obstacles y positions list [m]
 
 
     rx, ry, ax1, ax2, ax3 = potential_field_planning(sx, sy, gx, gy, ox, oy, grid_size, robot_radius)

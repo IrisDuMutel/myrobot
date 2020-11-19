@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -69,6 +69,9 @@ def callback(vel_sub,x_sub,pub,vx,th,rx,ry):
             traj_plann_command.header.stamp = rospy.Time.now()
             traj_plann_command.pose.pose.position.x = next_x # x from next waypoint
             traj_plann_command.pose.pose.position.y = next_y # y from next waypoint
+            traj_plann_command.pose.pose.orientation.x = rx[i] # x from last waypoint
+            traj_plann_command.pose.pose.orientation.y = ry[i] # y from last waypoint
+
             traj_plann_command.pose.pose.orientation.w = th[i+1]*180/math.pi # heading
             traj_plann_command.twist.twist.linear.x = 0.5 # linear velocity
             i_old = i

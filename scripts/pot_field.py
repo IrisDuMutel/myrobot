@@ -207,12 +207,16 @@ def pot_field():
 def trajectory_generation(rx,ry):
     t = 1 # time for segment i
     i = 0
-    vx,th = [0],[0]
-    while i < len(rx)-1:
+    vx,th = [],[]
+    while i < (len(rx)-1):
         dist  = np.hypot(rx[i+1]-rx[i], ry[i+1]-ry[i])
         vx.append(dist/t)
         th.append(np.arctan2( ry[i+1]-ry[i],rx[i+1]-rx[i]))
         i += 1
+        if i == len(rx)-1:
+            vx.append(0)
+            th.append(np.arctan2( ry[i]-ry[i-1],rx[i]-rx[i-1]))
+    
 
     return vx,th
     

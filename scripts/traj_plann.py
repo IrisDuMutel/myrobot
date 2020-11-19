@@ -45,7 +45,7 @@ def callback(vel_sub,x_sub,pub,vx,th,rx,ry):
     global i_old
 
 
-    if i <= len(rx)-1:
+    if i < len(rx)-1:
         next_x = rx[i+1]
         next_y = ry[i+1]
         th_des = th[i+1]
@@ -81,7 +81,12 @@ def callback(vel_sub,x_sub,pub,vx,th,rx,ry):
             i_old = i
             i += 1
             print("CHANGING WAYPOINT:", i+1)
-    
+            if i == len(rx)-1:
+                traj_plann_command.header.stamp = rospy.Time.now()
+                traj_plann_command.pose.pose.orientation.w = th[i] # heading
+                traj_plann_command.twist.twist.linear.x = vx[i] # linear velocity
+                pub.publish(traj_plann_command)
+
 
 if __name__=='__main__':
     try:

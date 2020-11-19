@@ -16,7 +16,7 @@ eta = 100.0 # repulsive potential gain
 AREA_WIDTH = 30 # potential area width [m]
 OSCILLATIONS_DETECTION_LENGTH = 3
 
-show_animation = False
+show_animation = True
 # to see image, comment return in pot_field() and remove from __main__ the outcome
 
 def get_motion_model():

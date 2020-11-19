@@ -71,9 +71,9 @@ def callback(vel_sub,x_sub,pub,vx,th,rx,ry):
             traj_plann_command.pose.pose.position.y = next_y # y from next waypoint
             traj_plann_command.pose.pose.orientation.x = rx[i] # x from last waypoint
             traj_plann_command.pose.pose.orientation.y = ry[i] # y from last waypoint
-
             traj_plann_command.pose.pose.orientation.w = th[i+1]*180/math.pi # heading
             traj_plann_command.twist.twist.linear.x = 0.5 # linear velocity
+            traj_plann_command.twist.twist.angular.x = 1
             i_old = i
     
             pub.publish(traj_plann_command)
@@ -85,8 +85,19 @@ def callback(vel_sub,x_sub,pub,vx,th,rx,ry):
                 traj_plann_command.header.stamp = rospy.Time.now()
                 traj_plann_command.pose.pose.orientation.w = th[i] # heading
                 traj_plann_command.twist.twist.linear.x = vx[i] # linear velocity
+                traj_plann_command.twist.twist.angular.x = 1
                 pub.publish(traj_plann_command)
-
+    elif i == len(rx)-1:
+        end = len(rx)
+        traj_plann_command.header.stamp = rospy.Time.now()
+        traj_plann_command.pose.pose.position.x = rx[end-1] # x from next waypoint
+        traj_plann_command.pose.pose.position.y = ry[end-1] # y from next waypoint
+        traj_plann_command.pose.pose.orientation.x = rx[end-2] # x from last waypoint
+        traj_plann_command.pose.pose.orientation.y = ry[end-2] # y from last waypoint
+        traj_plann_command.pose.pose.orientation.w = th[end-1]*180/math.pi # heading
+        traj_plann_command.twist.twist.linear.x = 0 # linear velocity
+        traj_plann_command.twist.twist.angular.x = 0
+        pub.publish(traj_plann_command)
 
 if __name__=='__main__':
     try:

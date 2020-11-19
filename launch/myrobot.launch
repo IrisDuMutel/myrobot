@@ -31,7 +31,7 @@
   <remap from="image" to="/camera/color/image_raw" />
   </node>-->
   <!-- <node pkg="myrobot" name="wandering" type="wandering.py" output="screen"/> -->
-  <node pkg="myrobot" name="controller" type="controller.py" output="screen"/>
+  <node pkg="myrobot" name="controller" type="PI_controller.py" output="screen"/>
 
   <!-- <node pkg="myrobot" name="light" type="light.py" output="screen"/>  -->
 </launch>

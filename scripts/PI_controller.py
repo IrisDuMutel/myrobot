@@ -21,31 +21,32 @@
 import rospy
 import math
 from scipy.spatial.transform import Rotation as R
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
 from myrobot.msg import vect_msg
 import message_filters
 from sensor_msgs.msg import Image, CameraInfo
-from matplotlib import pyplot as plt
 import numpy as np
 global psi_int
 psi_int = 0
+
 
 def controller():
     rospy.init_node('controller',anonymous=True)
     pub = rospy.Publisher('cmd_vel',Twist,queue_size=10)
     odom_sub   = message_filters.Subscriber('/odom', Odometry)
     ref_sub = message_filters.Subscriber('/traj_plann', Odometry)
+    # psi_refdoc= open("psi_ref.txt","w+")
+    # psi_estdoc= open("psi_des.txt","w+")
     # ref_sub = message_filters.Subscriber('/rs_vect', vect_msg)
     # ts = message_filters.TimeSynchronizer([ref_sub,odom_sub], 10)
     ts = message_filters.ApproximateTimeSynchronizer([ref_sub,odom_sub], queue_size=10, slop=0.5)
     ts.registerCallback(callback,pub)
     # rate=rospy.Rate(30)
     # rate.sleep()
-    plt.ion()
-    plt.show()
+    # write_to_file()
     rospy.spin()
-
+    
 
 def callback(ref_sub, odom_sub, pub):
     global psi_int
@@ -71,20 +72,25 @@ def callback(ref_sub, odom_sub, pub):
     rel_vel = vel_ref - vel_odom
     tot_dist = np.hypot(px_odom-px_start,py_odom-py_start)
     rel_dist = np.hypot(px_odom-px_start,py_odom-py_start)
-    cont_value = Refer.twist.twist.angular.x 
+    actual_psi = Refer.twist.twist.angular.x 
     # Error computation:
     dist_error = tot_dist-rel_dist
     vx_error = vel_ref-vel_odom
     psi_error = psi_ref-psi_est
-    
-
-
+    # psi_refdoc.write("%s\n" % psi_ref)
+    # psi_estdoc.write("%s\n" % psi_est)
+    # Control tuning
+    Kp_x_Gain = 1
+    Ki_x_Gain = 1
+    Kp_psi_Gain = 0.3
+    Ki_psi_Gain = 0.07
+    Integrator_psi_gainval = 0.02
     # Control
-    vx_cmd = cont_value*((dist_error)+(vx_error))
+    vx_cmd = ((dist_error)*Ki_x_Gain+(vx_error)*Kp_x_Gain)
     
-    psi_int += 0.2*psi_error
+    psi_int += Integrator_psi_gainval*psi_error
 
-    psi_cmd = (psi_error+psi_int)*cont_value
+    psi_cmd = (psi_error*Kp_psi_Gain+psi_int*Ki_psi_Gain)
 
     # Normalization
     psi_cmd = psi_cmd/180 #degrees
@@ -108,10 +114,6 @@ def callback(ref_sub, odom_sub, pub):
     # Publishing
     pub.publish(cmd)
 
-
-
-
-
 def get_rotation(Odom):
     orientation_q = Odom.pose.pose.orientation
     orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
@@ -121,6 +123,9 @@ def get_rotation(Odom):
     
 if __name__ == "__main__":
     try:
-        controller()           
+        controller()
+               
     except rospy.ROSInterruptException:
+
         pass
+        

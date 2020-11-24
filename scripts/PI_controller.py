@@ -77,13 +77,12 @@ def callback(ref_sub, odom_sub, pub):
     dist_error = tot_dist-rel_dist
     vx_error = vel_ref-vel_odom
     psi_error = psi_ref-psi_est
-    # psi_refdoc.write("%s\n" % psi_ref)
-    # psi_estdoc.write("%s\n" % psi_est)
+
     # Control tuning
     Kp_x_Gain = 1
     Ki_x_Gain = 1
-    Kp_psi_Gain = 0.3
-    Ki_psi_Gain = 0.07
+    Kp_psi_Gain = 0.7
+    Ki_psi_Gain = 0.0
     Integrator_psi_gainval = 0.02
     # Control
     vx_cmd = ((dist_error)*Ki_x_Gain+(vx_error)*Kp_x_Gain)
@@ -101,8 +100,7 @@ def callback(ref_sub, odom_sub, pub):
         psi_cmd = 0.5
     if psi_cmd < -0.5:
         psi_cmd = -0.5
-    # print('psi_cmd: ', psi_cmd)
-    # print('psi_ref: ', psi_ref)
+
     if vx_cmd > 1:
         vx_cmd = 1
     if vx_cmd < -1:
@@ -111,6 +109,7 @@ def callback(ref_sub, odom_sub, pub):
     # Transform into velocity commands
     cmd.linear.x = vx_cmd
     cmd.angular.z = psi_cmd
+
     # Publishing
     pub.publish(cmd)
 

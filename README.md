@@ -1,5 +1,6 @@
 # myrobot
 This project intends to simulate the behaviour of a Devastator ground robot.
+It includes homemade plugins and also some from gazebo_ros_pkgs (https://github.com/ros-simulation/gazebo_ros_pkgs).
 
 ## To use this repo follow the next steps:
 

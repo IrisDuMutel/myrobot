@@ -142,8 +142,8 @@ def callback(color_raw, depth_raw,pub):
 
             # Send data
             msg.header.stamp = rospy.Time.now()
-            msg.angle = vect[0]
-            msg.value = vect[1]
+            msg.angle = dist[1][1]
+            msg.value = dist[1][0]
             rospy.loginfo('Realsense vector data sent')
             pub.publish(msg)
      

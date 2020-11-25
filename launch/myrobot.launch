@@ -22,7 +22,7 @@
   <node pkg="gazebo_ros" type="spawn_model" name="spawn_sdf"  output="screen" args="-sdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
   
 <!-- OTHER NODES -->
- <node pkg="myrobot" name="realsense" type="realsense.py" output="log"/>
+ <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/>
  <node pkg="myrobot" name="head" type="move_head.py" output="screen"/>
  <node pkg="myrobot" name="traj_plann" type="traj_plann.py" output="screen"/>
   <!-- <node pkg="myrobot" name="force" type="force.py" output="screen"/> -->
@@ -32,6 +32,6 @@
   <!-- <node pkg="myrobot" name="wandering" type="wandering.py" output="screen"/> -->
   <!-- <node pkg="myrobot" name="controller" type="PI_controller.py" output="screen"/> -->
  <!-- <node pkg="myrobot" name="topic_2_txt" type="topic_2_file.py" output="screen"/> -->
-<node pkg="myrobot" name="slam_node" type="slam_gmapping.py" output="screen"/>
+<!-- <node pkg="myrobot" name="slam_node" type="slam_gmapping.py" output="screen"/> -->
   <!-- <node pkg="myrobot" name="light" type="light.py" output="screen"/>  -->
 </launch>

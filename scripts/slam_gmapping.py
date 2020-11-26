@@ -21,6 +21,7 @@ class slam_gmapping():
         self.dist_ = vect_msg()
         self.map_ = OccupancyGrid()
         self.map_.info.width = 20
+        self.theta = 0
         self.map_.info.height = 20
         self.bridge = CvBridge()
         self.map_.data = [0] * (self.map_.info.width * self.map_.info.height) # start an unoccupied map
@@ -28,19 +29,25 @@ class slam_gmapping():
         self.odom_sub   = message_filters.Subscriber('/odom', Odometry)
         self.color_sub = message_filters.Subscriber('rs_vect', vect_msg)
         self.depth_sub = message_filters.Subscriber('camera/depth/image_raw',Image)
-        ts = message_filters.ApproximateTimeSynchronizer([self.odom_sub,self.depth_sub,self.color_sub], queue_size=10, slop=0.05)
-        ts.registerCallback(self.callback,self.pub)
+        ts = message_filters.ApproximateTimeSynchronizer([self.odom_sub,self.depth_sub,self.color_sub], queue_size=10, slop=0.1)
+        ts.registerCallback(self.callback)
         self.gmapping()
+        rospy.spin()
 
-    def callback(self,odom_sub,depth_sub,color_sub,pub):
+    def callback(self,odom_sub,depth_sub,color_sub):
         self.odom_= odom_sub
+        self.theta = self.get_rotation()
         self.depth_ = depth_sub
         self.dist_ = color_sub
 
 
     def get_rotation(self):
+        # print(self.odom_)
         orientation_q = self.odom_.pose.pose.orientation
+        # print(orientation_q)
+        # print(self.odom_.pose.pose.orientation)
         orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
+        # print(orientation_list)
         r = R.from_quat(orientation_list)
         EuAn = r.as_euler('zyx', degrees=False)
         return EuAn 
@@ -48,7 +55,7 @@ class slam_gmapping():
         index = self.map_.info.width*y+x
         return index
     def gmapping(self):
-        print(self.depth_)
+        # print(self.depth_)
         while True:
             try:
                 # minDist = 0.3
@@ -75,12 +82,14 @@ class slam_gmapping():
                 #             valid_matrix[yCount,xCount] = 1
                 #         dist[yCount,xCount] = distance
                 dist = self.dist_.angle
-                theta, _, _ = self.get_rotation()
+                print(dist)
+                # theta, _, _ = self.get_rotation()
                 if dist> 0 and dist!='inf':
 
-                    x = dist[1][1]*np.cos(theta)
-                    y = dist[1][1]*np.sin(theta)
-                    lin_index = self.max_index(j,i)
+                    x = dist*np.cos(self.theta)
+                    print(x)
+                    y = dist*np.sin(self.theta)
+                    lin_index = self.max_index(y,x)
                     self.map_.data[lin_index] = 100
                 else:
                     pass

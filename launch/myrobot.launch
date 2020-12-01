@@ -6,10 +6,11 @@
   <arg name="x_pos" default="0.0"/>
   <arg name="y_pos" default="0.0"/>
   <arg name="z_pos" default="0.0"/>
+  <arg name="configuration_basename" default="turtlebot3_lds_2d.lua"/>
 <!-- World choice and configuration -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="verbose" value="true"/>
-    <arg name="world_name" value="$(find myrobot)/worlds/empty_world.world"/>
+    <arg name="world_name" value="$(find myrobot)/worlds/square_room.world"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
@@ -22,10 +23,10 @@
   <node pkg="gazebo_ros" type="spawn_model" name="spawn_sdf"  output="screen" args="-sdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
   
 <!-- OTHER NODES -->
- <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/>
+ <!-- <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/> -->
  <node pkg="myrobot" name="head" type="move_head.py" output="screen"/>
- <node pkg="myrobot" name="traj_plann" type="traj_plann.py" output="screen"/>
-  <!-- <node pkg="myrobot" name="force" type="force.py" output="screen"/> -->
+ <!--<node pkg="myrobot" name="traj_plann" type="traj_plann.py" output="screen"/>
+   <node pkg="myrobot" name="force" type="force.py" output="screen"/> -->
   <!--<node name="image_view1" pkg="image_view" type="image_view" respawn="false" output="log">
   <remap from="image" to="/camera/color/image_raw" />
   </node>-->

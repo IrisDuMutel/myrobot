@@ -12,7 +12,6 @@ project(myrobot)
 find_package(catkin REQUIRED COMPONENTS
     gazebo_dev
     message_generation
-    nodelet
     angles
     std_srvs
     urdf
@@ -42,11 +41,14 @@ find_package(catkin REQUIRED COMPONENTS
     genmsg 
     geometry_msgs
     rosconsole
+    openslam_gmapping 
+    nodelet
+    rosbag_storage
      
 
 )
 find_package(gazebo REQUIRED)
-find_package(Boost REQUIRED COMPONENTS thread)
+find_package(Boost REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -109,6 +111,7 @@ catkin_package(INCLUDE_DIRS plugins/light
                             plugins/actuator
                             plugins/diff_drive
                             plugins/template
+                            src/slam_mapping
 
                         
                             # plugins/simpletrackedvehicle
@@ -178,6 +181,7 @@ include_directories(plugins/trackedvehicle)
 include_directories(plugins/actuator)
 include_directories(plugins/template)
 include_directories(plugins/diff_drive)
+include_directories(src/slam_mapping)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}
@@ -196,6 +200,8 @@ add_library(diff_drive_plugin SHARED plugins/diff_drive/diff_drive_plugin.cpp)
 target_link_libraries(diff_drive_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
 target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
+add_executable(slam_devastator src/slam_mapping/slam_gmapping.cpp src/slam_mapping/main.cpp)
+target_link_libraries(slam_devastator ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 add_library(depth_camera_plugin SHARED plugins/depth_camera/depth_camera_plugin.cpp)
 target_link_libraries(depth_camera_plugin  DepthCameraPlugin ${catkin_LIBRARIES})###########template
 ## Build ##
@@ -271,9 +277,15 @@ catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py script
 install(TARGETS
   actuator_plugin
   diff_drive_plugin
+  slam_gmapping
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   )
+
+  install(DIRECTORY config launch rviz
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html

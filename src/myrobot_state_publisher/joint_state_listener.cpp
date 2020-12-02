@@ -43,8 +43,8 @@
 #include <kdl/tree.hpp>
 #include <kdl_parser/kdl_parser.hpp>
 
-#include "robot_state_publisher/robot_state_publisher.h"
-#include "robot_state_publisher/joint_state_listener.h"
+#include "robot_state_publisher.h"
+#include "joint_state_listener.h"
 
 using namespace robot_state_publisher;
 

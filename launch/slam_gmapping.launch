@@ -5,7 +5,7 @@
     <arg name="set_base_frame" default="cube_base"/>
     <arg name="set_odom_frame" default="odom"/>
     <arg name="set_map_frame"  default="map"/>
-    <!-- <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"></node> -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"></node>
     <node pkg="myrobot" type="slam_devastator" name="slam_gmapping" output="screen">
       <param name="base_frame" value="$(arg set_base_frame)"/>
       <param name="odom_frame" value="$(arg set_odom_frame)"/>

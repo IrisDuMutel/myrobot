@@ -1208,7 +1208,7 @@
     </link>
 
 
-
+     
     <link name='laser_sensor'>
       <pose>0 0 0 0 0 0 </pose>
         <visual name='visual'>
@@ -1609,13 +1609,13 @@
       <child>rightfront_force_sensor</child>
       <parent>cube_base</parent>
     </joint>
-
+   <gazebo>
     <joint type='fixed' name='LaserScanner'>
       <pose>0 0 0 0 0 0</pose>
       <child>laser_sensor</child>
       <parent>cube_base</parent>
     </joint>
-
+   </gazebo>
     <joint type='fixed' name='LeftFrontForceJoint'>
       <pose>0 0 0 0 0 0</pose>
       <child>leftfront_force_sensor</child>
@@ -1743,7 +1743,7 @@
       
      
       <!-- Using plugin from this directory-->
-      <plugin name="ActuatorPlugin_horizontal" filename="libactuator_plugin.so">
+      <!-- <plugin name="ActuatorPlugin_horizontal" filename="libactuator_plugin.so">
         <motor_joint>sg90h_to_shaft</motor_joint> 
         <commandTopicServo>cmd_servo</commandTopicServo>
         <servoTorque>10</servoTorque>
@@ -1759,10 +1759,10 @@
         <publishTF>true</publishTF>
         <publishservoOdomTF>true</publishservoOdomTF>
         <rosDebugLevel>na</rosDebugLevel> 
-      </plugin>
+      </plugin> -->
 
       <!-- Using plugin from this directory-->
-      <plugin name="ActuatorPlugin_vertical" filename="libactuator_plugin.so">
+      <!-- <plugin name="ActuatorPlugin_vertical" filename="libactuator_plugin.so">
         <motor_joint>sg90v_to_shaft</motor_joint> 
         <commandTopicServo>cmd_servo</commandTopicServo>
         <servoTorque>10</servoTorque>
@@ -1778,6 +1778,6 @@
         <publishTF>true</publishTF>
         <publishservoOdomTF>true</publishservoOdomTF>
         <rosDebugLevel>na</rosDebugLevel> 
-      </plugin>
+      </plugin> -->
   </model>
 </sdf>

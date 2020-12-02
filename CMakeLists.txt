@@ -220,10 +220,10 @@ add_executable(slam_devastator src/slam_mapping/slam_gmapping.cpp src/slam_mappi
 target_link_libraries(slam_devastator ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 add_library(myrobot_state_publisher_solver src/myrobot_state_publisher/robot_state_publisher.cpp)
 target_link_libraries(myrobot_state_publisher_solver ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
-add_library(myrobot_joint_state_listener src/myrobot_state_publisher/joint_state_listener.cpp)
-target_link_libraries(myrobot_joint_state_listener myrobot_state_publisher_solver ${orocos_kdl_LIBRARIES})
+add_library(myrobot_joint_state_listener SHARED src/myrobot_state_publisher/joint_state_listener.cpp)
+target_link_libraries(myrobot_joint_state_listener ${GAZEBO_LIBRARIES} myrobot_state_publisher_solver ${orocos_kdl_LIBRARIES})
 add_executable(myrobot_state_publisher src/myrobot_state_publisher/robot_state_publisher_node.cpp)
-target_link_libraries(myrobot_state_publisher myrobot_state_publisher_solver myrobot_joint_state_listener ${orocos_kdl_LIBRARIES})
+target_link_libraries(myrobot_state_publisher ${GAZEBO_LIBRARIES} myrobot_state_publisher_solver myrobot_joint_state_listener ${orocos_kdl_LIBRARIES})
 add_library(depth_camera_plugin SHARED plugins/depth_camera/depth_camera_plugin.cpp)
 target_link_libraries(depth_camera_plugin  DepthCameraPlugin ${catkin_LIBRARIES})###########template
 ## Build ##

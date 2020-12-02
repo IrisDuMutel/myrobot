@@ -47,7 +47,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
 
-#include "robot_state_publisher/robot_state_publisher.h"
+#include "robot_state_publisher.h"
 
 namespace robot_state_publisher {
 

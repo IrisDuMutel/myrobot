@@ -44,11 +44,17 @@ find_package(catkin REQUIRED COMPONENTS
     openslam_gmapping 
     nodelet
     rosbag_storage
+    kdl_parser 
+    rostime  
+    tf2_kdl
      
 
 )
 find_package(gazebo REQUIRED)
 find_package(Boost REQUIRED)
+find_package(orocos_kdl REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(urdfdom_headers REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -112,6 +118,7 @@ catkin_package(INCLUDE_DIRS plugins/light
                             plugins/diff_drive
                             plugins/template
                             src/slam_mapping
+                            src/myrobot_state_publisher
 
                         
                             # plugins/simpletrackedvehicle
@@ -138,7 +145,12 @@ catkin_package(INCLUDE_DIRS plugins/light
                             sensor_msgs
                             nav_msgs
                             gazebo_msgs
-                            rosconsole)
+                            rosconsole
+                            kdl_parser 
+                            orocos_kdl
+                            rostime
+                            tf2_kdl 
+                            urdfdom_headers)
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
@@ -169,8 +181,9 @@ catkin_package(INCLUDE_DIRS plugins/light
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 link_directories(${GAZEBO_LIBRARY_DIRS})
+include_directories(SYSTEM ${EIGEN3_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${std_msgs_INCLUDE_DIRS} 
-                    ${GAZEBO_INCLUDE_DIRS} ${roscpp_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+                    ${GAZEBO_INCLUDE_DIRS} ${roscpp_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${orocos_kdl_INCLUDE_DIRS} ${urdfdom_headers_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 # set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
@@ -182,6 +195,7 @@ include_directories(plugins/actuator)
 include_directories(plugins/template)
 include_directories(plugins/diff_drive)
 include_directories(src/slam_mapping)
+include_directories(src/myrobot_state_publisher)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}
@@ -202,6 +216,12 @@ add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
 target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
 add_executable(slam_devastator src/slam_mapping/slam_gmapping.cpp src/slam_mapping/main.cpp)
 target_link_libraries(slam_devastator ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+add_library(myrobot_state_publisher_solver src/myrobot_state_publisher/robot_state_publisher.cpp)
+target_link_libraries(myrobot_state_publisher_solver ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
+add_library(myrobot_joint_state_listener src/myrobot_state_publisher/joint_state_listener.cpp)
+target_link_libraries(myrobot_joint_state_listener myrobot_state_publisher_solver ${orocos_kdl_LIBRARIES})
+add_executable(myrobot_state_publisher src/robot_state_publisher_node.cpp)
+target_link_libraries(myrobot_state_publisher myrobot_state_publisher_solver joint_state_listener ${orocos_kdl_LIBRARIES})
 add_library(depth_camera_plugin SHARED plugins/depth_camera/depth_camera_plugin.cpp)
 target_link_libraries(depth_camera_plugin  DepthCameraPlugin ${catkin_LIBRARIES})###########template
 ## Build ##

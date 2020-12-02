@@ -28,7 +28,17 @@
   <depend>polled_camera</depend>
   <depend>diagnostic_updater</depend>
   <depend>camera_info_manager</depend>
+  <depend>kdl_parser</depend>
+  <depend>rostime</depend>
+  <depend>tf2_kdl</depend>
 
+  <build_depend>liborocos-kdl-dev</build_depend>
+  <build_depend>liburdfdom-headers-dev</build_depend>
+  <build_depend>eigen</build_depend>
+
+  <build_export_depend>liborocos-kdl-dev</build_export_depend>
+
+  <exec_depend>liborocos-kdl</exec_depend>
   <test_depend>rostest</test_depend>
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>controller_manager</build_depend>

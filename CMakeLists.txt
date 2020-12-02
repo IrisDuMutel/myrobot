@@ -147,9 +147,11 @@ catkin_package(INCLUDE_DIRS plugins/light
                             gazebo_msgs
                             rosconsole
                             kdl_parser 
-                            orocos_kdl
+                            
                             rostime
-                            tf2_kdl 
+                            tf2_kdl
+                            DEPENDS
+                            orocos_kdl 
                             urdfdom_headers)
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -220,8 +222,8 @@ add_library(myrobot_state_publisher_solver src/myrobot_state_publisher/robot_sta
 target_link_libraries(myrobot_state_publisher_solver ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
 add_library(myrobot_joint_state_listener src/myrobot_state_publisher/joint_state_listener.cpp)
 target_link_libraries(myrobot_joint_state_listener myrobot_state_publisher_solver ${orocos_kdl_LIBRARIES})
-add_executable(myrobot_state_publisher src/robot_state_publisher_node.cpp)
-target_link_libraries(myrobot_state_publisher myrobot_state_publisher_solver joint_state_listener ${orocos_kdl_LIBRARIES})
+add_executable(myrobot_state_publisher src/myrobot_state_publisher/robot_state_publisher_node.cpp)
+target_link_libraries(myrobot_state_publisher myrobot_state_publisher_solver myrobot_joint_state_listener ${orocos_kdl_LIBRARIES})
 add_library(depth_camera_plugin SHARED plugins/depth_camera/depth_camera_plugin.cpp)
 target_link_libraries(depth_camera_plugin  DepthCameraPlugin ${catkin_LIBRARIES})###########template
 ## Build ##

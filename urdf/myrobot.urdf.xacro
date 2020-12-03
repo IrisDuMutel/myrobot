@@ -27,19 +27,14 @@
           <box size="0.19 0.134 0.047"/>
         </geometry>
       </collision>
-     
-     <visual name="visual">
-        <geometry>
-          <box size="0.19 0.134 0.047"/>
-        </geometry>
-      </visual>
+
       
-      <!-- <visual>
+      <visual>
         <origin xyz="0.02 0 -0.01" rpy="1.5707 0 1.5707"/>
         <geometry>
-          <mesh filename="package://myrobot/models/myroboturdf/meshes/Devastator.dae"/>
+          <mesh filename="package://myrobot/models/myroboturdf/meshes/Devastator.dae" scale="1 1 1"/>
         </geometry>
-      </visual> -->
+      </visual>
 
       <collision name = "caster_collision">
       <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
@@ -58,13 +53,6 @@
         </surface> 
       </collision>
 
-      <visual name="caster_collision">
-      <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="0.05"/>
-        </geometry>
-      </visual>
-
 
       <collision name = 'caster_collision2'>
       <origin xyz="0.05 0 -0.03" rpy="0 0 0"/>
@@ -82,12 +70,6 @@
           </friction>
         </surface> 
       </collision>
-      <visual name="caster_collision2">
-      <origin xyz="0.05 0 -0.03" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="0.05"/>
-        </geometry>
-      </visual>
 
     </link>
   
@@ -104,6 +86,7 @@
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <inertia ixx="0.00052666666" ixy="0" ixz="0" iyy="0.00052666666" iyz="0" izz="0.001"/>
       </inertial>
+      <!-- <pose>0. 0.087 0.06825 0 1.5707 1.5707 </pose> -->
       
         
       <collision>
@@ -121,22 +104,38 @@
         </geometry>
       </visual>
 
-       
+        <!--<visual name='visual'>
+          <geometry>
+            <cylinder>
+              <radius>.06825</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          
+          <material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0.1 0.1 0.2 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual> -->
     </link>
 
     <joint name="wheel_right_joint" type="continuous">
       <parent link="cube_base"/>
       <child link="wheel_right_link"/>
-      <origin xyz="0. -0.087 0.06825" rpy="0 0 0"/>
+      <origin xyz="0. -0.087 0.06825" rpy="0 1.5707 1.5707"/>
       <axis xyz="0 0 1"/>
     </joint>
       
-    <link name="wheel_right_link">
+    <link name="wheel_right_joint">
+      <!-- <pose>0. -0.087 0.06825 0 1.5707 1.5707 </pose> -->
       <inertial>
         <mass value="0.2"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
         <inertia ixx="0.00052666666" ixy="0" ixz="0" iyy="0.00052666666" iyz="0" izz="0.001"/>
       </inertial>
+      <!-- <pose>0. 0.087 0.06825 0 1.5707 1.5707 </pose> -->
       
         
       <collision>
@@ -155,12 +154,13 @@
       </visual>
     </link>
 
-    <!-- <joint name="BaseBoards_joint" type="fixed">
+    <joint name="BaseBoards_joint" type="fixed">
       <parent link="cube_base"/>
       <child link="BaseBoards"/>
       <origin xyz="-0.01 0 0.1435" rpy="0 0 0"/>
     </joint>
 
+    <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%SUPPORTS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     <link name="BaseBoards">
       <inertial>
         <mass value="0.2"/>
@@ -179,9 +179,21 @@
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/BaseBoards.dae"/>
         </geometry>
       </visual>
-      
+      <!-- <visual name="visual">
+        <pose>0.05 0 0 0 0 1.5707</pose>
+        <geometry>
+          <mesh><uri>model://myrobot/meshes/Supports/BaseBoards.dae</uri></mesh>
 
-      <collision name = "stick1_collision">
+        </geometry>
+        <material>  
+          <ambient>0 0 0.196 0.490</ambient>
+          <diffuse>0.043 0.043 0.043 1</diffuse>
+          <specular>.027 .027 .459 64</specular>
+          <emissive>0.047 0.035 0.286 1</emissive>
+        </material>
+      </visual> -->
+
+      <!-- <collision name = "stick1_collision">
       
       <origin xyz="0.075 0.05 -0.02 " rpy="0 0 0"/>
         <geometry>
@@ -236,11 +248,11 @@
         <geometry>
           <cylinder length="0.04" radius="0.002"/>
         </geometry>
-      </visual>
+      </visual> -->
     </link>
-     -->
+    
 
-    <!-- <joint name="piastra_anteriore_joint" type="fixed">
+    <joint name="piastra_anteriore_joint" type="fixed">
       <parent link="BaseBoards"/>
       <child link="piastra_anteriore"/>
       <origin xyz="0.078 -0.004 0.104" rpy="0 0 0"/>
@@ -265,9 +277,9 @@
           <mesh filename="package:/myrobot/models/myroboturdf/meshes/Supports/Piastra_anteriore2.dae" scale="1 1 1"/>
         </geometry>
       </visual>
-    </link> -->
+    </link>
     
-    <!-- <joint name="supporto_sg90_joint" type="fixed">
+    <joint name="supporto_sg90_joint" type="fixed">
       <parent link="piastra_anteriore"/>
       <child link="supporto_sg90"/>
       <origin xyz="0.094 -0.004 0.0995" rpy="0 0 0"/>
@@ -293,8 +305,8 @@
         </geometry>
       </visual>
     </link>
-     -->
-    <!-- <joint name="supporto_piastra_albero_joint" type="fixed">
+    
+    <joint name="supporto_piastra_albero_joint" type="fixed">
       <parent link="sg90h_shaft"/>
       <child link="supporto_piastra_albero"/>
       <origin xyz="0.106 0.0005 0.109" rpy="0 0 0"/>
@@ -319,10 +331,11 @@
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Supporto_piastra_albero.dae" scale="1 1 1"/>
         </geometry>
       </visual>
+      <!-- <pose>0.106 0.0005 0.109 0 0 0</pose> -->
+      <!--<pose>0 0 0 0 0 0</pose>-->
+    </link>
 
-    </link> -->
-
-    <!-- <joint name="supporto_pitch_servo_1_joint" type="fixed">
+    <joint name="supporto_pitch_servo_1_joint" type="fixed">
       <parent link="supporto_piastra_albero"/>
       <child link="supporto_pitch_servo_1"/>
       <origin xyz="0.106 0.038 0.114" rpy="0 0 4.71238"/>
@@ -330,6 +343,7 @@
 
     <gazebo>
     <link name='supporto_pitch_servo_1'>
+      <!-- <pose>0.106 0.038 0.114 0 0 4.71238</pose> -->
       <inertial>
         <mass>0.1</mass>
         <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
@@ -393,9 +407,9 @@
         </geometry>
       </collision>
     </link>
-    </gazebo> -->
+    </gazebo>
     
-    <!-- <joint name="supporto_pitch_servo_2_joint" type="fixed">
+    <joint name="supporto_pitch_servo_2_joint" type="fixed">
       <parent link="supporto_pitch_servo_1"/>
       <child link="supporto_pitch_servo_2"/>
       <origin xyz="0.106 0.056 0.116" rpy="0 0 4.71238"/>
@@ -443,9 +457,9 @@
       </collision>
 
     </link>
-    </gazebo> -->
+    </gazebo>
     
-    <!-- <joint name="supporto_pitch_servo_2_noservo_joint" type="fixed">
+    <joint name="supporto_pitch_servo_2_noservo_joint" type="fixed">
       <parent link="supporto_pitch_servo_1"/>
       <child link="supporto_pitch_servo_2_noservo"/>
       <origin xyz="0.106 -0.056 0.116" rpy="0 0 1.5707"/>
@@ -453,6 +467,8 @@
 
     <gazebo>
     <link name='supporto_pitch_servo_2_noservo'>
+    <!-- <self_collide>true</self_collide> -->
+      <!-- <pose>0.106 -0.056 0.116 0 0 1.5707</pose> -->
       <inertial>
         <mass>0.1</mass>
         <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
@@ -481,7 +497,20 @@
           <emissive>0.047 0.035 0.286 1</emissive>
         </material>
       </visual>
-
+      <!-- <visual name='visual'>
+      <pose>0 0 0 0 0 0 </pose>
+        <geometry>
+          <box>
+            <size>0.0075 0.035 0.002</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/RedTransparent</name>
+          </script>
+        </material>
+      </visual> -->
       <collision name='collision_vertical'>
       <pose>-0.002375 0 0.018 0 0 0 </pose>
         <geometry>
@@ -490,12 +519,25 @@
           </box>
         </geometry>
       </collision>
-     
+      <!-- <visual name='collision_vertical'>
+      <pose>-0.002375 0 0.018 0 0 0 </pose>
+        <geometry>
+          <box>
+            <size>0.002 0.019 0.036</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/RedTransparent</name>
+          </script>
+        </material>
+      </visual> -->
     </link>
-    </gazebo> -->
+    </gazebo>
 
 
-    <!-- <joint name="supp_RS_joint" type="fixed">
+    <joint name="supp_RS_joint" type="fixed">
       <parent link="sg90v_shaft"/>
       <child link="supp_RS"/>
       <origin xyz="0.106 -0.002 0.128" rpy="0.128 0 0 3.1415"/>
@@ -543,12 +585,13 @@
       </collision>
      
     </link>
-    </gazebo> -->
+    </gazebo>
     
     
+    <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%SENSORS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     
     
-    <!-- <joint name="RealSense_joint" type="fixed">
+    <joint name="RealSense_joint" type="fixed">
       <parent link="supp_RS"/>
       <child link="RealSense"/>
       <origin xyz="0.108 -0.0075 0.14" rpy="0 0 0"/>
@@ -567,56 +610,69 @@
             <mesh filename="package:///myrobot/models/myroboturdf/meshes/Sensors/IntelRealsense_D435_Multibody.dae" scale="1 1 1"/>
           </geometry>
         </visual>
-    </link> -->
+    </link>
 
-    <!-- <joint name="rightfront_force_sensor_joint" type="fixed">
+    <joint name="rightfront_force_sensor_joint" type="fixed">
       <parent link="cube_base"/>
       <child link="rightfront_force_sensor"/>
       <origin xyz="0.11 0.05 0.07" rpy="0 0 0"/>
     </joint>    
 
     <link name="rightfront_force_sensor">
+      <!-- <pose>0.11 0.05 0.07 0 0 0</pose> -->
         <visual name="visual">
           <geometry>
             <box size="0.05 0.01 0.01"/>
           </geometry>
-          
-        </visual>
+          <!-- <material>  
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 1 1 1</emissive>
+          </material>  -->
+        </visual><!---->
         <collision name="collision_rightfront_collision">
           <geometry>
             <box size="0.05 0.01 0.01"/>
           </geometry>
         </collision>
-    </link> -->
+    </link>
 
-    <!-- <joint name="leftfront_force_sensor_joint" type="fixed">
+    <joint name="leftfront_force_sensor_joint" type="fixed">
       <parent link="cube_base"/>
       <child link="leftfront_force_sensor"/>
       <origin xyz="0.11 -0.05 0.07" rpy="0 0 0"/>
     </joint>    
 
     <link name="leftfront_force_sensor">
+      <!-- <pose>0.11 0.05 0.07 0 0 0</pose> -->
         <visual name="visual">
           <geometry>
             <box size="0.05 0.01 0.01"/>
           </geometry>
-   
-        </visual>
+          <!-- <material>  
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 1 1 1</emissive>
+          </material>  -->
+        </visual><!---->
         <collision name="collision_leftfront_collision">
           <geometry>
             <box size="0.05 0.01 0.01"/>
           </geometry>
         </collision>
-    </link> -->
+    </link>
     
 
-    <!-- <joint name="LightSensor_joint" type="fixed">
+    <joint name="LightSensor_joint" type="fixed">
       <parent link="BaseBoards"/>
       <child link="LightSensor"/>
       <origin xyz="0.055 0.04 0.153 " rpy="0 -1.5707 0"/>
     </joint>    
 
     <link name="LightSensor">
+      <!-- <pose>0.11 0.05 0.07 0 0 0</pose> -->
         <inertial>
           <origin xyz="0 0 0" />
           <mass value="2.8498940e-02" />
@@ -629,13 +685,16 @@
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Sensors/photodiode-Hamamatsu-S1223-01_BL.dae" scale="0.001 0.001 0.001"/>
           </geometry>
-        </visual>
+        </visual><!---->
         <collision name="collision">
           <geometry>
             <box size="0.005 0.01 0.01"/>
           </geometry>
         </collision>
 
+      <!-- <self_collide>0</self_collide>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity> -->
     </link>
 
     <joint name="laser_sensor_joint" type="fixed">
@@ -645,6 +704,7 @@
     </joint>    
 
     <link name="laser_sensor">
+      <!-- <pose>0.11 0.05 0.07 0 0 0</pose> -->
         <inertial>
           <origin xyz="0 0 0" />
           <mass value="2.8498940e-02" />
@@ -662,6 +722,7 @@
 
 
  
+    <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%BOARDS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
 
     
     <joint name="LattePanda_joint" type="fixed">
@@ -671,6 +732,7 @@
     </joint>
 
     <link name="LattePanda">
+      <!-- <pose>-0.012 0.001 0.153 0 0 0</pose> -->
       <inertial>
           <origin xyz="0 0 0" />
           <mass value="2.8498940e-02" />
@@ -699,6 +761,7 @@
     </joint>
 
     <link name="K64F">
+      <!-- <pose>-0.012 0.001 0.153 0 0 0</pose> -->
       <inertial>
           <origin xyz="0 0 0" />
           <mass value="2.8498940e-02" />
@@ -720,6 +783,7 @@
       </visual>
       </link>
   
+    <!--%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MISCELLANEOUS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
     <joint name="sg90h_joint" type="fixed">
       <parent link="supporto_sg90"/>
       <child link="sg90h"/>
@@ -727,6 +791,7 @@
     </joint>
 
     <link name="sg90h">
+      <!-- <pose>-0.012 0.001 0.153 0 0 0</pose> -->
       <inertial>
           <origin xyz="0 0 0" />
           <mass value="2.8498940e-02" />
@@ -756,6 +821,7 @@
     </joint>
 
     <link name="sg90h_shaft">
+      <!-- <pose>-0.012 0.001 0.153 0 0 0</pose> -->
       <inertial>
           <origin xyz="0 0 0" />
           <mass value="2.8498940e-02" />
@@ -860,7 +926,201 @@
       </visual>
       </link>
     
-  
-       -->
+    <!-- JOINTS -->
+    <!-- <joint type='revolute' name='left_wheel_hinge'>
+      <pose>0 0 -0.03 0 0 0</pose>
+      <child>left_wheel</child>
+      <parent>cube_base</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint type='revolute' name='right_wheel_hinge'>
+      <pose>0 0 0.03 0 0 0</pose>
+      <child>right_wheel</child>
+      <parent>cube_base</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint type='fixed' name='BaseBoards_joint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>BaseBoards</child>
+      <parent>cube_base</parent>
+    </joint>
+
+    <joint type='fixed' name='piastra_anteriore_joint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>piastra_anteriore</child>
+      <parent>cube_base</parent>
+    </joint>
+
+    <joint type='fixed' name='supporto_sg90_joint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>supporto_sg90</child>
+      <parent>piastra_anteriore</parent>
+    </joint>
+
+    <joint type='fixed' name='RigthFrontForceJoint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>rightfront_force_sensor</child>
+      <parent>cube_base</parent>
+    </joint>
+   <gazebo>
+    <joint type='fixed' name='LaserScanner'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>laser_sensor</child>
+      <parent>cube_base</parent>
+    </joint>
+   </gazebo>
+    <joint type='fixed' name='LeftFrontForceJoint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>leftfront_force_sensor</child>
+      <parent>cube_base</parent>
+    </joint>
+
+    <joint type='fixed' name='LightSensorJoint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>LightSensor</child>
+      <parent>BaseBoards</parent>
+    </joint>
+
+    
+
+    <joint type='fixed' name='sg90h_joint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>sg90h</child>
+      <parent>supporto_sg90</parent>
+    </joint>
+
+
+    <joint type='fixed' name='sg90v_joint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>sg90v</child>
+      <parent>supporto_pitch_servo_2</parent>
+    </joint>
+
+    <joint name="sg90h_to_shaft" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <child>sg90h_shaft</child>
+      <parent>sg90h</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+    <joint name="sg90v_to_shaft" type="revolute">
+      <pose>0 0 0 0 0 0</pose>
+      <child>sg90v_shaft</child>
+      <parent>sg90v</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+          <friction>1</friction>
+      </axis>
+    </joint>
+
+    <joint name="shaft_to_SuppRS" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>supp_RS</child>
+      <parent>sg90v_shaft</parent>
+    </joint>
+
+    <joint type='fixed' name='RealSenseJoint'>
+      <pose>0 0 0 0 0 0</pose>
+      <child>RealSense</child>
+      <parent>supp_RS</parent>
+    </joint>
+    
+    <joint name="shaft_to_piastra_albero" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>supporto_piastra_albero</child>
+      <parent>sg90h_shaft</parent>
+    </joint>
+
+    <joint name="piastra_albero_to_pitch_servo1" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>supporto_pitch_servo_1</child>
+      <parent>supporto_piastra_albero</parent>
+    </joint>
+
+    <joint name="pitch_servo1_to_pitch_servo2" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>supporto_pitch_servo_2</child>
+      <parent>supporto_pitch_servo_1</parent>
+    </joint>
+
+    <joint name="pitch_servo1_to_pitch_servo2_noservo" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>supporto_pitch_servo_2_noservo</child>
+      <parent>supporto_pitch_servo_1</parent>
+    </joint>
+
+    <joint name="LattePanda_to_baseboards" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>LattePanda</child>
+      <parent>BaseBoards</parent>
+    </joint>
+
+    <joint name="Batteria_to_cube" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>batteria</child>
+      <parent>cube_base</parent>
+    </joint>
+
+    <joint name="K64F_to_BaseBoards" type="fixed">
+      <pose>0 0 0 0 0 0</pose>
+      <child>K64F</child>
+      <parent>BaseBoards</parent>
+    </joint> -->
+
+
+
+    <!-- PLUGINS -->
+    <!-- Using plugin from this directory-->
+    <!-- <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <odometrySource>world</odometrySource>
+        <publishOdomTF>true</publishOdomTF>
+        <robotBaseFrame>cube_base</robotBaseFrame>
+        <publishWheelTF>false</publishWheelTF>
+        <publishTf>true</publishTf>
+        <publishWheelJointState>true</publishWheelJointState>
+        <legacyMode>false</legacyMode>
+        <updateRate>30</updateRate>
+        <leftJoint>left_wheel_hinge</leftJoint>
+        <rightJoint>right_wheel_hinge</rightJoint>
+        <wheelSeparation>0.4</wheelSeparation>
+        <wheelDiameter>0.2</wheelDiameter>
+        <wheelAcceleration>1</wheelAcceleration>
+        <wheelTorque>10</wheelTorque>
+        <rosDebugLevel>na</rosDebugLevel>
+      </plugin> -->
+      
+     
+      <!-- Using plugin from this directory-->
+      <!-- <plugin name="ActuatorPlugin_horizontal" filename="libactuator_plugin.so">
+        <motor_joint>sg90h_to_shaft</motor_joint> 
+        <commandTopicServo>cmd_servo</commandTopicServo>
+        <servoTorque>10</servoTorque>
+        <servoodometryTopic>odom</servoodometryTopic>
+        <servoodometryFrame>odom</servoodometryFrame>
+        <diameter_servo>0.004</diameter_servo>
+        <servoAcceleration>1</servoAcceleration>
+        <updateRatesg90>30</updateRatesg90>
+        <robotNamespace>sg90h</robotNamespace>
+        <servoodometrySource>world</servoodometrySource>
+        <servoBaseFrame>sg90h</servoBaseFrame>
+        <publishServoTF>true</publishServoTF>
+        <publishTF>true</publishTF>
+        <publishservoOdomTF>true</publishservoOdomTF>
+        <rosDebugLevel>na</rosDebugLevel> 
+      </plugin> -->
+
+      <!-- Using plugin from this directory-->
+      
 
 </robot>

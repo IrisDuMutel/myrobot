@@ -34,12 +34,12 @@
         </geometry>
       </visual>
       
-      <!-- <visual>
+      <visual>
         <origin xyz="0.02 0 -0.01" rpy="1.5707 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Devastator.dae"/>
         </geometry>
-      </visual> -->
+      </visual>
 
       <collision name = "caster_collision">
       <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
@@ -94,8 +94,8 @@
     <joint name="wheel_left_joint" type="continuous">
       <parent link="cube_base"/>
       <child link="wheel_left_link"/>
-      <origin xyz="0. 0.087 0.06825" rpy="0 1.5707 1.5707"/>
-      <axis xyz="0 0 1"/>
+      <origin xyz="0. 0.087 -0.011" rpy="0 1.5707 1.5707"/>
+      <axis xyz="1 0 0"/>
     </joint>
 
     <link name="wheel_left_link">
@@ -127,8 +127,8 @@
     <joint name="wheel_right_joint" type="continuous">
       <parent link="cube_base"/>
       <child link="wheel_right_link"/>
-      <origin xyz="0. -0.087 0.06825" rpy="0 0 0"/>
-      <axis xyz="0 0 1"/>
+      <origin xyz="0. -0.087 -0.011" rpy="0 0 0"/>
+      <axis xyz="1 0 0"/>
     </joint>
       
     <link name="wheel_right_link">
@@ -155,10 +155,10 @@
       </visual>
     </link>
 
-    <!-- <joint name="BaseBoards_joint" type="fixed">
+    <joint name="BaseBoards_joint" type="fixed">
       <parent link="cube_base"/>
       <child link="BaseBoards"/>
-      <origin xyz="-0.01 0 0.1435" rpy="0 0 0"/>
+      <origin xyz="-0.01 0 0.0635" rpy="0 0 0"/>
     </joint>
 
     <link name="BaseBoards">
@@ -179,7 +179,12 @@
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/BaseBoards.dae"/>
         </geometry>
       </visual>
-      
+       <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.16 0.122315 0.002"/>
+        </geometry>
+      </visual>
 
       <collision name = "stick1_collision">
       
@@ -238,12 +243,12 @@
         </geometry>
       </visual>
     </link>
-     -->
+    
 
-    <!-- <joint name="piastra_anteriore_joint" type="fixed">
-      <parent link="BaseBoards"/>
+    <joint name="piastra_anteriore_joint" type="fixed">
+      <parent link="cube_base"/>
       <child link="piastra_anteriore"/>
-      <origin xyz="0.078 -0.004 0.104" rpy="0 0 0"/>
+      <origin xyz="0.078 -0.004 0.024" rpy="0 0 0"/>
     </joint>
     
     <link name="piastra_anteriore">
@@ -259,18 +264,24 @@
           <box size="0.086 0.079320 0.003"/>
         </geometry>
       </collision>
-      <visual>
+      <!-- <visual>
+        <origin xyz="0 0 0 " rpy="0 0 0"/>
+        <geometry>
+          <box size="0.086 0.079320 0.003"/>
+        </geometry>
+      </visual>-->
+      <visual> 
         <origin xyz="0.025 0 -0.0015 " rpy="0 0 1.5707"/>
         <geometry>
-          <mesh filename="package:/myrobot/models/myroboturdf/meshes/Supports/Piastra_anteriore2.dae" scale="1 1 1"/>
+          <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Piastra_anteriore2.dae"/>
         </geometry>
       </visual>
-    </link> -->
+    </link>
     
-    <!-- <joint name="supporto_sg90_joint" type="fixed">
+    <joint name="supporto_sg90_joint" type="fixed">
       <parent link="piastra_anteriore"/>
       <child link="supporto_sg90"/>
-      <origin xyz="0.094 -0.004 0.0995" rpy="0 0 0"/>
+      <origin xyz="0.024 0 -0.005" rpy="0 0 0"/>
     </joint>
     
     <link name="supporto_sg90">
@@ -289,11 +300,17 @@
       <visual>
         <origin xyz="-0.003 0.015 0" rpy="0 0 1.5707"/>
         <geometry>
-          <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Supporto_sg90_base.dae" scale="1 1 1"/>
+          <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Supporto_sg90_base.dae"/>
         </geometry>
       </visual>
+      <!-- <visual>
+        <origin xyz="0 0 0 " rpy="0 0 0"/>
+        <geometry>
+          <box size="0.027 0.049 0.004"/>
+        </geometry>
+      </visual> -->
     </link>
-     -->
+    
     <!-- <joint name="supporto_piastra_albero_joint" type="fixed">
       <parent link="sg90h_shaft"/>
       <child link="supporto_piastra_albero"/>
@@ -569,10 +586,10 @@
         </visual>
     </link> -->
 
-    <!-- <joint name="rightfront_force_sensor_joint" type="fixed">
+    <joint name="rightfront_force_sensor_joint" type="fixed">
       <parent link="cube_base"/>
       <child link="rightfront_force_sensor"/>
-      <origin xyz="0.11 0.05 0.07" rpy="0 0 0"/>
+      <origin xyz="0.11 0.05 0" rpy="0 0 0"/>
     </joint>    
 
     <link name="rightfront_force_sensor">
@@ -580,19 +597,18 @@
           <geometry>
             <box size="0.05 0.01 0.01"/>
           </geometry>
-          
         </visual>
         <collision name="collision_rightfront_collision">
           <geometry>
             <box size="0.05 0.01 0.01"/>
           </geometry>
         </collision>
-    </link> -->
+    </link>
 
-    <!-- <joint name="leftfront_force_sensor_joint" type="fixed">
+    <joint name="leftfront_force_sensor_joint" type="fixed">
       <parent link="cube_base"/>
       <child link="leftfront_force_sensor"/>
-      <origin xyz="0.11 -0.05 0.07" rpy="0 0 0"/>
+      <origin xyz="0.11 -0.05 0" rpy="0 0 0"/>
     </joint>    
 
     <link name="leftfront_force_sensor">
@@ -600,20 +616,19 @@
           <geometry>
             <box size="0.05 0.01 0.01"/>
           </geometry>
-   
         </visual>
         <collision name="collision_leftfront_collision">
           <geometry>
             <box size="0.05 0.01 0.01"/>
           </geometry>
         </collision>
-    </link> -->
+    </link>
     
 
-    <!-- <joint name="LightSensor_joint" type="fixed">
+    <joint name="LightSensor_joint" type="fixed">
       <parent link="BaseBoards"/>
       <child link="LightSensor"/>
-      <origin xyz="0.055 0.04 0.153 " rpy="0 -1.5707 0"/>
+      <origin xyz="0.055 0.04 0.008 " rpy="0 -1.5707 0"/>
     </joint>    
 
     <link name="LightSensor">
@@ -627,7 +642,7 @@
         <visual name="visual">
           <origin xyz="0.001 0 0" rpy=" 0 0 -1.5707"/>
           <geometry>
-            <mesh filename="package://myrobot/models/myroboturdf/meshes/Sensors/photodiode-Hamamatsu-S1223-01_BL.dae" scale="0.001 0.001 0.001"/>
+            <mesh filename="package://myrobot/models/myroboturdf/meshes/Sensors/photodiode-Hamamatsu-S1223-01_BL.dae"/>
           </geometry>
         </visual>
         <collision name="collision">
@@ -667,7 +682,7 @@
     <joint name="LattePanda_joint" type="fixed">
       <parent link="BaseBoards"/>
       <child link="LattePanda"/>
-      <origin xyz="-0.012 0.001 0.153" rpy="0 0 0"/>
+      <origin xyz="-0.012 0.001 0.0.002" rpy="0 0 0"/>
     </joint>
 
     <link name="LattePanda">
@@ -683,11 +698,15 @@
             <box size="0.12 0.08 0.01"/>
           </geometry>
       </collision> 
-        
-      <visual name="visual">
-          <origin xyz="0.001 0 0" rpy=" 0 0 -1.5707"/>
+      <!-- <visual name="visual">
           <geometry>
-            <mesh filename="package://myrobot/models/myroboturdf/meshes/Boards/LattePanda_delta.dae" scale="0.001 0.001 0.001"/>
+            <box size="0.12 0.08 0.01"/>
+          </geometry>
+      </visual>  -->
+      <visual name="visual">
+          <origin xyz="0.001 0 0" rpy="1.5707 0 0 "/>
+          <geometry>
+            <mesh filename="package://myrobot/models/myroboturdf/meshes/Boards/LattePanda_delta.dae"/>
           </geometry>
       </visual>
       </link>
@@ -695,7 +714,7 @@
     <joint name="K64F_joint" type="fixed">
       <parent link="BaseBoards"/>
       <child link="K64F"/>
-      <origin xyz="0 0 0.138" rpy="3.1415 0 1.5707"/>
+      <origin xyz="0 0 -0.003" rpy="3.1415 0 1.5707"/>
     </joint>
 
     <link name="K64F">
@@ -710,12 +729,17 @@
           <geometry>
             <box size="0.085 0.055 0.015"/>
           </geometry>
-      </collision> 
+      </collision>
+      <!-- <visual name="visual">
+          <geometry>
+            <box size="0.085 0.055 0.015"/>
+          </geometry>
+      </visual>   -->
         
       <visual name="visual">
           <origin xyz="-0.037 -0.027 -0.007" rpy=" 0 0 0"/>
           <geometry>
-            <mesh filename="package://myrobot/models/myroboturdf/meshes/Boards/K64F.dae" scale="0.001 0.001 0.001"/>
+            <mesh filename="package://myrobot/models/myroboturdf/meshes/Boards/K64F.dae"/>
           </geometry>
       </visual>
       </link>
@@ -723,7 +747,7 @@
     <joint name="sg90h_joint" type="fixed">
       <parent link="supporto_sg90"/>
       <child link="sg90h"/>
-      <origin xyz="0.106 -0.005 0.092" rpy="1.5707 0 0"/>
+      <origin xyz="0.003 -0.00 -0.01" rpy="1.5707 0 0"/>
     </joint>
 
     <link name="sg90h">
@@ -739,11 +763,15 @@
             <box size=".012 0.022 0.022"/>
           </geometry>
       </collision> 
-        
+      <visual name="collision_sg90h">
+          <geometry>
+            <box size=".012 0.022 0.022"/>
+          </geometry>
+      </visual> 
       <visual name="visual">
           <origin xyz="0 -0.011 0" rpy=" 0 0 0"/>
           <geometry>
-            <mesh filename="package://myrobot/models/myroboturdf/meshes/Misc/sg90.dae" scale="0.001 0.001 0.001"/>
+            <mesh filename="package://myrobot/models/myroboturdf/meshes/Misc/sg90.dae"/>
           </geometry>
       </visual>
       </link>
@@ -751,7 +779,7 @@
     <joint name="sg90h_shaft_joint" type="continuous">
       <parent link="sg90h"/>
       <child link="sg90h_shaft"/>
-      <origin xyz="0.106 0.0005 0.106" rpy="0 0 0"/>
+      <origin xyz="0.0 0 0.02" rpy="1.5707 0 0"/>
       <axis xyz="0 0 1"/>
     </joint>
 
@@ -776,7 +804,7 @@
       </visual>
     </link>
 
-    <joint name="sg90v_joint" type="fixed">
+    <!-- <joint name="sg90v_joint" type="fixed">
       <parent link="supporto_pitch_servo_2"/>
       <child link="sg90v"/>
       <origin xyz="0.106 0.06595 0.136" rpy="3.1415 0 0"/>

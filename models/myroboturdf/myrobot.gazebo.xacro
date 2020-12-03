@@ -40,7 +40,7 @@
         </clip>
       </camera>
     </sensor>  
-  </gazebo>
+  </gazebo>-->
 
   <gazebo reference="rightfront_force_sensor">
     <sensor name="rf_force_sensor" type="contact">
@@ -63,7 +63,7 @@
   </gazebo>
 
 
-  <gazebo reference="LightSensor">
+<gazebo reference="LightSensor">
     <sensor name='camera' type='depth'>
       <camera name='camera'>
         <horizontal_fov>1.047</horizontal_fov>
@@ -104,7 +104,7 @@
         </noise>
       </ray>
     </sensor>
-  </gazebo> -->
+  </gazebo>
 
 <!-- PLUGINS -->
   <!-- <gazebo>
@@ -135,7 +135,7 @@
   </gazebo> -->
 
   <!-- <gazebo>
-    <plugin name="gazebo_ros_bumper_controller" filename="libcontact_plugin.so">
+    <plugin name="gazebo_right_bumper_controller" filename="libcontact_plugin.so">
       <alwaysOn>true</alwaysOn>
       <updateRate>30.0</updateRate>
       <bumperTopicName>/force/rightfront_sensor</bumperTopicName>
@@ -144,7 +144,7 @@
   </gazebo>
 
   <gazebo>
-    <plugin name="gazebo_ros_bumper_controller" filename="libcontact_plugin.so">
+    <plugin name="gazebo_left_bumper_controller" filename="libcontact_plugin.so">
       <alwaysOn>true</alwaysOn>
       <updateRate>30.0</updateRate>
       <bumperTopicName>/force/leftfront_sensor</bumperTopicName>
@@ -153,7 +153,7 @@
   </gazebo> -->
 
   <!-- <gazebo>
-    <plugin name="myrobot" filename="liblight_sensor_plugin.so">
+    <plugin name="light_sensor_plugin" filename="liblight_sensor_plugin.so">
       <cameraName>camera2</cameraName>
       <alwaysOn>true</alwaysOn>
       <updateRate>0.0</updateRate>
@@ -171,14 +171,14 @@
       <distortion_t1>0.0</distortion_t1>
       <distortion_t2>0.0</distortion_t2>
       <pointCloudCutoff>0.4</pointCloudCutoff>
-      <robotNamespace>/</robotNamespace>
+      <robotNamespace>base_footprint</robotNamespace>
     </plugin> 
   </gazebo> -->
 
   <!-- <gazebo>
     <plugin name="gazebo_ros_lds_lfcd_controller" filename="libgazebo_ros_laser.so">
       <topicName>scan</topicName>
-      <frameName>cube_base</frameName>
+      <frameName>laser_scan</frameName>
     </plugin>
   </gazebo> -->
 

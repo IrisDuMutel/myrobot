@@ -6,6 +6,7 @@
 
     <!-- LINKS --> 
     <link name="base_footprint"/>
+
     <joint name="base_joint" type="fixed">
       <parent link="base_footprint"/>
       <child link="cube_base"/>
@@ -82,6 +83,7 @@
           </friction>
         </surface> 
       </collision>
+
       <visual name="caster_collision2">
       <origin xyz="0.05 0 -0.03" rpy="0 0 0"/>
         <geometry>
@@ -91,11 +93,11 @@
 
     </link>
   
-    <joint name="wheel_left_joint" type="continuous">
+    <joint name="left_wheel_hinge" type="continuous">
       <parent link="cube_base"/>
       <child link="wheel_left_link"/>
       <origin xyz="0. 0.087 -0.011" rpy="0 1.5707 1.5707"/>
-      <axis xyz="1 0 0"/>
+      <axis xyz=" 0 0 1"/>
     </joint>
 
     <link name="wheel_left_link">
@@ -124,11 +126,11 @@
        
     </link>
 
-    <joint name="wheel_right_joint" type="continuous">
+    <joint name="rigth_wheel_hinge" type="continuous">
       <parent link="cube_base"/>
       <child link="wheel_right_link"/>
       <origin xyz="0. -0.087 -0.011" rpy="0 0 0"/>
-      <axis xyz="1 0 0"/>
+      <axis xyz="0 1 0"/>
     </joint>
       
     <link name="wheel_right_link">
@@ -153,6 +155,7 @@
           <cylinder length="0.035" radius="0.06825"/>
         </geometry>
       </visual>
+
     </link>
 
     <joint name="BaseBoards_joint" type="fixed">
@@ -179,12 +182,12 @@
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/BaseBoards.dae"/>
         </geometry>
       </visual>
-       <visual>
+       <!-- <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.16 0.122315 0.002"/>
         </geometry>
-      </visual>
+      </visual> -->
 
       <collision name = "stick1_collision">
       
@@ -311,10 +314,10 @@
       </visual> -->
     </link>
     
-    <!-- <joint name="supporto_piastra_albero_joint" type="fixed">
+    <joint name="supporto_piastra_albero_joint" type="fixed">
       <parent link="sg90h_shaft"/>
       <child link="supporto_piastra_albero"/>
-      <origin xyz="0.106 0.0005 0.109" rpy="0 0 0"/>
+      <origin xyz="0 0 -0.005" rpy="0 0 0"/>
     </joint>
 
     <link name="supporto_piastra_albero">
@@ -330,14 +333,19 @@
           <cylinder length="0.004" radius="0.008"/>
         </geometry>
       </collision>
+      <!-- <visual>
+        <origin xyz="0 0 0 " rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.004" radius="0.008"/>
+        </geometry>
+      </visual> -->
       <visual>
         <origin xyz="0 0 -0.002" rpy="1.5707 0 4.71238"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Supporto_piastra_albero.dae" scale="1 1 1"/>
         </geometry>
       </visual>
-
-    </link> -->
+    </link>
 
     <!-- <joint name="supporto_pitch_servo_1_joint" type="fixed">
       <parent link="supporto_piastra_albero"/>
@@ -779,7 +787,7 @@
     <joint name="sg90h_shaft_joint" type="continuous">
       <parent link="sg90h"/>
       <child link="sg90h_shaft"/>
-      <origin xyz="0.0 0 0.02" rpy="1.5707 0 0"/>
+      <origin xyz="-0.0 0.015 -0.005" rpy="1.5707 0 0"/>
       <axis xyz="0 0 1"/>
     </joint>
 

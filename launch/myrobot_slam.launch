@@ -6,12 +6,18 @@
   <arg name="open_rviz" default="true"/>
 
   <!-- Myrobot -->
-  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
-    <arg name="model" value="$(arg model)" />
-  </include>
+  <arg name="multi_robot_name" default=""/>
+
+  <arg name="urdf_file" default="$(find xacro)/xacro --inorder '$(find myrobot)/models/myroboturdf/$(arg model).urdf.xacro'" />
+  <param name="robot_description" command="$(arg urdf_file)" />
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" value="$(arg multi_robot_name)"/>
+  </node>
 
   <!-- SLAM: Gmapping -->
-  <include file="$(find myrobot)/launch//$(arg model)_gmapping.launch">
+  <include file="$(find myrobot)/launch/myrobot_gmapping.launch">
     <arg name="model" value="$(arg model)"/>
     <arg name="configuration_basename" value="$(arg configuration_basename)"/>
   </include>
@@ -21,4 +27,5 @@
     <node pkg="rviz" type="rviz" name="rviz" required="true"
           args="-d $(find myrobot)/rviz/laser_scan.rviz"/>
   </group>
+  
 </launch>

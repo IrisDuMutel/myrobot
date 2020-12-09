@@ -35,12 +35,12 @@
         </geometry>
       </visual>
       
-      <visual>
+      <!-- <visual>
         <origin xyz="0.02 0 -0.01" rpy="1.5707 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Devastator.dae"/>
         </geometry>
-      </visual>
+      </visual> -->
 
       <collision name = "caster_collision">
       <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
@@ -176,18 +176,18 @@
           <box size="0.16 0.122315 0.002"/>
         </geometry>
       </collision>
-      <visual>
+      <!-- <visual>
         <origin xyz="0.05 0 0" rpy="0 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/BaseBoards.dae"/>
         </geometry>
-      </visual>
-       <!-- <visual>
+      </visual> -->
+       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.16 0.122315 0.002"/>
         </geometry>
-      </visual> -->
+      </visual>
 
       <collision name = "stick1_collision">
       
@@ -267,18 +267,18 @@
           <box size="0.086 0.079320 0.003"/>
         </geometry>
       </collision>
-      <!-- <visual>
+      <visual>
         <origin xyz="0 0 0 " rpy="0 0 0"/>
         <geometry>
           <box size="0.086 0.079320 0.003"/>
         </geometry>
-      </visual>-->
-      <visual> 
+      </visual>
+      <!-- <visual> 
         <origin xyz="0.025 0 -0.0015 " rpy="0 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Piastra_anteriore2.dae"/>
         </geometry>
-      </visual>
+      </visual> -->
     </link>
     
     <joint name="supporto_sg90_joint" type="fixed">
@@ -300,18 +300,18 @@
           <box size="0.027 0.049 0.004"/>
         </geometry>
       </collision>
-      <visual>
+      <!-- <visual>
         <origin xyz="-0.003 0.015 0" rpy="0 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Supporto_sg90_base.dae"/>
         </geometry>
-      </visual>
-      <!-- <visual>
+      </visual> -->
+      <visual>
         <origin xyz="0 0 0 " rpy="0 0 0"/>
         <geometry>
           <box size="0.027 0.049 0.004"/>
         </geometry>
-      </visual> -->
+      </visual>
     </link>
     
     <joint name="supporto_piastra_albero_joint" type="fixed">
@@ -333,18 +333,18 @@
           <cylinder length="0.004" radius="0.008"/>
         </geometry>
       </collision>
-      <!-- <visual>
+      <visual>
         <origin xyz="0 0 0 " rpy="0 0 0"/>
         <geometry>
           <cylinder length="0.004" radius="0.008"/>
         </geometry>
-      </visual> -->
-      <visual>
+      </visual>
+      <!-- <visual>
         <origin xyz="0 0 -0.002" rpy="1.5707 0 4.71238"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Supporto_piastra_albero.dae" scale="1 1 1"/>
         </geometry>
-      </visual>
+      </visual> -->
     </link>
 
     <!-- <joint name="supporto_pitch_servo_1_joint" type="fixed">
@@ -647,10 +647,16 @@
                    iyy="1.1192413e-05" iyz="-1.4400107e-11"
                    izz="2.0712558e-05" />
         </inertial>
-        <visual name="visual">
+        <!-- <visual name="visual">
           <origin xyz="0.001 0 0" rpy=" 0 0 -1.5707"/>
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Sensors/photodiode-Hamamatsu-S1223-01_BL.dae"/>
+          </geometry>
+        </visual> -->
+        <visual name="visual">
+          <origin xyz="0.001 0 0" rpy=" 0 0 -1.5707"/>
+          <geometry>
+            <box size="0.005 0.01 0.01"/>
           </geometry>
         </visual>
         <collision name="collision">
@@ -682,15 +688,11 @@
           </geometry>
         </collision>    
     </link>
-
-
- 
-
     
     <joint name="LattePanda_joint" type="fixed">
       <parent link="BaseBoards"/>
       <child link="LattePanda"/>
-      <origin xyz="-0.012 0.001 0.0.002" rpy="0 0 0"/>
+      <origin xyz="-0.012 0.001 0.002" rpy="0 0 0"/>
     </joint>
 
     <link name="LattePanda">
@@ -706,17 +708,17 @@
             <box size="0.12 0.08 0.01"/>
           </geometry>
       </collision> 
-      <!-- <visual name="visual">
+      <visual name="visual">
           <geometry>
             <box size="0.12 0.08 0.01"/>
           </geometry>
-      </visual>  -->
-      <visual name="visual">
+      </visual> 
+      <!-- <visual name="visual">
           <origin xyz="0.001 0 0" rpy="1.5707 0 0 "/>
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Boards/LattePanda_delta.dae"/>
           </geometry>
-      </visual>
+      </visual> -->
       </link>
 
     <joint name="K64F_joint" type="fixed">
@@ -738,18 +740,18 @@
             <box size="0.085 0.055 0.015"/>
           </geometry>
       </collision>
-      <!-- <visual name="visual">
+      <visual name="visual">
           <geometry>
             <box size="0.085 0.055 0.015"/>
           </geometry>
-      </visual>   -->
+      </visual>  
         
-      <visual name="visual">
+      <!-- <visual name="visual">
           <origin xyz="-0.037 -0.027 -0.007" rpy=" 0 0 0"/>
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Boards/K64F.dae"/>
           </geometry>
-      </visual>
+      </visual> -->
       </link>
   
     <joint name="sg90h_joint" type="fixed">
@@ -776,12 +778,12 @@
             <box size=".012 0.022 0.022"/>
           </geometry>
       </visual> 
-      <visual name="visual">
+      <!-- <visual name="visual">
           <origin xyz="0 -0.011 0" rpy=" 0 0 0"/>
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Misc/sg90.dae"/>
           </geometry>
-      </visual>
+      </visual> -->
       </link>
 
     <joint name="sg90h_shaft_joint" type="continuous">

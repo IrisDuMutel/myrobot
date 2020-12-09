@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<robot name="testmodel" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find myrobot)/models/testmodel/testmodel.gazebo.xacro"/>
+
+
+    <!-- LINKS --> 
+    <link name="base_footprint"/>
+
+    <joint name="base_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="cube_base"/>
+      <origin xyz="0.0 0.0 0.08" rpy="0 0 0"/>
+    </joint>
+
+    <link name="cube_base">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="8.2573504e-01"/>
+        <inertia ixx="2.2124416e-03" ixy="-1.2294101e-05" ixz="3.4938785e-05"
+                 iyy="2.1193702e-03" iyz="-5.0120904e-06"
+                 izz="2.0064271e-03" />
+      </inertial>
+      
+      <collision name="cube_base_collision">
+        <origin xyz="0 0 0 " rpy="0 0 0"/>
+        <geometry>
+          <box size="0.19 0.134 0.047"/>
+        </geometry>
+      </collision>
+     
+     <visual name="cube_base_visual">
+        <geometry>
+          <box size="0.19 0.134 0.047"/>
+        </geometry>
+      </visual>
+      
+      <collision name = "caster_collision">
+      <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.05"/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+              <slip1>0.1</slip1>
+              <slip2>0.1</slip2>
+            </ode>
+          </friction>
+        </surface> 
+      </collision>
+
+      <visual name="caster_visual">
+      <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.05"/>
+        </geometry>
+      </visual>
+
+
+      <collision name = 'caster2_collision'>
+      <origin xyz="0.05 0 -0.03" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.05"/>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+              <slip1>0.1</slip1>
+              <slip2>0.1</slip2>
+            </ode>
+          </friction>
+        </surface> 
+      </collision>
+
+      <visual name="caster2_visual">
+      <origin xyz="0.05 0 -0.03" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.05"/>
+        </geometry>
+      </visual>
+     
+
+    </link>
+
+    <joint name="wheel_left_joint" type="continuous">
+      <parent link="cube_base"/>
+      <child link="wheel_left_link"/>
+      <origin xyz="0. 0.087 -0.013" rpy="-1.57 0 0"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="wheel_left_link">
+      <inertial>
+        <mass value="0.2"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <inertia ixx="0.00052666666" ixy="0" ixz="0" iyy="0.00052666666" iyz="0" izz="0.001"/>
+      </inertial>
+      
+        
+      <collision name="wheel_left_link_collision">
+        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <geometry>
+          <cylinder length="0.035" radius="0.06825"/>
+        </geometry>
+      </collision>
+      
+
+      <visual name="wheel_left_link_visual">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.035" radius="0.06825"/>
+        </geometry>
+      </visual>
+
+       
+    </link>
+
+    <joint name="wheel_right_joint" type="continuous">
+      <parent link="cube_base"/>
+      <child link="wheel_right_link"/>
+      <origin xyz="0. -0.087 -0.013" rpy="-1.57 0 0"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+      
+    <link name="wheel_right_link">
+      <inertial>
+        <mass value="0.2"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <inertia ixx="0.00052666666" ixy="0" ixz="0" iyy="0.00052666666" iyz="0" izz="0.001"/>
+      </inertial>
+      
+        
+      <collision name="wheel_right_link_collision">
+        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+        <geometry>
+          <cylinder length="0.035" radius="0.06825"/>
+        </geometry>
+      </collision>
+      
+
+      <visual name="wheel_right_link_visual">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.035" radius="0.06825"/>
+        </geometry>
+      </visual>
+
+    </link>
+
+
+
+
+
+</robot>

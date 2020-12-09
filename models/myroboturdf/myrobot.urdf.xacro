@@ -28,18 +28,18 @@
         </geometry>
       </collision>
      
-     <visual name="cube_base_visual">
+     <!-- <visual name="cube_base_visual">
         <geometry>
           <box size="0.19 0.134 0.047"/>
         </geometry>
-      </visual>
+      </visual> -->
 
-      <!-- <visual>
+      <visual name="cube_base_visual">
         <origin xyz="0.02 0 -0.01" rpy="1.5707 0 1.5707"/>
         <geometry>
-          <mesh filename="package://myrobot/models/myroboturdf/meshes/Devastator.dae"/>
+          <mesh filename="package://myrobot/models/myroboturdf/meshes/Devastator.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-      </visual> -->
+      </visual>
 
       <collision name = "caster_collision">
       <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
@@ -58,12 +58,12 @@
         </surface> 
       </collision>
 
-      <visual name="caster_visual">
+      <!-- <visual name="caster_visual">
       <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
         <geometry>
           <sphere radius="0.05"/>
         </geometry>
-      </visual>
+      </visual> -->
 
 
       <collision name = 'caster2_collision'>
@@ -82,13 +82,13 @@
           </friction>
         </surface> 
       </collision>
-
-      <visual name="caster2_visual">
+ 
+     <!-- <visual name="caster2_visual">
       <origin xyz="0.05 0 -0.03" rpy="0 0 0"/>
         <geometry>
           <sphere radius="0.05"/>
         </geometry>
-      </visual>
+      </visual> -->
      
 
     </link>
@@ -109,19 +109,18 @@
       
         
       <collision name="wheel_left_link_collision">
-        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
         <geometry>
           <cylinder length="0.035" radius="0.06"/>
         </geometry>
       </collision>
       
 
-      <visual name="wheel_left_link_visual">
+      <!-- <visual name="wheel_left_link_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <cylinder length="0.035" radius="0.06"/>
         </geometry>
-      </visual>
+      </visual> -->
 
        
     </link>
@@ -142,19 +141,18 @@
       
         
       <collision name="wheel_right_link_collision">
-        <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
         <geometry>
           <cylinder length="0.035" radius="0.06"/>
         </geometry>
       </collision>
       
 
-      <visual name="wheel_right_link_visual">
+      <!-- <visual name="wheel_right_link_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <cylinder length="0.035" radius="0.06"/>
         </geometry>
-      </visual>
+      </visual> -->
 
     </link>
 
@@ -172,18 +170,18 @@
           <box size="0.16 0.122315 0.002"/>
         </geometry>
       </collision>
-      <!-- <visual  name="BaseBoards_visual">
+      <visual  name="BaseBoards_visual">
         <origin xyz="0.05 0 0" rpy="0 0 1.5707"/>
         <geometry>
-          <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/BaseBoards.dae"/>
+          <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/BaseBoards.STL" scale="0.001 0.001 0.001"/>
         </geometry>
-      </visual> -->
-       <visual name="BaseBoards_visual">
+      </visual>
+       <!-- <visual name="BaseBoards_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.16 0.122315 0.002"/>
         </geometry>
-      </visual>
+      </visual> -->
 
       <collision name = "stick1_collision">
       
@@ -265,12 +263,12 @@
           <box size="0.086 0.079320 0.003"/>
         </geometry>
       </visual>
-      <!-- <visual> 
+      <visual> 
         <origin xyz="0.025 0 -0.0015 " rpy="0 0 1.5707"/>
         <geometry>
-          <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Piastra_anteriore2.dae"/>
+          <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Piastra_anteriore2.stl"/>
         </geometry>
-      </visual> -->
+      </visual>
     </link>
     
     <joint name="supporto_sg90_joint" type="fixed">

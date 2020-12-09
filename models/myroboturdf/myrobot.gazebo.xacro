@@ -23,6 +23,29 @@
     <maxVel>0.1</maxVel>
     <fdir1>1 0 0</fdir1>
   </gazebo>
+  
+   <gazebo>
+    <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <odometrySource>world</odometrySource>
+        <publishOdomTF>true</publishOdomTF>
+        <robotBaseFrame>base_footprint</robotBaseFrame>
+        <publishWheelTF>false</publishWheelTF>
+        <publishTf>true</publishTf>
+        <publishWheelJointState>true</publishWheelJointState>
+        <legacyMode>false</legacyMode>
+        <updateRate>30</updateRate>
+        <leftJoint>left_wheel_hinge</leftJoint>
+        <rightJoint>right_wheel_hinge</rightJoint>
+        <wheelSeparation>0.4</wheelSeparation>
+        <wheelDiameter>0.2</wheelDiameter>
+        <wheelAcceleration>1</wheelAcceleration>
+        <wheelTorque>10</wheelTorque>
+        <rosDebugLevel>na</rosDebugLevel>
+    </plugin>
+  </gazebo>
 
   <!-- <gazebo reference="RealSense">
     <sensor name="camera" type="depth">
@@ -208,28 +231,7 @@
     </sensor>
   </gazebo>
 
-  <!-- <gazebo>
-    <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
-        <commandTopic>cmd_vel</commandTopic>
-        <odometryTopic>odom</odometryTopic>
-        <odometryFrame>odom</odometryFrame>
-        <odometrySource>world</odometrySource>
-        <publishOdomTF>true</publishOdomTF>
-        <robotBaseFrame>base_footprint</robotBaseFrame>
-        <publishWheelTF>false</publishWheelTF>
-        <publishTf>true</publishTf>
-        <publishWheelJointState>true</publishWheelJointState>
-        <legacyMode>false</legacyMode>
-        <updateRate>30</updateRate>
-        <leftJoint>left_wheel_hinge</leftJoint>
-        <rightJoint>right_wheel_hinge</rightJoint>
-        <wheelSeparation>0.4</wheelSeparation>
-        <wheelDiameter>0.2</wheelDiameter>
-        <wheelAcceleration>1</wheelAcceleration>
-        <wheelTorque>10</wheelTorque>
-        <rosDebugLevel>na</rosDebugLevel>
-    </plugin>
-  </gazebo> -->
+ 
 
   <!--<gazebo>
      <plugin name="ActuatorPlugin_horizontal" filename="libactuator_plugin.so">

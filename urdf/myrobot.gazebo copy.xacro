@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+<robot name="myrobot_sim" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <gazebo reference="cube_base">
+  </gazebo>
+  
+  <gazebo reference="wheel_left_link">
+    <mu1>0.1</mu1>
+    <mu2>0.1</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+  </gazebo>
+
+  <gazebo reference="wheel_right_link">
+    <mu1>0.1</mu1>
+    <mu2>0.1</mu2>
+    <kp>500000.0</kp>
+    <kd>10.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>0.1</maxVel>
+    <fdir1>1 0 0</fdir1>
+  </gazebo>
+
+  <!-- <gazebo reference="RealSense">
+    <sensor name="camera" type="depth">
+      <update_rate>20</update_rate>
+      <camera>
+        <horizontal_fov>1.5</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>100</far>
+        </clip>
+      </camera>
+    </sensor>  
+  </gazebo>-->
+
+  <gazebo reference="rightfront_force_sensor">
+    <sensor name="rf_force_sensor" type="contact">
+      <update_rate>30.0</update_rate>
+      <always_on>true</always_on>
+      <contact>
+        <collision>collision_rightfront_collision</collision>
+      </contact>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="leftfront_force_sensor">
+    <sensor name="lf_force_sensor" type="contact">
+      <update_rate>30.0</update_rate>
+      <always_on>true</always_on>
+      <contact>
+        <collision>collision_leftfront_collision</collision>
+      </contact>
+    </sensor>
+  </gazebo>
+
+
+<gazebo reference="LightSensor">
+    <sensor name='camera' type='depth'>
+      <camera name='camera'>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>320</width>
+          <height>240</height>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+      </camera>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="laser_sensor">
+    <sensor type='ray' name='laser'>
+      <pose>0 0 0 0 0 0</pose>      
+      <visualize>true</visualize>
+      <update_rate>5</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>0.0</min_angle>
+            <max_angle>6.28319</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.120</min>
+          <max>3.5</max>
+          <resolution>0.015</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+    </sensor>
+  </gazebo>
+
+<!-- PLUGINS -->
+  <!-- <gazebo>
+    <plugin name="camera_plugin" filename="libdepth_camera_plugin.so">
+      <baseline>0.2</baseline>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>0.0</updateRate>
+      <cameraName>camera_ir</cameraName>
+      <imageTopicName>/camera/color/image_raw</imageTopicName>
+      <cameraInfoTopicName>/camera/color/camera_info</cameraInfoTopicName>
+      <depthImageTopicName>/camera/depth/image_raw</depthImageTopicName>
+      <depthImageCameraInfoTopicName>/camera/depth/camera_info</depthImageCameraInfoTopicName>
+      <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
+      <frameName>RealSense</frameName>
+      <pointCloudCutoff>0.3</pointCloudCutoff>
+      <pointCloudCutoffMax>4.5</pointCloudCutoffMax>
+      <distortionK1>0</distortionK1>
+      <distortionK2>0</distortionK2>
+      <distortionK3>0</distortionK3>
+      <distortionT1>0</distortionT1>
+      <distortionT2>0</distortionT2>
+      <CxPrime>0</CxPrime>
+      <Cx>0</Cx>
+      <Cy>0</Cy>
+      <focalLength>0</focalLength>
+      <hackBaseline>0</hackBaseline>
+    </plugin>
+  </gazebo> -->
+
+  <!-- <gazebo>
+    <plugin name="gazebo_right_bumper_controller" filename="libcontact_plugin.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>30.0</updateRate>
+      <bumperTopicName>/force/rightfront_sensor</bumperTopicName>
+      <frameName>rightfront_force_sensor</frameName>
+    </plugin> 
+  </gazebo>
+
+  <gazebo>
+    <plugin name="gazebo_left_bumper_controller" filename="libcontact_plugin.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>30.0</updateRate>
+      <bumperTopicName>/force/leftfront_sensor</bumperTopicName>
+      <frameName>leftfront_force_sensor</frameName>
+    </plugin> 
+  </gazebo> -->
+
+  <!-- <gazebo>
+    <plugin name="light_sensor_plugin" filename="liblight_sensor_plugin.so">
+      <cameraName>camera2</cameraName>
+      <alwaysOn>true</alwaysOn>
+      <updateRate>0.0</updateRate>
+      <lightTopicName>lightdata</lightTopicName>
+      <imageTopicName>color/image_raw</imageTopicName>
+      <depthImageTopicName>depth/image_raw</depthImageTopicName>
+      <pointCloudTopicName>depth/points</pointCloudTopicName>
+      <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>
+      <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
+      <frameName>camera_depth_optical_frame</frameName>
+      <baseline>0.1</baseline>
+      <distortion_k1>0.0</distortion_k1>
+      <distortion_k2>0.0</distortion_k2>
+      <distortion_k3>0.0</distortion_k3>
+      <distortion_t1>0.0</distortion_t1>
+      <distortion_t2>0.0</distortion_t2>
+      <pointCloudCutoff>0.4</pointCloudCutoff>
+      <robotNamespace>base_footprint</robotNamespace>
+    </plugin> 
+  </gazebo> -->
+
+  <gazebo reference="laser_sensor">
+    <sensor type="ray" name="lds_lfcd_sensor">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>5</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>0.0</min_angle>
+            <max_angle>6.28319</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.120</min>
+          <max>3.5</max>
+          <resolution>0.015</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_lds_lfcd_controller" filename="libgazebo_ros_laser.so">
+        <topicName>scan</topicName>
+        <frameName>laser_sensor</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- <gazebo>
+    <plugin name="cube_moving_code" filename="libdiff_drive_plugin.so">
+        <commandTopic>cmd_vel</commandTopic>
+        <odometryTopic>odom</odometryTopic>
+        <odometryFrame>odom</odometryFrame>
+        <odometrySource>world</odometrySource>
+        <publishOdomTF>true</publishOdomTF>
+        <robotBaseFrame>base_footprint</robotBaseFrame>
+        <publishWheelTF>false</publishWheelTF>
+        <publishTf>true</publishTf>
+        <publishWheelJointState>true</publishWheelJointState>
+        <legacyMode>false</legacyMode>
+        <updateRate>30</updateRate>
+        <leftJoint>left_wheel_hinge</leftJoint>
+        <rightJoint>right_wheel_hinge</rightJoint>
+        <wheelSeparation>0.4</wheelSeparation>
+        <wheelDiameter>0.2</wheelDiameter>
+        <wheelAcceleration>1</wheelAcceleration>
+        <wheelTorque>10</wheelTorque>
+        <rosDebugLevel>na</rosDebugLevel>
+    </plugin>
+  </gazebo> -->
+
+  <!--<gazebo>
+     <plugin name="ActuatorPlugin_horizontal" filename="libactuator_plugin.so">
+        <motor_joint>sg90h_to_shaft</motor_joint> 
+        <commandTopicServo>cmd_servo</commandTopicServo>
+        <servoTorque>10</servoTorque>
+        <servoodometryTopic>odom</servoodometryTopic>
+        <servoodometryFrame>odom</servoodometryFrame>
+        <diameter_servo>0.004</diameter_servo>
+        <servoAcceleration>1</servoAcceleration>
+        <updateRatesg90>30</updateRatesg90>
+        <robotNamespace>sg90h</robotNamespace>
+        <servoodometrySource>world</servoodometrySource>
+        <servoBaseFrame>sg90h</servoBaseFrame>
+        <publishServoTF>true</publishServoTF>
+        <publishTF>true</publishTF>
+        <publishservoOdomTF>true</publishservoOdomTF>
+        <rosDebugLevel>na</rosDebugLevel> 
+      </plugin> 
+  </gazebo>-->
+
+ <!--  <gazebo>
+    <plugin name="ActuatorPlugin_vertical" filename="libactuator_plugin.so">
+        <motor_joint>sg90v_to_shaft</motor_joint> 
+        <commandTopicServo>cmd_servo</commandTopicServo>
+        <servoTorque>10</servoTorque>
+        <servoodometryTopic>odom</servoodometryTopic>
+        <servoodometryFrame>odom</servoodometryFrame>
+        <diameter_servo>0.004</diameter_servo>
+        <servoAcceleration>1</servoAcceleration>
+        <updateRatesg90>30</updateRatesg90>
+        <robotNamespace>sg90v</robotNamespace>
+        <servoodometrySource>world</servoodometrySource>
+        <servoBaseFrame>sg90v</servoBaseFrame>
+        <publishServoTF>true</publishServoTF>
+        <publishTF>true</publishTF>
+        <publishservoOdomTF>true</publishservoOdomTF>
+        <rosDebugLevel>na</rosDebugLevel> 
+      </plugin> 
+  </gazebo>-->
+  </robot>

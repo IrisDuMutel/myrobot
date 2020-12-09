@@ -2,6 +2,7 @@
 <robot name="myrobot_sim" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <gazebo reference="cube_base">
+  <material>Gazebo/Grey</material>
   </gazebo>
   
   <gazebo reference="wheel_left_link">
@@ -12,6 +13,7 @@
     <minDepth>0.001</minDepth>
     <maxVel>1</maxVel>
     <fdir1>1 0 0</fdir1>
+    <material>light_black</material>
   </gazebo>
 
   <gazebo reference="wheel_right_link">
@@ -22,8 +24,11 @@
     <minDepth>0.001</minDepth>
     <maxVel>1</maxVel>
     <fdir1>1 0 0</fdir1>
+    <material>Gazebo/FlatBlack</material>
   </gazebo>
   
+
+
    <gazebo>
     <plugin name="turtlebot3_burger_controller" filename="libdiff_drive_plugin.so">
       <commandTopic>cmd_vel</commandTopic>
@@ -45,6 +50,16 @@
       <wheelTorque>10</wheelTorque>
       <rosDebugLevel>na</rosDebugLevel>
     </plugin>
+  </gazebo>
+
+  <gazebo reference="sg90h_shaft">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  
+
+  <gazebo reference="supporto_pitch_servo_1">
+    <!-- <material>Gazebo/Blue</material> -->
   </gazebo>
 
   <!-- <gazebo reference="RealSense">
@@ -206,9 +221,9 @@
 
  
 
-  <!--<gazebo>
+  <gazebo>
      <plugin name="ActuatorPlugin_horizontal" filename="libactuator_plugin.so">
-        <motor_joint>sg90h_to_shaft</motor_joint> 
+        <motor_joint>sg90h_shaft_joint</motor_joint> 
         <commandTopicServo>cmd_servo</commandTopicServo>
         <servoTorque>10</servoTorque>
         <servoodometryTopic>odom</servoodometryTopic>
@@ -218,13 +233,13 @@
         <updateRatesg90>30</updateRatesg90>
         <robotNamespace>sg90h</robotNamespace>
         <servoodometrySource>world</servoodometrySource>
-        <servoBaseFrame>sg90h</servoBaseFrame>
+        <servoBaseFrame>supporto_sg90</servoBaseFrame>
         <publishServoTF>true</publishServoTF>
         <publishTF>true</publishTF>
         <publishservoOdomTF>true</publishservoOdomTF>
         <rosDebugLevel>na</rosDebugLevel> 
       </plugin> 
-  </gazebo>-->
+  </gazebo>
 
  <!--  <gazebo>
     <plugin name="ActuatorPlugin_vertical" filename="libactuator_plugin.so">

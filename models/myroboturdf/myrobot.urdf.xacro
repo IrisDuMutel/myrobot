@@ -367,7 +367,7 @@
     <joint name="supporto_pitch_servo_2_joint" type="fixed">
       <parent link="supporto_pitch_servo_1"/>
       <child link="supporto_pitch_servo_2"/>
-      <origin xyz="0.1 0 0" rpy="0 0 0"/>
+      <origin xyz="0 -0.059 -0.02" rpy="0 0 -1.5707"/>
     </joint>
 
     <link name='supporto_pitch_servo_2'>
@@ -377,75 +377,52 @@
         </geometry>
       </collision>
       <visual name='supporto_pitch_servo_2_visual'>
-      <origin xyz="0 0 0.02" rpy="0 3.1415 0" />
+      <origin xyz="-0.042 0 0.02" rpy="0 3.1415 0" />
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/supporto_pitch_servo_2.stl" scale="0.001 0.001 0.001"/>
         </geometry>
       </visual>
-      <visual name='supporto_pitch_servo_2_visual'>
+      <!-- <visual name='supporto_pitch_servo_2_visual'>
         <geometry>
           <box size="0.002 0.02 0.035"/>
         </geometry>
-      </visual>
+      </visual> -->
     </link>
     
-    <!-- <joint name="supporto_pitch_servo_2_noservo_joint" type="fixed">
+    <joint name="supporto_pitch_servo_2_noservo_joint" type="fixed">
       <parent link="supporto_pitch_servo_1"/>
       <child link="supporto_pitch_servo_2_noservo"/>
-      <origin xyz="0.106 -0.056 0.116" rpy="0 0 1.5707"/>
+      <origin xyz="0 0.059 -0.02" rpy="0 0 -1.5707"/>
     </joint>
 
-    <gazebo>
     <link name='supporto_pitch_servo_2_noservo'>
-      <inertial>
-        <mass>0.1</mass>
-        <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
-        <inertia>
-          <ixx>0.001</ixx> <ixy>0</ixy> <ixz>0</ixz>
-          <iyy>0.001</iyy> <iyz>0</iyz>
-          <izz>0.001</izz>
-        </inertia>
-      </inertial>
       <collision name='supporto_pitch_servo_2_noservo_collision'>
         <geometry>
-          <box>
-            <size>0.0075 0.035 0.002</size>
-          </box>
+          <box size="0.0075 0.035 0.002"/>
         </geometry>
       </collision>
+     <!-- <visual name='supporto_pitch_servo_2_noservo_visual'>
+      <origin xyz="0.085 0 0.02" rpy="0 3.1415 0" />
+        <geometry>
+          <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/supporto_pitch_servo_2_noservo.dae"/>
+            scale="0.001 0.001 0.001"/> 
+        </geometry>
+      </visual>-->
       <visual name='supporto_pitch_servo_2_noservo_visual'>
-      <pose>0.082 0 -0.001 0 0 3.1415</pose>
         <geometry>
-          <mesh><uri>model://myrobot/meshes/Supports/supporto_pitch_servo_2_noservo.dae</uri></mesh>
+          <box size="0.002 0.019 0.036"/>
         </geometry>
-        <material>  
-          <ambient>0 0 0.196 0.490</ambient>
-          <diffuse>0.043 0.043 0.043 1</diffuse>
-          <specular>.027 .027 .459 64</specular>
-          <emissive>0.047 0.035 0.286 1</emissive>
-        </material>
       </visual>
-
-      <collision name='vertical2_collision'>
-      <pose>-0.002375 0 0.018 0 0 0 </pose>
-        <geometry>
-          <box>
-            <size>0.002 0.019 0.036</size>
-          </box>
-        </geometry>
-      </collision>
      
     </link>
-    </gazebo> -->
 
 
-    <!-- <joint name="supp_RS_joint" type="fixed">
+    <joint name="supp_RS_joint" type="fixed">
       <parent link="sg90v_shaft"/>
       <child link="supp_RS"/>
-      <origin xyz="0.106 -0.002 0.128" rpy="0.128 0 0 3.1415"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
-    <gazebo>
     <link name='supp_RS'>
       <collision name='collision'>
         <geometry>
@@ -455,39 +432,44 @@
         </geometry>
       </collision>
      <visual name='supp_RS_visual'>
-      <pose>0.0 0.054 0.013 1.5707 0 1.5707</pose>
+     <origin xyz="0.0 0.054 0.013" rpy="1.5707 0 1.5707"/>
         <geometry>
-          <mesh><uri>model://myrobot/meshes/Supports/Supp_RS.dae</uri></mesh>
+          <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Supp_RS.dae"/>
         </geometry>
-        <material>  
-          <ambient>0 0 0.196 0.490</ambient>
-          <diffuse>0.043 0.043 0.043 1</diffuse>
-          <specular>.027 .027 .459 64</specular>
-          <emissive>0.047 0.035 0.286 1</emissive>
-        </material>
-       
+      </visual>
+      <visual name='visuall'>
+        <geometry>
+          <box size="0.016 0.105 0.0035"/>
+        </geometry>
       </visual>
        
       <collision name='vertical3_collision'>
-      <pose>0 0.05 0.01 0 0 0 </pose>
+      <origin xyz="0 0.05 0.01" rpy="0 0 0"/>
         <geometry>
-          <box>
-            <size>0.016 0.0035 0.02</size>
-          </box>
+          <box size="0.016 0.0035 0.02"/>
         </geometry>
       </collision>
+      <visual name='vertical3_visual'>
+      <origin xyz="0 0.05 0.01" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.016 0.0035 0.02"/>
+        </geometry>
+      </visual>
      
       <collision name='vertical4_collision'>
-      <pose>0 -0.05 0.01 0 0 0 </pose>
+      <origin xyz="0 -0.05 0.01" rpy="0 0 0"/>
         <geometry>
-          <box>
-            <size>0.016 0.0035 0.02</size>
-          </box>
+          <box size="0.016 0.0035 0.02"/>
         </geometry>
       </collision>
+      <visual name='vertical4_visual'>
+      <origin xyz="0 -0.05 0.01" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.016 0.0035 0.02"/>
+        </geometry>
+      </visual>
      
     </link>
-    </gazebo> -->
     
     
     
@@ -721,10 +703,10 @@
       </visual>
     </link>
 
-    <!-- <joint name="sg90v_joint" type="fixed">
+    <joint name="sg90v_joint" type="fixed">
       <parent link="supporto_pitch_servo_2"/>
       <child link="sg90v"/>
-      <origin xyz="0.106 0.06595 0.136" rpy="3.1415 0 0"/>
+      <origin xyz="0.011 0 0" rpy="0 0 1.5707"/>
     </joint>
 
     <link name="sg90v">
@@ -740,19 +722,24 @@
             <box size=".012 0.022 0.022"/>
           </geometry>
       </collision> 
-        
       <visual name="sg90v_visual">
-          <origin xyz="0 -0.011 0" rpy=" 0 0 0"/>
           <geometry>
-            <mesh filename="package://myrobot/models/myroboturdf/meshes/Misc/sg90.dae" scale="0.001 0.001 0.001"/>
+            <box size=".012 0.022 0.022"/>
           </geometry>
       </visual>
+        
+      <!-- <visual name="sg90v_visual">
+          <origin xyz="0 -0.011 0" rpy=" 0 0 0"/>
+          <geometry>
+            <mesh filename="package://myrobot/models/myroboturdf/meshes/Misc/sg90.dae"/>
+          </geometry>
+      </visual> -->
       </link>
  
     <joint name="sg90v_shaft_joint" type="continuous">
       <parent link="sg90v"/>
       <child link="sg90v_shaft"/>
-      <origin xyz="0.106 0.048 0.141" rpy="1.5707 0 0"/>
+      <origin xyz="-0.0 0.015 -0.005" rpy="1.5707 0 0 "/>
       <axis xyz="0 0 1"/>
     </joint>
 
@@ -780,32 +767,30 @@
    <joint name="batteria_joint" type="fixed">
       <parent link="cube_base"/>
       <child link="batteria"/>
-      <origin xyz="-0.02 0 0.075" rpy="0 0 0"/>
+      <origin xyz="0 0 -0.015" rpy="0 0 0"/>
     </joint>
 
     <link name="batteria">
-      <inertial>
-          <origin xyz="0 0 0" />
-          <mass value="2.8498940e-02" />
-          <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09"
-                   iyy="1.1192413e-05" iyz="-1.4400107e-11"
-                   izz="2.0712558e-05" />
-      </inertial>
+      
       <collision name="batteria_collision">
           <geometry>
             <box size="0.102 0.035 0.025"/>
           </geometry>
       </collision> 
-        
       <visual name="batteria_visual">
+          <geometry>
+            <box size="0.102 0.035 0.025"/>
+          </geometry>
+      </visual> 
+      <!-- <visual name="batteria_visual">
           <origin xyz="0 0 -0.012" rpy=" 0 0 0"/>
           <geometry>
-            <mesh filename="package://myrobot/models/myroboturdf/meshes/Misc/Turnigy_2200mAh_3S_20C_Lipo_Pack.dae" scale="0.001 0.001 0.001"/>
+            <mesh filename="package://myrobot/models/myroboturdf/meshes/Misc/Turnigy_2200mAh_3S_20C_Lipo_Pack.dae"/>
           </geometry>
-      </visual>
+      </visual> -->
       </link>
     
   
-       -->
+      
 
 </robot>

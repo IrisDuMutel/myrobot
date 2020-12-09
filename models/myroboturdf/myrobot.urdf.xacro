@@ -15,7 +15,7 @@
     <link name="cube_base">
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <mass value="8.2573504e-01"/>
+        <mass value="0.2"/>
         <inertia ixx="2.2124416e-03" ixy="-1.2294101e-05" ixz="3.4938785e-05"
                  iyy="2.1193702e-03" iyz="-5.0120904e-06"
                  izz="2.0064271e-03" />
@@ -96,7 +96,7 @@
     <joint name="wheel_left_joint" type="continuous">
       <parent link="cube_base"/>
       <child link="wheel_left_link"/>
-      <origin xyz="0. 0.087 -0.014" rpy="-1.57 0 0"/>
+      <origin xyz="0. 0.087 -0.021" rpy="-1.57 0 0"/>
       <axis xyz="0 0 1"/>
     </joint>
 
@@ -111,7 +111,7 @@
       <collision name="wheel_left_link_collision">
         <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
         <geometry>
-          <cylinder length="0.035" radius="0.06825"/>
+          <cylinder length="0.035" radius="0.06"/>
         </geometry>
       </collision>
       
@@ -119,7 +119,7 @@
       <visual name="wheel_left_link_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <cylinder length="0.035" radius="0.06825"/>
+          <cylinder length="0.035" radius="0.06"/>
         </geometry>
       </visual>
 
@@ -129,7 +129,7 @@
     <joint name="wheel_right_joint" type="continuous">
       <parent link="cube_base"/>
       <child link="wheel_right_link"/>
-      <origin xyz="0. -0.087 -0.014" rpy="-1.57 0 0"/>
+      <origin xyz="0. -0.087 -0.021" rpy="-1.57 0 0"/>
       <axis xyz="0 0 1"/>
     </joint>
       
@@ -144,7 +144,7 @@
       <collision name="wheel_right_link_collision">
         <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
         <geometry>
-          <cylinder length="0.035" radius="0.06825"/>
+          <cylinder length="0.035" radius="0.06"/>
         </geometry>
       </collision>
       
@@ -152,7 +152,7 @@
       <visual name="wheel_right_link_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <cylinder length="0.035" radius="0.06825"/>
+          <cylinder length="0.035" radius="0.06"/>
         </geometry>
       </visual>
 
@@ -165,11 +165,7 @@
     </joint>
 
     <link name="BaseBoards">
-      <inertial>
-        <mass value="0.2"/>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
-        <inertia ixx="0.00052666666" ixy="0" ixz="0" iyy="0.00052666666" iyz="0" izz="0.001"/>
-      </inertial>
+    
       <collision name="BaseBoards_collision">
         <origin xyz="0 0 0 " rpy="0 0 0"/>
         <geometry>
@@ -255,11 +251,7 @@
     </joint>
     
     <link name="piastra_anteriore">
-      <inertial>
-        <mass value="0.2"/>
-        <origin rpy="0.078 -0.004 0.104" xyz="0 0 0"/>
-        <inertia ixx="0.00052666666" ixy="0" ixz="0" iyy="0.00052666666" iyz="0" izz="0.001"/>
-      </inertial>
+
 
       <collision name="piastra_anteriore_collision">
         <origin xyz="0 0 0 " rpy="0 0 0"/>
@@ -288,11 +280,7 @@
     </joint>
     
     <link name="supporto_sg90">
-      <inertial>
-        <mass value="0.2"/>
-        <origin rpy="0.078 -0.004 0.104" xyz="0 0 0"/>
-        <inertia ixx="0.00052666666" ixy="0" ixz="0" iyy="0.00052666666" iyz="0" izz="0.001"/>
-      </inertial>
+     
 
       <collision name="supporto_sg90_collision">
         <origin xyz="0 0 0 " rpy="0 0 0"/>
@@ -640,13 +628,13 @@
     </joint>    
 
     <link name="LightSensor">
-        <inertial>
+        <!-- <inertial>
           <origin xyz="0 0 0" />
           <mass value="2.8498940e-02" />
           <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09"
                    iyy="1.1192413e-05" iyz="-1.4400107e-11"
                    izz="2.0712558e-05" />
-        </inertial>
+        </inertial> -->
         <!-- <visual name="LightSensor_visual">
           <origin xyz="0.001 0 0" rpy=" 0 0 -1.5707"/>
           <geometry>
@@ -696,13 +684,7 @@
     </joint>
 
     <link name="LattePanda">
-      <inertial>
-          <origin xyz="0 0 0" />
-          <mass value="2.8498940e-02" />
-          <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09"
-                   iyy="1.1192413e-05" iyz="-1.4400107e-11"
-                   izz="2.0712558e-05" />
-      </inertial>
+      
       <collision name="LattePanda_collision">
           <geometry>
             <box size="0.12 0.08 0.01"/>
@@ -728,13 +710,7 @@
     </joint>
 
     <link name="K64F">
-      <inertial>
-          <origin xyz="0 0 0" />
-          <mass value="2.8498940e-02" />
-          <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09"
-                   iyy="1.1192413e-05" iyz="-1.4400107e-11"
-                   izz="2.0712558e-05" />
-      </inertial>
+      
       <collision name="K64F_collision">
           <geometry>
             <box size="0.085 0.055 0.015"/>
@@ -761,13 +737,13 @@
     </joint>
 
     <link name="sg90h">
-      <inertial>
+      <!-- <inertial>
           <origin xyz="0 0 0" />
           <mass value="2.8498940e-02" />
           <inertia ixx="1.1175580e-05" ixy="-4.2369783e-11" ixz="-5.9381719e-09"
                    iyy="1.1192413e-05" iyz="-1.4400107e-11"
                    izz="2.0712558e-05" />
-      </inertial>
+      </inertial> -->
       <collision name="sg90h_collision">
           <geometry>
             <box size=".012 0.022 0.022"/>

@@ -97,40 +97,10 @@ Visualization Manager:
       Use Timestamp: false
       Value: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        BaseBoards:
-          Value: true
-        K64F:
-          Value: true
-        LattePanda:
-          Value: true
-        LightSensor:
-          Value: true
-        base_footprint:
-          Value: true
-        cube_base:
-          Value: true
-        laser_sensor:
-          Value: true
-        leftfront_force_sensor:
-          Value: true
-        odom:
-          Value: true
-        piastra_anteriore:
-          Value: true
-        rightfront_force_sensor:
-          Value: true
-        sg90h:
-          Value: true
-        supporto_sg90:
-          Value: true
-        wheel_left_link:
-          Value: true
-        wheel_right_link:
-          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -138,32 +108,9 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        odom:
-          base_footprint:
-            cube_base:
-              BaseBoards:
-                K64F:
-                  {}
-                LattePanda:
-                  {}
-                LightSensor:
-                  {}
-              laser_sensor:
-                {}
-              leftfront_force_sensor:
-                {}
-              piastra_anteriore:
-                supporto_sg90:
-                  sg90h:
-                    {}
-              rightfront_force_sensor:
-                {}
-              wheel_left_link:
-                {}
-              wheel_right_link:
-                {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false

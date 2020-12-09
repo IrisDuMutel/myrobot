@@ -28,47 +28,46 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 import rospy
-
 from geometry_msgs.msg import Twist
+import sys, select, os
+if os.name == 'nt':
+  import msvcrt
+else:
+  import tty, termios
 
-import sys, select, termios, tty
+BURGER_MAX_LIN_VEL = 0.22
+BURGER_MAX_ANG_VEL = 2.84
+
+WAFFLE_MAX_LIN_VEL = 0.26
+WAFFLE_MAX_ANG_VEL = 1.82
+
+LIN_VEL_STEP_SIZE = 0.01
+ANG_VEL_STEP_SIZE = 0.1
 
 msg = """
-Control Your Turtlebot!
+Control Your TurtleBot3!
 ---------------------------
 Moving around:
-   u    i    o
-   j    k    l
-   m    ,    .
-q/z : increase/decrease max speeds by 10%
-w/x : increase/decrease only linear speed by 10%
-e/c : increase/decrease only angular speed by 10%
-space key, k : force stop
-anything else : stop smoothly
+        w
+   a    s    d
+        x
+
+w/x : increase/decrease linear velocity (Burger : ~ 0.22, Waffle and Waffle Pi : ~ 0.26)
+a/d : increase/decrease angular velocity (Burger : ~ 2.84, Waffle and Waffle Pi : ~ 1.82)
+
+space key, s : force stop
+
 CTRL-C to quit
 """
 
-moveBindings = {
-        'i':(1,0),
-        'o':(1,-1),
-        'j':(0,1),
-        'l':(0,-1),
-        'u':(1,1),
-        ',':(-1,0),
-        '.':(-1,1),
-        'm':(-1,-1),
-           }
-
-speedBindings={
-        'q':(1.1,1.1),
-        'z':(.9,.9),
-        'w':(1.1,1),
-        'x':(.9,1),
-        'e':(1,1.1),
-        'c':(1,.9),
-          }
+e = """
+Communications Failed
+"""
 
 def getKey():
+    if os.name == 'nt':
+      return msvcrt.getch()
+
     tty.setraw(sys.stdin.fileno())
     rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
     if rlist:
@@ -79,91 +78,115 @@ def getKey():
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
     return key
 
-speed = .2
-turn = 1
+def vels(target_linear_vel, target_angular_vel):
+    return "currently:\tlinear vel %s\t angular vel %s " % (target_linear_vel,target_angular_vel)
 
-def vels(speed,turn):
-    return "currently:\tspeed %s\tturn %s " % (speed,turn)
+def makeSimpleProfile(output, input, slop):
+    if input > output:
+        output = min( input, output + slop )
+    elif input < output:
+        output = max( input, output - slop )
+    else:
+        output = input
+
+    return output
+
+def constrain(input, low, high):
+    if input < low:
+      input = low
+    elif input > high:
+      input = high
+    else:
+      input = input
+
+    return input
+
+def checkLinearLimitVelocity(vel):
+    if turtlebot3_model == "burger":
+      vel = constrain(vel, -BURGER_MAX_LIN_VEL, BURGER_MAX_LIN_VEL)
+    elif turtlebot3_model == "waffle" or turtlebot3_model == "waffle_pi":
+      vel = constrain(vel, -WAFFLE_MAX_LIN_VEL, WAFFLE_MAX_LIN_VEL)
+    else:
+      vel = constrain(vel, -BURGER_MAX_LIN_VEL, BURGER_MAX_LIN_VEL)
+
+    return vel
+
+def checkAngularLimitVelocity(vel):
+    if turtlebot3_model == "burger":
+      vel = constrain(vel, -BURGER_MAX_ANG_VEL, BURGER_MAX_ANG_VEL)
+    elif turtlebot3_model == "waffle" or turtlebot3_model == "waffle_pi":
+      vel = constrain(vel, -WAFFLE_MAX_ANG_VEL, WAFFLE_MAX_ANG_VEL)
+    else:
+      vel = constrain(vel, -BURGER_MAX_ANG_VEL, BURGER_MAX_ANG_VEL)
+
+    return vel
 
 if __name__=="__main__":
-    settings = termios.tcgetattr(sys.stdin)
-    
-    rospy.init_node('node_teleop')
-    pub = rospy.Publisher('/cmd_vel', Twist, queue_size=5)
+    if os.name != 'nt':
+        settings = termios.tcgetattr(sys.stdin)
 
-    x = 0
-    th = 0
+    rospy.init_node('myrobot_teleop')
+    pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+
+    turtlebot3_model = rospy.get_param("model", "burger")
+
     status = 0
-    count = 0
-    acc = 0.1
-    target_speed = 0
-    target_turn = 0
-    control_speed = 0
-    control_turn = 0
+    target_linear_vel   = 0.0
+    target_angular_vel  = 0.0
+    control_linear_vel  = 0.0
+    control_angular_vel = 0.0
+
     try:
         print(msg)
-        print( vels(speed,turn))
         while(1):
             key = getKey()
-            if key in moveBindings.keys():
-                x = moveBindings[key][0]
-                th = moveBindings[key][1]
-                count = 0
-            elif key in speedBindings.keys():
-                speed = speed * speedBindings[key][0]
-                turn = turn * speedBindings[key][1]
-                count = 0
-
-                print( vels(speed,turn))
-                if (status == 14):
-                    print( msg)
-                status = (status + 1) % 15
-            elif key == ' ' or key == 'k' :
-                x = 0
-                th = 0
-                control_speed = 0
-                control_turn = 0
+            if key == 'w' :
+                target_linear_vel = checkLinearLimitVelocity(target_linear_vel + LIN_VEL_STEP_SIZE)
+                status = status + 1
+                print(vels(target_linear_vel,target_angular_vel))
+            elif key == 'x' :
+                target_linear_vel = checkLinearLimitVelocity(target_linear_vel - LIN_VEL_STEP_SIZE)
+                status = status + 1
+                print(vels(target_linear_vel,target_angular_vel))
+            elif key == 'a' :
+                target_angular_vel = checkAngularLimitVelocity(target_angular_vel + ANG_VEL_STEP_SIZE)
+                status = status + 1
+                print(vels(target_linear_vel,target_angular_vel))
+            elif key == 'd' :
+                target_angular_vel = checkAngularLimitVelocity(target_angular_vel - ANG_VEL_STEP_SIZE)
+                status = status + 1
+                print(vels(target_linear_vel,target_angular_vel))
+            elif key == ' ' or key == 's' :
+                target_linear_vel   = 0.0
+                control_linear_vel  = 0.0
+                target_angular_vel  = 0.0
+                control_angular_vel = 0.0
+                print(vels(target_linear_vel, target_angular_vel))
             else:
-                count = count + 1
-                if count > 4:
-                    x = 0
-                    th = 0
                 if (key == '\x03'):
                     break
 
-            target_speed = speed * x
-            target_turn = turn * th
-
-            if target_speed > control_speed:
-                control_speed = min( target_speed, control_speed + 0.02 )
-            elif target_speed < control_speed:
-                control_speed = max( target_speed, control_speed - 0.02 )
-            else:
-                control_speed = target_speed
-
-            if target_turn > control_turn:
-                control_turn = min( target_turn, control_turn + 0.1 )
-            elif target_turn < control_turn:
-                control_turn = max( target_turn, control_turn - 0.1 )
-            else:
-                control_turn = target_turn
+            if status == 20 :
+                print(msg)
+                status = 0
 
             twist = Twist()
-            twist.linear.x = control_speed; twist.linear.y = 0; twist.linear.z = 0
-            twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = control_turn
+
+            control_linear_vel = makeSimpleProfile(control_linear_vel, target_linear_vel, (LIN_VEL_STEP_SIZE/2.0))
+            twist.linear.x = control_linear_vel; twist.linear.y = 0.0; twist.linear.z = 0.0
+
+            control_angular_vel = makeSimpleProfile(control_angular_vel, target_angular_vel, (ANG_VEL_STEP_SIZE/2.0))
+            twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = control_angular_vel
+
             pub.publish(twist)
 
-            #print("loop: {0}".format(count))
-            #print("target: vx: {0}, wz: {1}".format(target_speed, target_turn))
-            #print("publihsed: vx: {0}, wz: {1}".format(twist.linear.x, twist.angular.z))
-
-    except Exception as e:
+    except:
         print(e)
 
     finally:
         twist = Twist()
-        twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
-        twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
+        twist.linear.x = 0.0; twist.linear.y = 0.0; twist.linear.z = 0.0
+        twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = 0.0
         pub.publish(twist)
-
-    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    if os.name != 'nt':
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)

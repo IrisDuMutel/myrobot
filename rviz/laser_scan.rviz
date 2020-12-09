@@ -10,7 +10,6 @@ Panels:
         - /Map1
         - /TF1
         - /RobotModel1
-        - /RobotModel1/Status1
       Splitter Ratio: 0.5
     Tree Height: 1670
   - Class: rviz/Selection
@@ -31,7 +30,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: LaserScan
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -79,7 +78,7 @@ Visualization Manager:
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
-      Size (Pixels): 4
+      Size (Pixels): 5
       Size (m): 0.5
       Style: Points
       Topic: /scan
@@ -102,6 +101,36 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
+        BaseBoards:
+          Value: true
+        K64F:
+          Value: true
+        LattePanda:
+          Value: true
+        LightSensor:
+          Value: true
+        base_footprint:
+          Value: true
+        cube_base:
+          Value: true
+        laser_sensor:
+          Value: true
+        leftfront_force_sensor:
+          Value: true
+        odom:
+          Value: true
+        piastra_anteriore:
+          Value: true
+        rightfront_force_sensor:
+          Value: true
+        sg90h:
+          Value: true
+        supporto_sg90:
+          Value: true
+        wheel_left_link:
+          Value: true
+        wheel_right_link:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -109,7 +138,30 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        {}
+        odom:
+          base_footprint:
+            cube_base:
+              BaseBoards:
+                K64F:
+                  {}
+                LattePanda:
+                  {}
+                LightSensor:
+                  {}
+              laser_sensor:
+                {}
+              leftfront_force_sensor:
+                {}
+              piastra_anteriore:
+                supporto_sg90:
+                  sg90h:
+                    {}
+              rightfront_force_sensor:
+                {}
+              wheel_left_link:
+                {}
+              wheel_right_link:
+                {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -118,10 +170,79 @@ Visualization Manager:
       Enabled: true
       Links:
         All Links Enabled: true
+        BaseBoards:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
+        K64F:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LattePanda:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        LightSensor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         Link Tree Style: ""
+        base_footprint:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        cube_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        laser_sensor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        leftfront_force_sensor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        piastra_anteriore:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rightfront_force_sensor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        sg90h:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        supporto_sg90:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_left_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        wheel_right_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""

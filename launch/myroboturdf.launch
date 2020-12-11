@@ -6,7 +6,7 @@
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find myrobot)/worlds/empty_world.world"/>
-    <arg name="paused" value="true"/>
+    <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
     <arg name="headless" value="false"/>
@@ -17,4 +17,11 @@
   <param name="robot_description" command="$(find xacro)/xacro --inorder $(find myrobot)/models/myroboturdf/$(arg model).urdf.xacro" />
 
   <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+  <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/>
+  <!-- <node pkg="myrobot" name="force" type="force.py" output="screen"/> --> -->
+  <!-- <node name="image_view1" pkg="image_view" type="image_view" respawn="false" output="log">
+  <remap from="image" to="/camera/color/image_raw" />
+  </node> -->
+  
+ 
 </launch>

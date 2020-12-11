@@ -61,10 +61,10 @@
   </gazebo>
 
   <gazebo reference="supporto_pitch_servo_1">
-    <!-- <material>Gazebo/Blue</material> -->
+     <material>Gazebo/Blue</material> 
   </gazebo>
 
-  <!-- <gazebo reference="RealSense">
+  <gazebo reference="RealSense">
     <sensor name="camera" type="depth">
       <update_rate>20</update_rate>
       <camera>
@@ -79,50 +79,7 @@
           <far>100</far>
         </clip>
       </camera>
-    </sensor>  
-  </gazebo>-->
-
-  <!-- <gazebo reference="rightfront_force_sensor">
-    <sensor name="rf_force_sensor" type="contact">
-      <update_rate>30.0</update_rate>
-      <always_on>true</always_on>
-      <contact>
-        <collision>collision_rightfront_collision</collision>
-      </contact>
-    </sensor>
-  </gazebo>
-
-  <gazebo reference="leftfront_force_sensor">
-    <sensor name="lf_force_sensor" type="contact">
-      <update_rate>30.0</update_rate>
-      <always_on>true</always_on>
-      <contact>
-        <collision>collision_leftfront_collision</collision>
-      </contact>
-    </sensor>
-  </gazebo> -->
-
-
-<!-- <gazebo reference="LightSensor">
-    <sensor name='camera' type='depth'>
-      <camera name='camera'>
-        <horizontal_fov>1.047</horizontal_fov>
-        <image>
-          <width>320</width>
-          <height>240</height>
-        </image>
-        <clip>
-          <near>0.1</near>
-          <far>100</far>
-        </clip>
-      </camera>
-    </sensor>
-  </gazebo> -->
-
-
-<!-- PLUGINS -->
-  <!-- <gazebo>
-    <plugin name="camera_plugin" filename="libdepth_camera_plugin.so">
+      <plugin name="camera_plugin" filename="libdepth_camera_plugin.so">
       <baseline>0.2</baseline>
       <alwaysOn>true</alwaysOn>
       <updateRate>0.0</updateRate>
@@ -145,28 +102,57 @@
       <Cy>0</Cy>
       <focalLength>0</focalLength>
       <hackBaseline>0</hackBaseline>
-    </plugin>
-  </gazebo> -->
-
-  <!-- <gazebo>
-    <plugin name="gazebo_right_bumper_controller" filename="libcontact_plugin.so">
-      <alwaysOn>true</alwaysOn>
-      <updateRate>30.0</updateRate>
-      <bumperTopicName>/force/rightfront_sensor</bumperTopicName>
-      <frameName>rightfront_force_sensor</frameName>
     </plugin> 
+    </sensor> 
+    
   </gazebo>
 
-  <gazebo>
-    <plugin name="gazebo_left_bumper_controller" filename="libcontact_plugin.so">
-      <alwaysOn>true</alwaysOn>
-      <updateRate>30.0</updateRate>
-      <bumperTopicName>/force/leftfront_sensor</bumperTopicName>
-      <frameName>leftfront_force_sensor</frameName>
-    </plugin> 
-  </gazebo> -->
+  <gazebo reference="rightfront_force_sensor">
+    <sensor name="rf_force_sensor" type="contact">
+      <update_rate>30.0</update_rate>
+      <always_on>true</always_on>
+      <contact>
+        <collision>collision_rightfront_collision</collision>
+      </contact>
+      <plugin name="gazebo_right_bumper_controller" filename="libcontact_plugin.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>30.0</updateRate>
+        <bumperTopicName>/force/rightfront_sensor</bumperTopicName>
+        <frameName>rightfront_force_sensor</frameName>
+      </plugin> 
+    </sensor>
+  </gazebo>
 
-  <!-- <gazebo>
+  <gazebo reference="leftfront_force_sensor">
+    <sensor name="lf_force_sensor" type="contact">
+      <update_rate>30.0</update_rate>
+      <always_on>true</always_on>
+      <contact>
+        <collision>collision_leftfront_collision</collision>
+      </contact>
+      <plugin name="gazebo_left_bumper_controller" filename="libcontact_plugin.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>30.0</updateRate>
+        <bumperTopicName>/force/leftfront_sensor</bumperTopicName>
+        <frameName>leftfront_force_sensor</frameName>
+      </plugin> 
+    </sensor>
+  </gazebo>
+
+
+<gazebo reference="LightSensor">
+    <sensor name='camera' type='depth'>
+      <camera name='camera'>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>320</width>
+          <height>240</height>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+      </camera>
     <plugin name="light_sensor_plugin" filename="liblight_sensor_plugin.so">
       <cameraName>camera2</cameraName>
       <alwaysOn>true</alwaysOn>
@@ -187,13 +173,24 @@
       <pointCloudCutoff>0.4</pointCloudCutoff>
       <robotNamespace>base_footprint</robotNamespace>
     </plugin> 
-  </gazebo> -->
+    </sensor>
+  </gazebo>
+
+
+
+
+  
+
+
+    
+
+  
 
   <gazebo reference="laser_sensor">
     <sensor type="ray" name="lds_lfcd_sensor">
       <pose>0 0 0 0 0 0</pose>
-      <visualize>false</visualize>
-      <update_rate>5</update_rate>
+      <visualize>true</visualize>
+      <update_rate>10</update_rate>
       <ray>
         <scan>
           <horizontal>

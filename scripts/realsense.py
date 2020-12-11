@@ -146,10 +146,7 @@ def callback(color_raw, depth_raw,pub):
             msg.value = dist[1][0]
             rospy.loginfo('Realsense vector data sent')
             pub.publish(msg)
-     
-    # finally:
-    #     # Stop streaming
-    #     pipeline.stop()
+
     finally:
         pass
 if __name__ == '__main__':

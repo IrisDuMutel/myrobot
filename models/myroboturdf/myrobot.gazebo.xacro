@@ -220,7 +220,7 @@
 
  
 
-  <gazebo>
+    <!-- <gazebo>
      <plugin name="ActuatorPlugin_horizontal" filename="libactuator_plugin.so">
         <motor_joint>sg90h_shaft_joint</motor_joint> 
         <commandTopicServo>cmd_servo</commandTopicServo>
@@ -258,5 +258,5 @@
         <publishservoOdomTF>true</publishservoOdomTF>
         <rosDebugLevel>na</rosDebugLevel> 
       </plugin> 
-  </gazebo>
+  </gazebo> -->
   </robot>

@@ -1,127 +1,110 @@
 #!/usr/bin/env python
-import rospy 
-from nav_msgs.msg import OccupancyGrid, MapMetaData,Odometry
-from myrobot.msg import vect_msg
 
+# SLAM gmapping done with depth camera. 
+# This script has the task of transforming the depth data from the realsense
+# into a laser scan message.
+import rospy
+from myrobot.msg import vect_msg
 import cv2 
 import os
 import math
 import time
-import message_filters
-from sensor_msgs.msg import Image, CameraInfo
 import numpy as np
+import message_filters
+from sensor_msgs.msg import Image, CameraInfo, LaserScan
 from cv_bridge import CvBridge, CvBridgeError
-from scipy.spatial.transform import Rotation as R
 
-class slam_gmapping():
-    
-    def __init__(self):
-        self.odom_ = Odometry()
-        self.depth_ = Image()
-        self.dist_ = vect_msg()
-        self.map_ = OccupancyGrid()
-        self.map_.info.width = 20
-        self.theta = 0
-        self.map_.info.height = 20
-        self.bridge = CvBridge()
-        self.map_.data = [0] * (self.map_.info.width * self.map_.info.height) # start an unoccupied map
-        self.pub = rospy.Publisher('/slam_map',OccupancyGrid, queue_size=10)
-        self.odom_sub   = message_filters.Subscriber('/odom', Odometry)
-        self.color_sub = message_filters.Subscriber('rs_vect', vect_msg)
-        self.depth_sub = message_filters.Subscriber('camera/depth/image_raw',Image)
-        ts = message_filters.ApproximateTimeSynchronizer([self.odom_sub,self.depth_sub,self.color_sub], queue_size=10, slop=0.1)
-        ts.registerCallback(self.callback)
-        self.gmapping()
-        rospy.spin()
+def slam_gmapping():
+    rospy.init_node('realsense_behaviour', anonymous=True)
+    pub = rospy.Publisher('rs_vect', LaserScan, queue_size=10)
+    color_sub = message_filters.Subscriber('camera/color/image_raw',Image)
+    depth_sub = message_filters.Subscriber('camera/depth/image_raw',Image)
+    ts = message_filters.TimeSynchronizer([color_sub, depth_sub], 10)
+    ts.registerCallback(callback,pub)
+    rospy.spin()
 
-    def callback(self,odom_sub,depth_sub,color_sub):
-        self.odom_= odom_sub
-        self.theta = self.get_rotation()
-        self.depth_ = depth_sub
-        self.dist_ = color_sub
+def callback(color_raw, depth_raw,pub):
+    test = vect_msg()
+    msg = LaserScan()
+    bridge = CvBridge()
+    # realsense min and max distance 
+    minDist = 0.3
+    maxDist = 4.5
+    # set show_depth to True to show the rgb and depth frames together
+    rs_plt = True # Display what is seen in color frames
+    show_depth = False
+    # Show images
+    if rs_plt:
+        cv2.namedWindow('RealSense color', cv2.WINDOW_AUTOSIZE)
+        cv2.namedWindow('RealSense depth', cv2.WINDOW_AUTOSIZE)
+    try:
+        
+        try:
+            color_image = bridge.imgmsg_to_cv2(color_raw, "bgr8")
+            depth_image = bridge.imgmsg_to_cv2(depth_raw, "32FC1")
+        except CvBridgeError as e:
+            print(e)
+        
+        depth_array = np.array(depth_image, dtype=np.float32)
+        norm_depth=cv2.normalize(depth_array, depth_array, 0, 1, cv2.NORM_MINMAX)
+        valX = np.arange(30,609,10)
+        valY = np.array([200])
+        dist = np.zeros(len(valX))
+        valid_matrix =np.zeros(len(valX))
+        color = np.asanyarray(color_image)
+        colorized_depth = np.asanyarray(depth_image)
 
 
-    def get_rotation(self):
-        # print(self.odom_)
-        orientation_q = self.odom_.pose.pose.orientation
-        # print(orientation_q)
-        # print(self.odom_.pose.pose.orientation)
-        orientation_list = [orientation_q.x, orientation_q.y, orientation_q.z, orientation_q.w]
-        # print(orientation_list)
-        r = R.from_quat(orientation_list)
-        EuAn = r.as_euler('zyx', degrees=False)
-        return EuAn 
-    def max_index(self,y,x):
-        index = self.map_.info.width*y+x
-        return index
-    def gmapping(self):
-        # print(self.depth_)
-        while True:
-            try:
-                # minDist = 0.3
-                # maxDist = 4.5
-                # try:
-                #     color_image = self.bridge.imgmsg_to_cv2(self.color_, "bgr8")
-                #     depth_image = self.bridge.imgmsg_to_cv2(self.depth_, "32FC4")
-                # except CvBridgeError as e:
-                #     print(e)
-                # depth_array = np.array(depth_image, dtype=np.float32)
-                # norm_depth=cv2.normalize(depth_array, depth_array, 0, 1, cv2.NORM_MINMAX)
-                # valX = np.array([30, 319, 609])
-                # valY = np.array([30, 239, 449])
-                # dist = np.zeros((3,3))
-                # valid_matrix =np.zeros((3,3))
-                # colorized_depth = np.asanyarray(depth_image)
-                # for xCount in range(0,3):
-                #     for yCount in range(0,3):
-                #         distance = colorized_depth[valY[yCount],valX[xCount]]
-                #         if(distance < minDist) or math.isnan(distance)==True:
-                #             distance =  np.inf
-                #             valid_matrix[yCount,xCount] = 0
-                #         else:
-                #             valid_matrix[yCount,xCount] = 1
-                #         dist[yCount,xCount] = distance
-                dist = self.dist_.angle
-                print(dist)
-                # theta, _, _ = self.get_rotation()
-                if dist> 0 and dist!='inf':
+        for xCount in range(0,len(valX)):
+            distance = colorized_depth[valY[0],valX[xCount]]
+            if(distance < minDist) or math.isnan(distance)==True:
+                distance =  np.inf
+                valid_matrix[xCount] = 0
+            else:
+                valid_matrix[xCount] = 1
+            dist[xCount] = distance
+            if rs_plt:
+                cv2.circle(color,(valX[xCount],valY[0]),5,(0,0,255),2)
+                cv2.circle(colorized_depth,(valX[xCount],valY[0]),5,(0,255,0),2)
 
-                    x = dist*np.cos(self.theta)
-                    print(x)
-                    y = dist*np.sin(self.theta)
-                    lin_index = self.max_index(y,x)
-                    self.map_.data[lin_index] = 100
-                else:
-                    pass
+        # # Find index of valid  values 
+        print(dist)
+
+        RGB = np.dstack((norm_depth, np.zeros_like(norm_depth), np.zeros_like(norm_depth)))
+        grey_3_channel = cv2.cvtColor(norm_depth, cv2.COLOR_GRAY2BGR)
+
+        if rs_plt:
+            cv2.imshow('RealSense color', color)
+            if show_depth:
+                cv2.imshow('RealSense depth', grey_3_channel)
                 
-                self.map_.header.stamp = rospy.Time.now()
-                # self.map_.header.frame_id = 0
-                self.map_.info.resolution = 0.5
-                self.map_.info.width = 20
-                self.map_.info.height = 20
-                # np.resize(self.map_.data.resize, self.map_.info.width*self.map_.info.height) 
-                self.map_.info.origin.position.x = 0
-                self.map_.info.origin.position.y = 0
-                self.map_.info.origin.position.z = 0
-                self.map_.info.origin.orientation.x = 0
-                self.map_.info.origin.orientation.y = 0
-                self.map_.info.origin.orientation.z = 0
-                self.map_.info.origin.orientation.w = 1.0
-
-                # for i in range(self.map_.info.width):
-                #     for j in range(self.map_.info.height):
-                #         lin_index = self.max_index(j,i)
-                #         print(lin_index)
-                #         self.map_.data[lin_index] = 10
-                # self.map_.data = [100] * (self.map_.info.width * self.map_.info.height) 
-                # print(len(self.map_.data))
-                self.pub.publish(self.map_)
-            except rospy.ROSInterruptException:
+            k = cv2.waitKey(1) & 0xFF
+            if k == ord('q'):
+                # break
                 pass
 
-if __name__=='__main__':
+            # Send data
+            msg.header.stamp=rospy.Time.now()
+            msg.header.frame_id='RealSense'
+            msg.angle_min = 0
+            msg.angle_max = 6.28319
+            msg.time_increment = 0;  # instantaneous simulator scan
+            # msg.angle_increment=0.017
+            msg.scan_time = 0;  # not sure whether this is correct
+            msg.range_min = 0.11
+            msg.range_max = 3.5
+            msg.ranges = dist
+            msg.intensities = np.zeros(len(dist))
+            # msg.header.stamp = rospy.Time.now()
+            # msg.angle = dist[1][1]
+            # msg.value = dist[1][0]
+            # rospy.loginfo('Realsense vector data sent')
+            pub.publish(msg)
+
+    finally:
+        pass
+if __name__ == '__main__':
     try:
-        rospy.init_node('slam',anonymous=False)
         slam_gmapping()
     except rospy.ROSInterruptException:
         pass

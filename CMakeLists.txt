@@ -117,8 +117,8 @@ catkin_package(INCLUDE_DIRS plugins/light
                             plugins/actuator
                             plugins/diff_drive
                             plugins/template
-                            src/slam_mapping
-                            src/myrobot_state_publisher
+                            # src/slam_mapping
+                            # src/myrobot_state_publisher
 
                         
                             # plugins/simpletrackedvehicle
@@ -196,8 +196,8 @@ include_directories(plugins/trackedvehicle)
 include_directories(plugins/actuator)
 include_directories(plugins/template)
 include_directories(plugins/diff_drive)
-include_directories(src/slam_mapping)
-include_directories(src/myrobot_state_publisher)
+# include_directories(src/slam_mapping)
+# include_directories(src/myrobot_state_publisher)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}
@@ -216,14 +216,14 @@ add_library(diff_drive_plugin SHARED plugins/diff_drive/diff_drive_plugin.cpp)
 target_link_libraries(diff_drive_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
 target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
-add_executable(slam_devastator src/slam_mapping/slam_gmapping.cpp src/slam_mapping/main.cpp)
-target_link_libraries(slam_devastator ${Boost_LIBRARIES} ${catkin_LIBRARIES})
-add_library(myrobot_state_publisher_solver src/myrobot_state_publisher/robot_state_publisher.cpp)
-target_link_libraries(myrobot_state_publisher_solver ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
-add_library(myrobot_joint_state_listener SHARED src/myrobot_state_publisher/joint_state_listener.cpp)
-target_link_libraries(myrobot_joint_state_listener ${GAZEBO_LIBRARIES} myrobot_state_publisher_solver ${orocos_kdl_LIBRARIES})
-add_executable(myrobot_state_publisher src/myrobot_state_publisher/robot_state_publisher_node.cpp)
-target_link_libraries(myrobot_state_publisher ${GAZEBO_LIBRARIES} myrobot_state_publisher_solver myrobot_joint_state_listener ${orocos_kdl_LIBRARIES})
+# add_executable(slam_devastator src/slam_mapping/slam_gmapping.cpp src/slam_mapping/main.cpp)
+# target_link_libraries(slam_devastator ${Boost_LIBRARIES} ${catkin_LIBRARIES})
+# add_library(myrobot_state_publisher_solver src/myrobot_state_publisher/robot_state_publisher.cpp)
+# target_link_libraries(myrobot_state_publisher_solver ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
+# add_library(myrobot_joint_state_listener SHARED src/myrobot_state_publisher/joint_state_listener.cpp)
+# target_link_libraries(myrobot_joint_state_listener ${GAZEBO_LIBRARIES} myrobot_state_publisher_solver ${orocos_kdl_LIBRARIES})
+# add_executable(myrobot_state_publisher src/myrobot_state_publisher/robot_state_publisher_node.cpp)
+# target_link_libraries(myrobot_state_publisher ${GAZEBO_LIBRARIES} myrobot_state_publisher_solver myrobot_joint_state_listener ${orocos_kdl_LIBRARIES})
 add_library(depth_camera_plugin SHARED plugins/depth_camera/depth_camera_plugin.cpp)
 target_link_libraries(depth_camera_plugin  DepthCameraPlugin ${catkin_LIBRARIES})###########template
 ## Build ##

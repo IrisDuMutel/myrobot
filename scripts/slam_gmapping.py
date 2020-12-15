@@ -32,7 +32,7 @@ def callback(color_raw, depth_raw,pub):
     maxDist = 4.5
     # set show_depth to True to show the rgb and depth frames together
     rs_plt = True # Display what is seen in color frames
-    show_depth = False
+    show_depth = True
     # Show images
     if rs_plt:
         cv2.namedWindow('RealSense color', cv2.WINDOW_AUTOSIZE)

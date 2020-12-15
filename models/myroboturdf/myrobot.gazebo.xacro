@@ -74,7 +74,7 @@
      <material>Gazebo/Blue</material> 
   </gazebo> -->
 
-  <!-- <gazebo reference="RealSense">
+  <gazebo reference="RealSense">
     <sensor name="camera" type="depth">
       <update_rate>20</update_rate>
       <camera>
@@ -115,7 +115,7 @@
     </plugin> 
     </sensor> 
     
-  </gazebo> -->
+  </gazebo>
 
   <!-- <gazebo reference="rightfront_force_sensor">
     <sensor name="rf_force_sensor" type="contact">
@@ -196,10 +196,10 @@
 
   
 
-  <!-- <gazebo reference="laser_sensor">
+  <gazebo reference="laser_sensor">
     <sensor type="ray" name="lds_lfcd_sensor">
       <pose>0 0 0 0 0 0</pose>
-      <visualize>false</visualize>
+      <visualize>true</visualize>
       <update_rate>10</update_rate>
       <ray>
         <scan>
@@ -226,7 +226,7 @@
         <frameName>laser_sensor</frameName>
       </plugin>
     </sensor>
-  </gazebo> -->
+  </gazebo>
 
  
 

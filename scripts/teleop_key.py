@@ -127,7 +127,7 @@ if __name__=="__main__":
 
     rospy.init_node('myrobot_teleop')
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
-
+    rate = rospy.Rate(10)
     turtlebot3_model = rospy.get_param("model", "burger")
 
     status = 0
@@ -179,6 +179,7 @@ if __name__=="__main__":
             twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = control_angular_vel
 
             pub.publish(twist)
+            rate.sleep()
 
     except:
         print(e)

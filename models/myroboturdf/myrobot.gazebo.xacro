@@ -11,9 +11,9 @@
     <kp>500000.0</kp>
     <kd>10.0</kd>
     <minDepth>0.001</minDepth>
-    <maxVel>1</maxVel>
+    <maxVel>0.1</maxVel>
     <fdir1>1 0 0</fdir1>
-    <material>light_black</material>
+    <material>Gazebo/FlatBlack</material>
   </gazebo>
 
   <gazebo reference="wheel_right_link">
@@ -22,10 +22,20 @@
     <kp>500000.0</kp>
     <kd>10.0</kd>
     <minDepth>0.001</minDepth>
-    <maxVel>1</maxVel>
+    <maxVel>0.1</maxVel>
     <fdir1>1 0 0</fdir1>
     <material>Gazebo/FlatBlack</material>
   </gazebo>
+
+  <!-- <gazebo reference="caster_back_link">
+    <mu1>0.1</mu1>
+    <mu2>0.1</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+    <material>Gazebo/FlatBlack</material>
+  </gazebo> -->
   
 
 
@@ -52,19 +62,19 @@
     </plugin>
   </gazebo>
 
-  <gazebo reference="sg90h_shaft">
+  <!-- <gazebo reference="sg90h_shaft">
     <material>Gazebo/Red</material>
   </gazebo>
 
   <gazebo reference="sg90v_shaft">
     <material>Gazebo/Red</material>
-  </gazebo>
+  </gazebo> -->
 
-  <gazebo reference="supporto_pitch_servo_1">
+  <!-- <gazebo reference="supporto_pitch_servo_1">
      <material>Gazebo/Blue</material> 
-  </gazebo>
+  </gazebo> -->
 
-  <gazebo reference="RealSense">
+  <!-- <gazebo reference="RealSense">
     <sensor name="camera" type="depth">
       <update_rate>20</update_rate>
       <camera>
@@ -105,9 +115,9 @@
     </plugin> 
     </sensor> 
     
-  </gazebo>
+  </gazebo> -->
 
-  <gazebo reference="rightfront_force_sensor">
+  <!-- <gazebo reference="rightfront_force_sensor">
     <sensor name="rf_force_sensor" type="contact">
       <update_rate>30.0</update_rate>
       <always_on>true</always_on>
@@ -137,10 +147,10 @@
         <frameName>leftfront_force_sensor</frameName>
       </plugin> 
     </sensor>
-  </gazebo>
+  </gazebo> -->
 
 
-<gazebo reference="LightSensor">
+<!-- <gazebo reference="LightSensor">
     <sensor name='camera' type='depth'>
       <camera name='camera'>
         <horizontal_fov>1.047</horizontal_fov>
@@ -174,7 +184,7 @@
       <robotNamespace>base_footprint</robotNamespace>
     </plugin> 
     </sensor>
-  </gazebo>
+  </gazebo> -->
 
 
 
@@ -186,10 +196,10 @@
 
   
 
-  <gazebo reference="laser_sensor">
+  <!-- <gazebo reference="laser_sensor">
     <sensor type="ray" name="lds_lfcd_sensor">
       <pose>0 0 0 0 0 0</pose>
-      <visualize>true</visualize>
+      <visualize>false</visualize>
       <update_rate>10</update_rate>
       <ray>
         <scan>
@@ -216,7 +226,7 @@
         <frameName>laser_sensor</frameName>
       </plugin>
     </sensor>
-  </gazebo>
+  </gazebo> -->
 
  
 

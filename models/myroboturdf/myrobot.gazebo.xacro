@@ -54,8 +54,8 @@
       <updateRate>30</updateRate>
       <leftJoint>wheel_left_joint</leftJoint>
       <rightJoint>wheel_right_joint</rightJoint>
-      <wheelSeparation>0.160</wheelSeparation>
-      <wheelDiameter>0.066</wheelDiameter>
+      <wheelSeparation>0.174</wheelSeparation>
+      <wheelDiameter>0.1365</wheelDiameter>
       <wheelAcceleration>1</wheelAcceleration>
       <wheelTorque>10</wheelTorque>
       <rosDebugLevel>na</rosDebugLevel>
@@ -73,7 +73,35 @@
   <!-- <gazebo reference="supporto_pitch_servo_1">
      <material>Gazebo/Blue</material> 
   </gazebo> -->
-
+  <gazebo>
+    <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
+      <alwaysOn>true</alwaysOn>
+      <bodyName>imu_link</bodyName>
+      <frameName>imu_link</frameName>
+      <topicName>imu</topicName>
+      <serviceName>imu_service</serviceName>
+      <gaussianNoise>0.0</gaussianNoise>
+      <updateRate>200</updateRate>
+      <imu>
+        <noise>
+          <type>gaussian</type>
+          <rate>
+            <mean>0.0</mean>
+            <stddev>2e-4</stddev>
+            <bias_mean>0.0000075</bias_mean>
+            <bias_stddev>0.0000008</bias_stddev>
+          </rate>
+          <accel>
+            <mean>0.0</mean>
+            <stddev>1.7e-2</stddev>
+            <bias_mean>0.1</bias_mean>
+            <bias_stddev>0.001</bias_stddev>
+          </accel>
+        </noise>
+      </imu>
+    </plugin>
+  </gazebo>
+<!-- 
   <gazebo reference="RealSense">
     <sensor name="camera" type="depth">
       <update_rate>20</update_rate>
@@ -115,7 +143,7 @@
     </plugin> 
     </sensor> 
     
-  </gazebo>
+  </gazebo> -->
 
   <!-- <gazebo reference="rightfront_force_sensor">
     <sensor name="rf_force_sensor" type="contact">
@@ -204,7 +232,7 @@
       <ray>
         <scan>
           <horizontal>
-            <samples>360</samples>
+            <samples>24</samples>
             <resolution>1</resolution>
             <min_angle>0.0</min_angle>
             <max_angle>6.28319</max_angle>

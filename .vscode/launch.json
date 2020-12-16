@@ -5,16 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "ROS: Attach",
-            "type": "ros",
-            "request": "attach"
-        },
-        {
-            "name": "Python: Current File",
-            "type": "ros",
-            "request": "attach",
-            "program": "${file}",
-            "console": "integratedTerminal"
+            "name": "ROS: Launch",
+            "request": "launch",
+            "target": "/home/iris/catkin_ws/src/turtlebot3_machine_learning/turtlebot3_dqn/launch/turtlebot3_dqn_stage_1.launch",
+            "type": "ros"
         }
     ]
 }

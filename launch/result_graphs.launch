@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="myrobot" type="result_graph.py" name="result_graph" output="screen" />
+  <node pkg="myrobot" type="action_graph.py" name="action_graph" output="screen" />
+</launch>

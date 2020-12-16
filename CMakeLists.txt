@@ -288,6 +288,7 @@ include_directories(include
 # )
 catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py scripts/arbiter.py 
                                scripts/force.py scripts/light.py scripts/vector_fcn.py scripts/move_head.py
+                               scripts/respawnGoal.py scripts/myrobot_dqn_stage_1.py scripts/environment_stage_1.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## Mark executables for installation

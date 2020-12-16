@@ -38,18 +38,7 @@ def callback(color_raw, depth_raw,pub):
         cv2.namedWindow('RealSense color', cv2.WINDOW_AUTOSIZE)
         cv2.namedWindow('RealSense depth', cv2.WINDOW_AUTOSIZE)
     try:
-        # while not rospy.is_shutdown():
-
-        # # skip 5 first frames to give Auto-Exposure time to adjust
-         # for i in range(5):
-         #     pipeline.wait_for_frames()
-        # Wait for a coherent pair of frames: depth and color
-         # frames = pipeline.wait_for_frames()
-         # color_frame = frames.get_color_frame()
-         # depth_frame = frames.get_depth_frame()
         
-        # Access color component of the frame
-         # color = np.asanyarray(color_frame.get_data())
         try:
             color_image = bridge.imgmsg_to_cv2(color_raw, "bgr8")
             depth_image = bridge.imgmsg_to_cv2(depth_raw, "32FC1")
@@ -58,14 +47,7 @@ def callback(color_raw, depth_raw,pub):
         
         depth_array = np.array(depth_image, dtype=np.float32)
         norm_depth=cv2.normalize(depth_array, depth_array, 0, 1, cv2.NORM_MINMAX)
-        # Access depth component
-         # colorizer = rs.colorizer()
-         # colorizer_depth = np.asanyarray(colorizer.colorize(depth_frame).get_data()    
-        # Depth and rgb image alignment
-        # align = rs.align(rs.stream.color)
-        # frames = align.process(frames)
-        # aligned_depth_frame = frames.get_depth_frame()
-        # colorized_depth = np.asanyarray(colorizer.colorize(aligned_depth_frame).get_data())
+        
         valX = np.array([30, 319, 609])
         valY = np.array([30, 239, 449])
         dist = np.zeros((3,3))

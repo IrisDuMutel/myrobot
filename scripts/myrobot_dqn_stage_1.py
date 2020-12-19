@@ -30,7 +30,7 @@ from std_msgs.msg import Float32MultiArray
 from keras.models import Sequential, load_model
 from keras.optimizers import RMSprop
 from keras.layers import Dense, Dropout, Activation
-from environment_stage_1 import Env
+from src.env_stage_1 import Env
 
 
 EPISODES = 3000

@@ -289,6 +289,7 @@ include_directories(include
 catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py scripts/arbiter.py 
                                scripts/force.py scripts/light.py scripts/vector_fcn.py scripts/move_head.py
                                scripts/respawnGoal.py scripts/myrobot_dqn_stage_1.py scripts/environment_stage_1.py
+                               scripts/action_graph.py scripts/result_graph.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## Mark executables for installation
@@ -306,7 +307,8 @@ install(TARGETS
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   )
 
-  install(DIRECTORY config launch rviz
+
+  install(DIRECTORY config launch rviz launch save_model
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 

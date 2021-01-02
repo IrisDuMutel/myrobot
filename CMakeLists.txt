@@ -117,6 +117,7 @@ catkin_package(INCLUDE_DIRS plugins/light
                             plugins/actuator
                             plugins/diff_drive
                             plugins/template
+                            plugins/pwm_vel
                             # src/slam_mapping
                             # src/myrobot_state_publisher
 
@@ -196,6 +197,7 @@ include_directories(plugins/trackedvehicle)
 include_directories(plugins/actuator)
 include_directories(plugins/template)
 include_directories(plugins/diff_drive)
+include_directories(plugins/pwm_vel)
 # include_directories(src/slam_mapping)
 # include_directories(src/myrobot_state_publisher)
 include_directories( ${catkin_INCLUDE_DIRS} 
@@ -214,6 +216,8 @@ add_library(actuator_plugin SHARED plugins/actuator/actuator_plugin.cpp)
 target_link_libraries(actuator_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(diff_drive_plugin SHARED plugins/diff_drive/diff_drive_plugin.cpp)
 target_link_libraries(diff_drive_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_library(pwm_vel_plugin SHARED plugins/pwm_vel/pwm_vel_plugin.cpp)
+target_link_libraries(pwm_vel_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
 target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
 # add_executable(slam_devastator src/slam_mapping/slam_gmapping.cpp src/slam_mapping/main.cpp)
@@ -288,7 +292,7 @@ include_directories(include
 # )
 catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py scripts/arbiter.py 
                                scripts/force.py scripts/light.py scripts/vector_fcn.py scripts/move_head.py
-                               scripts/respawnGoal.py scripts/myrobot_dqn_stage_1.py scripts/environment_stage_1.py
+                               src/respawnGOAL.py scripts/myrobot_dqn_stage_1.py src/env_stage_1.py
                                scripts/action_graph.py scripts/result_graph.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
@@ -301,6 +305,7 @@ catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py script
 install(TARGETS
   actuator_plugin
   diff_drive_plugin
+  pwm_vel_plugin
   slam_gmapping
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

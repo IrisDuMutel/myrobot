@@ -33,7 +33,7 @@ from keras.layers import Dense, Dropout, Activation
 from src.env_stage_1 import Env
 
 
-EPISODES = 3000
+EPISODES = 190
 
 class ReinforceAgent():
     def __init__(self, state_size, action_size):
@@ -144,7 +144,7 @@ class ReinforceAgent():
         self.model.fit(X_batch, Y_batch, batch_size=self.batch_size, epochs=1, verbose=0)
 
 if __name__ == '__main__':
-    rospy.init_node('turtlebot3_dqn_stage_1')
+    rospy.init_node('myrobot_dqn_stage_1')
     pub_result = rospy.Publisher('result', Float32MultiArray, queue_size=5)
     pub_get_action = rospy.Publisher('get_action', Float32MultiArray, queue_size=5)
     result = Float32MultiArray()
@@ -182,7 +182,7 @@ if __name__ == '__main__':
             get_action.data = [action, score, reward]
             pub_get_action.publish(get_action)
 
-            if e % 10 == 0:
+            if e % 10 == 0: # saves the model every 10 episodes
                 agent.model.save(agent.dirPath + str(e) + '.h5')
                 with open(agent.dirPath + str(e) + '.json', 'w') as outfile:
                     json.dump(param_dictionary, outfile)

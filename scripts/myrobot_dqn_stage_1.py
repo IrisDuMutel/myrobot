@@ -150,7 +150,7 @@ if __name__ == '__main__':
     result = Float32MultiArray()
     get_action = Float32MultiArray()
 
-    state_size = 26
+    state_size = 26 # scan_range + heading + actual_distance
     action_size = 5
 
     env = Env(action_size)

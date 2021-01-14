@@ -80,7 +80,7 @@ class Env():
                 scan_range.append(scan.ranges[i])
 
         if min_range > min(scan_range) > 0:
-            done = True
+            done = True # Finish  episode when distance to a wall is smaller than min_range
 
         current_distance = round(math.hypot(self.goal_x - self.position.x, self.goal_y - self.position.y),2)
         if current_distance < 0.2:

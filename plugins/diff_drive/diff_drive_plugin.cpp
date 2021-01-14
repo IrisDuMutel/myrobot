@@ -276,8 +276,11 @@ void GazeboRosDiffDrive::UpdateChild()
         if ( publishWheelTF_ ) publishWheelTF();
         if ( publishWheelJointState_ ) publishWheelJointState();
 
-        // Update robot in case new velocities have been requested
+        // Update robot in case new velocities have been requested:
         getWheelVelocities();
+        // Fron now on:
+        //      - curren_speed: value of speed of the wheel in simulation
+        //      - wheel_speed: desired speed of wheel (obtained from getWheelVelocities
 
         double current_speed[2];
 
@@ -324,10 +327,27 @@ void GazeboRosDiffDrive::FiniChild()
 void GazeboRosDiffDrive::getWheelVelocities()
 {
     boost::mutex::scoped_lock scoped_lock ( lock );
-
-    double vr = x_;
+    
+    // Here, we transform the cmv_vel velocities into v_r linear, and v_a angular
+    double vr = x_; 
     double va = rot_;
+    
+// HERE IS WHERE WE MUST INTRODUCE THE CONVERSION:
+//      DESIRED VEL -> MOTOR MODEL -> WHEEL VEL
+// Here, some equations to consider:
+//      power = torque * ang_vel
+//      
 
+
+
+
+
+
+//
+
+
+    // If legacy mode = True: ang vel = 0.1 --> clockwise rotation
+    // no effect on linear velocity
     if(legacy_mode_)
     {
       wheel_speed_[LEFT] = vr + va * wheel_separation_ / 2.0;

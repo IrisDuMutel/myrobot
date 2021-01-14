@@ -181,9 +181,10 @@ if __name__ == '__main__':
             state = next_state
             get_action.data = [action, score, reward]
             pub_get_action.publish(get_action)
-
-            if e % 10 == 0: # saves the model every 10 episodes
-                agent.model.save(agent.dirPath + str(e) + '.h5')
+            
+            # saves the model every 10 episodes
+            if e % 10 == 0: 
+                agent.model.save(agent.dirPath + str(e) + '.h5') # scripts+episodenumber+.h5
                 with open(agent.dirPath + str(e) + '.json', 'w') as outfile:
                     json.dump(param_dictionary, outfile)
 

@@ -33,19 +33,19 @@
         </geometry>
       </collision>
      
-     <visual name="cube_base_visual">
+     <!-- <visual name="cube_base_visual">
         <geometry>
           <box size="0.19 0.134 0.047"/>
         </geometry>
-      </visual>
-<!-- 
+      </visual> -->
+
       <visual name="cube_base_visual">
         <origin xyz="0.02 0 -0.01" rpy="1.5707 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Devastator.stl" scale="0.001 0.001 0.001"/>
         </geometry>
         <material name="light_black"/> 
-      </visual> -->
+      </visual>
 
       <collision name = "caster_collision">
       <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
@@ -63,13 +63,13 @@
           </friction>
         </surface> 
       </collision>
-
+<!-- 
       <visual name="caster_visual">
       <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
         <geometry>
           <sphere radius="0.05"/>
         </geometry>
-      </visual>
+      </visual> -->
       
 
 
@@ -90,12 +90,12 @@
         </surface> 
       </collision>
  
-     <visual name="caster2_visual">
+     <!-- <visual name="caster2_visual">
       <origin xyz="0.05 0 -0.03" rpy="0 0 0"/>
         <geometry>
           <sphere radius="0.05"/>
         </geometry>
-      </visual>
+      </visual> -->
 
 
     </link>
@@ -150,12 +150,12 @@
       </collision>
       
 
-      <visual name="wheel_left_link_visual">
+      <!-- <visual name="wheel_left_link_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <cylinder length="0.035" radius="0.06825"/>
         </geometry>
-      </visual>
+      </visual> -->
 
        
     </link>
@@ -182,12 +182,12 @@
       </collision>
       
 
-      <visual name="wheel_right_link_visual">
+      <!--<visual  name="wheel_right_link_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <cylinder length="0.035" radius="0.06825"/>
         </geometry>
-      </visual>
+      </visual>-->
 
     </link>
 
@@ -205,19 +205,19 @@
           <box size="0.16 0.122315 0.002"/>
         </geometry>
       </collision>
-      <!-- <visual  name="BaseBoards_visual">
+      <visual  name="BaseBoards_visual">
         <origin xyz="0.05 0 0" rpy="0 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/BaseBoards.STL" scale="0.001 0.001 0.001"/>
         </geometry>
         <material name="blue"/>
-      </visual> -->
-       <visual name="BaseBoards_visual">
+      </visual>
+       <!-- <visual name="BaseBoards_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <box size="0.16 0.122315 0.002"/>
         </geometry>
-      </visual>
+      </visual> -->
 
       <collision name = "stick1_collision">
       
@@ -297,19 +297,19 @@
           <box size="0.086 0.079320 0.003"/>
         </geometry>
       </collision>
-      <visual name ="piastra_anteriore_visual">
+      <!-- <visual name ="piastra_anteriore_visual">
         <origin xyz="0 0 0 " rpy="0 0 0"/>
         <geometry>
           <box size="0.086 0.079320 0.003"/>
         </geometry>
-      </visual>
-      <!-- <visual> 
+      </visual> -->
+      <visual> 
         <origin xyz="0.025 0 -0.0015 " rpy="0 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Piastra_anteriore2.stl" scale="0.001 0.001 0.001"/>
         </geometry>
         <material name="grey"/>
-      </visual> -->
+      </visual>
     </link>
     
     <joint name="supporto_sg90_joint" type="fixed">
@@ -327,18 +327,18 @@
           <box size="0.027 0.049 0.004"/>
         </geometry>
       </collision>
-      <!-- <visual>
+      <visual>
         <origin xyz="-0.003 0.015 0" rpy="0 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Supporto_sg90_base.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-      </visual> -->
-      <visual name="supporto_sg90_visual">
+      </visual>
+      <!-- <visual name="supporto_sg90_visual">
         <origin xyz="0 0 0 " rpy="0 0 0"/>
         <geometry>
           <box size="0.027 0.049 0.004"/>
         </geometry>
-      </visual>
+      </visual> -->
     </link>
     
     <joint name="supporto_piastra_albero_joint" type="fixed">
@@ -355,18 +355,18 @@
           <cylinder length="0.004" radius="0.008"/>
         </geometry>
       </collision>
-      <visual name="supporto_piastra_albero_visual">
+      <!-- <visual name="supporto_piastra_albero_visual">
         <origin xyz="0 0 0 " rpy="0 0 0"/>
         <geometry>
           <cylinder length="0.004" radius="0.008"/>
         </geometry>
-      </visual>
-      <!-- <visual name="supporto_piastra_albero_visual">
+      </visual> -->
+      <visual name="supporto_piastra_albero_visual">
         <origin xyz="0 0 -0.002" rpy="1.5707 0 4.71238"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Supporto_piastra_albero.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-      </visual>  -->
+      </visual> 
     </link>
 
     <joint name="supporto_pitch_servo_1_joint" type="fixed">
@@ -382,18 +382,18 @@
           <box size="0.035 0.12 0.003"/>
         </geometry>
       </collision>
-      <visual name="supporto_pitch_servo_1_visual">
+      <!-- <visual name="supporto_pitch_servo_1_visual">
         <geometry>
           <box size="0.035 0.12 0.003"/>
         </geometry>
-      </visual> 
+      </visual>  -->
 
-      <!-- <visual name='supporto_pitch_servo_1_visual'>
+      <visual name='supporto_pitch_servo_1_visual'>
       <origin xyz="0 0 0.004" rpy="3.1415 0 1.5707" />
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/supporto_pitch_servo_1_new.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-      </visual> -->
+      </visual>
       
     </link>
 
@@ -410,17 +410,17 @@
           <box size="0.002 0.02 0.035"/>
         </geometry>
       </collision>
-      <!-- <visual name='supporto_pitch_servo_2_visual'>
+      <visual name='supporto_pitch_servo_2_visual'>
       <origin xyz="-0.042 0 0.02" rpy="0 3.1415 0" />
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/supporto_pitch_servo_2.stl" scale="0.001 0.001 0.001"/>
         </geometry>
-      </visual> -->
-      <visual name='supporto_pitch_servo_2_visual'>
+      </visual>
+      <!-- <visual name='supporto_pitch_servo_2_visual'>
         <geometry>
           <box size="0.002 0.02 0.035"/>
         </geometry>
-      </visual> 
+      </visual>  -->
     </link>
     
     <joint name="supporto_pitch_servo_2_noservo_joint" type="fixed">
@@ -435,18 +435,18 @@
           <box size="0.0075 0.035 0.002"/>
         </geometry>
       </collision>
-      <!-- <visual name='supporto_pitch_servo_2_noservo_visual'>
+      <visual name='supporto_pitch_servo_2_noservo_visual'>
       <origin xyz="0.085 0 0.02" rpy="0 3.1415 0" />
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/supporto_pitch_servo_2_noservo.dae"/>
             scale="0.001 0.001 0.001"/> 
         </geometry>
-      </visual> -->
-      <visual name='supporto_pitch_servo_2_noservo_visual'>
+      </visual>
+      <!-- <visual name='supporto_pitch_servo_2_noservo_visual'>
         <geometry>
           <box size="0.002 0.019 0.036"/>
         </geometry>
-      </visual>
+      </visual> -->
      
     </link>
 
@@ -463,17 +463,17 @@
           <box size="0.016 0.105 0.0035"/>
         </geometry>
       </collision>
-      <!-- <visual name='supp_RS_visual'>
+      <visual name='supp_RS_visual'>
      <origin xyz="0.0 0.054 0.013" rpy="1.5707 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Supports/Supp_RS.dae"/>
         </geometry>
-      </visual>  -->
-      <visual name='visuall'>
+      </visual> 
+      <!-- <visual name='visuall'>
         <geometry>
           <box size="0.016 0.105 0.0035"/>
         </geometry>
-      </visual>
+      </visual> -->
        
       <collision name='vertical3_collision'>
       <origin xyz="0 0.05 0.01" rpy="0 0 0"/>
@@ -481,12 +481,12 @@
           <box size="0.016 0.0035 0.02"/>
         </geometry>
       </collision>
-      <visual name='vertical3_visual'>
+      <!-- <visual name='vertical3_visual'>
       <origin xyz="0 0.05 0.01" rpy="0 0 0"/>
         <geometry>
           <box size="0.016 0.0035 0.02"/>
         </geometry>
-      </visual>
+      </visual> -->
      
       <collision name='vertical4_collision'>
       <origin xyz="0 -0.05 0.01" rpy="0 0 0"/>
@@ -494,12 +494,12 @@
           <box size="0.016 0.0035 0.02"/>
         </geometry>
       </collision>
-      <visual name='vertical4_visual'>
+      <!-- <visual name='vertical4_visual'>
       <origin xyz="0 -0.05 0.01" rpy="0 0 0"/>
         <geometry>
           <box size="0.016 0.0035 0.02"/>
-        </geometry>
-      </visual>
+        </geometry> 
+      </visual>-->
      
     </link>
     
@@ -528,19 +528,19 @@
             <box size="0.025 0.087 0.02"/>
           </geometry>
         </collision>
-        <visual name="RealSense_visual2">
+        <!-- <visual name="RealSense_visual2">
           <geometry>
             <box size="0.025 0.087 0.02"/>
           </geometry>
           <material name="white"/>
-        </visual>
-        <!-- <visual name="RealSense_visual">
+        </visual> -->
+        <visual name="RealSense_visual">
           <origin xyz="0.0125 0.0 0" rpy="1.5707 0 1.5707"/>
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Sensors/IntelRealsense_D435_Multibody.dae"/>
           </geometry>
           <material name="white"/>
-        </visual> -->
+        </visual>
     </link>
 
     <joint name="rightfront_force_sensor_joint" type="fixed">
@@ -651,17 +651,17 @@
             <box size="0.12 0.08 0.01"/>
           </geometry>
       </collision> 
-      <visual name="LattePanda_visual">
+      <!-- <visual name="LattePanda_visual">
           <geometry>
             <box size="0.12 0.08 0.01"/>
           </geometry>
-      </visual> 
-      <!-- <visual name="LattePanda_visual">
+      </visual>  -->
+      <visual name="LattePanda_visual">
           <origin xyz="0.001 0 0" rpy="1.5707 0 0 "/>
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Boards/LattePanda_delta.dae"/>
           </geometry>
-      </visual> -->
+      </visual>
       </link>
 
     <joint name="K64F_joint" type="fixed">
@@ -677,18 +677,18 @@
             <box size="0.085 0.055 0.015"/>
           </geometry>
       </collision>
-      <visual name="K64F_visual">
+      <!-- <visual name="K64F_visual">
           <geometry>
             <box size="0.085 0.055 0.015"/>
           </geometry>
-      </visual>  
+      </visual>   -->
         
-      <!-- <visual name="visual">
+      <visual name="visual">
           <origin xyz="-0.037 -0.027 -0.007" rpy=" 0 0 0"/>
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Boards/K64F.dae"/>
           </geometry>
-      </visual> -->
+      </visual>
       </link>
   
     <joint name="sg90h_joint" type="fixed">
@@ -710,17 +710,17 @@
             <box size=".012 0.022 0.022"/>
           </geometry>
       </collision> 
-      <visual name="sg90h_visual">
+      <!-- <visual name="sg90h_visual">
           <geometry>
             <box size=".012 0.022 0.022"/>
           </geometry>
-      </visual> 
-      <!-- <visual name="sg90h_visual">
+      </visual>  -->
+      <visual name="sg90h_visual">
           <origin xyz="0 -0.011 0" rpy=" 0 0 0"/>
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Misc/sg90.dae"/>
           </geometry>
-      </visual> -->
+      </visual>
     </link>
 
     <joint name="sg90h_shaft_joint" type="fixed">
@@ -770,18 +770,18 @@
             <box size=".012 0.022 0.022"/>
           </geometry>
       </collision> 
-      <visual name="sg90v_visual">
+      <!-- <visual name="sg90v_visual">
           <geometry>
             <box size=".012 0.022 0.022"/>
           </geometry>
-      </visual>
+      </visual> -->
         
-       <!-- <visual name="sg90v_visual">
+       <visual name="sg90v_visual">
           <origin xyz="0 -0.011 0" rpy=" 0 0 0"/>
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Misc/sg90.dae"/>
           </geometry>
-      </visual>  -->
+      </visual> 
       </link>
  
     <joint name="sg90v_shaft_joint" type="fixed">
@@ -825,17 +825,17 @@
             <box size="0.102 0.035 0.025"/>
           </geometry>
       </collision> 
-      <visual name="batteria_visual">
+      <!-- <visual name="batteria_visual">
           <geometry>
             <box size="0.102 0.035 0.025"/>
           </geometry>
-      </visual> 
-      <!-- <visual name="batteria_visual">
+      </visual>  -->
+      <visual name="batteria_visual">
           <origin xyz="0 0 -0.012" rpy=" 0 0 0"/>
           <geometry>
             <mesh filename="package://myrobot/models/myroboturdf/meshes/Misc/Turnigy_2200mAh_3S_20C_Lipo_Pack.dae"/>
           </geometry>
-      </visual> -->
+      </visual>
       </link>
     
   

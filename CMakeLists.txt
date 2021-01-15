@@ -118,6 +118,8 @@ catkin_package(INCLUDE_DIRS plugins/light
                             plugins/diff_drive
                             plugins/template
                             plugins/pwm_vel
+                            plugins/imu
+                            plugins/lidar
                             # src/slam_mapping
                             # src/myrobot_state_publisher
 
@@ -198,6 +200,8 @@ include_directories(plugins/actuator)
 include_directories(plugins/template)
 include_directories(plugins/diff_drive)
 include_directories(plugins/pwm_vel)
+include_directories(plugins/imu)
+include_directories(plugins/lidar)
 # include_directories(src/slam_mapping)
 # include_directories(src/myrobot_state_publisher)
 include_directories( ${catkin_INCLUDE_DIRS} 
@@ -219,7 +223,7 @@ target_link_libraries(diff_drive_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} 
 add_library(pwm_vel_plugin SHARED plugins/pwm_vel/pwm_vel_plugin.cpp)
 target_link_libraries(pwm_vel_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
-target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
+target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})###########template
 # add_executable(slam_devastator src/slam_mapping/slam_gmapping.cpp src/slam_mapping/main.cpp)
 # target_link_libraries(slam_devastator ${Boost_LIBRARIES} ${catkin_LIBRARIES})
 # add_library(myrobot_state_publisher_solver src/myrobot_state_publisher/robot_state_publisher.cpp)
@@ -229,7 +233,11 @@ target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})
 # add_executable(myrobot_state_publisher src/myrobot_state_publisher/robot_state_publisher_node.cpp)
 # target_link_libraries(myrobot_state_publisher ${GAZEBO_LIBRARIES} myrobot_state_publisher_solver myrobot_joint_state_listener ${orocos_kdl_LIBRARIES})
 add_library(depth_camera_plugin SHARED plugins/depth_camera/depth_camera_plugin.cpp)
-target_link_libraries(depth_camera_plugin  DepthCameraPlugin ${catkin_LIBRARIES})###########template
+target_link_libraries(depth_camera_plugin  DepthCameraPlugin ${catkin_LIBRARIES})
+add_library(imu_plugin SHARED plugins/imu/imu_plugin.cpp)
+target_link_libraries(imu_plugin  ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_library(laser_plugin plugins/lidar/laser_plugin.cpp)
+target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
 ## Build ##
 ###########
 find_package(OpenCV REQUIRED)

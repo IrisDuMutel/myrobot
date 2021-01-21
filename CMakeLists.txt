@@ -239,8 +239,8 @@ target_link_libraries(imu_plugin  ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(laser_plugin plugins/lidar/laser_plugin.cpp)
 target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
 
-add_library(dc_motor_model SHARED src/dc_motor_model/Dc_motor_Dev.cpp)
-target_link_libraries(dc_motor_model ${catkin_LIBRARIES})
+add_library(Dc_motor_Dev SHARED src/dc_motor_model/Dc_motor_Dev.cpp)
+target_link_libraries(Dc_motor_Dev ${catkin_LIBRARIES})
 ## Build ##
 ###########
 find_package(OpenCV REQUIRED)
@@ -316,6 +316,7 @@ catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py script
 install(TARGETS
   actuator_plugin
   diff_drive_plugin
+  Dc_motor_Dev
   # pwm_vel_plugin
   # slam_gmapping
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'Dc_motor_Dev'.
 //
-// Model version                  : 1.30
+// Model version                  : 1.32
 // Simulink Coder version         : 9.2 (R2019b) 18-Jul-2019
-// C/C++ source code generated on : Thu Jan 21 12:42:25 2021
+// C/C++ source code generated on : Thu Jan 21 16:22:31 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: AMD->x86-64 (Linux 64)
@@ -205,21 +205,21 @@ void Dc_motor_Dev_initialize(RT_MODEL_Dc_motor_Dev_T *const Dc_motor_Dev_M,
   Dc_motor_Dev_M->Timing.stepSize0 = 0.01;
 
   // block I/O
-  (void) std::memset((static_cast<void *>(Dc_motor_Dev_B)), 0,
-                     sizeof(B_Dc_motor_Dev_T));
+  (void) memset((static_cast<void *>(Dc_motor_Dev_B)), 0,
+                sizeof(B_Dc_motor_Dev_T));
 
   // states (continuous)
   {
-    (void) std::memset(static_cast<void *>(Dc_motor_Dev_X), 0,
-                       sizeof(X_Dc_motor_Dev_T));
+    (void) memset(static_cast<void *>(Dc_motor_Dev_X), 0,
+                  sizeof(X_Dc_motor_Dev_T));
   }
 
   // external inputs
-  (void)std::memset(Dc_motor_Dev_U, 0, sizeof(ExtU_Dc_motor_Dev_T));
+  (void)memset(Dc_motor_Dev_U, 0, sizeof(ExtU_Dc_motor_Dev_T));
 
   // external outputs
-  (void) std::memset(static_cast<void *>(Dc_motor_Dev_Y), 0,
-                     sizeof(ExtY_Dc_motor_Dev_T));
+  (void) memset(static_cast<void *>(Dc_motor_Dev_Y), 0,
+                sizeof(ExtY_Dc_motor_Dev_T));
 
   // InitializeConditions for Integrator: '<S1>/Integrator'
   Dc_motor_Dev_X->Integrator_CSTATE = Dc_motor_Dev_P.Integrator_IC;

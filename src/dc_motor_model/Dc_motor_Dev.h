@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'Dc_motor_Dev'.
 //
-// Model version                  : 1.30
+// Model version                  : 1.32
 // Simulink Coder version         : 9.2 (R2019b) 18-Jul-2019
-// C/C++ source code generated on : Thu Jan 21 12:42:25 2021
+// C/C++ source code generated on : Thu Jan 21 16:22:31 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: AMD->x86-64 (Linux 64)
@@ -18,12 +18,13 @@
 //
 #ifndef RTW_HEADER_Dc_motor_Dev_h_
 #define RTW_HEADER_Dc_motor_Dev_h_
-#include <cstring>
+#include <string.h>
+#include <stddef.h>
 #ifndef Dc_motor_Dev_COMMON_INCLUDES_
 # define Dc_motor_Dev_COMMON_INCLUDES_
 #include "rtwtypes.h"
-#include "R2019b/simulink/include/rtw_continuous.h"
-#include "R2019b/simulink/include/rtw_solver.h"
+#include "rtw_continuous.h"
+#include "rtw_solver.h"
 #endif                                 // Dc_motor_Dev_COMMON_INCLUDES_
 
 #include "Dc_motor_Dev_types.h"

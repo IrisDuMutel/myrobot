@@ -24,7 +24,7 @@
 */
 
 /*
- * \file  gazebo_ros_pwm_vel.cpp
+ * \file  gazebo_ros_diff_drive.cpp
  *
  * \brief A differential drive plugin for gazebo. Based on the diffdrive plugin
  * developed for the erratic robot (see copyright notice above). The original
@@ -47,7 +47,7 @@
 #include <algorithm>
 #include <assert.h>
 
-#include <pwm_vel_plugin.h>
+#include <diff_drive_plugin.h>
 
 #include <ignition/math/Angle.hh>
 #include <ignition/math/Pose3.hh>
@@ -65,16 +65,16 @@ enum {
     LEFT,
 };
 
-GazeboRosPWMVel::GazeboRosPWMVel() {}
+GazeboRosDiffDrive::GazeboRosDiffDrive() {}
 
 // Destructor
-GazeboRosPWMVel::~GazeboRosPWMVel() 
+GazeboRosDiffDrive::~GazeboRosDiffDrive() 
 {
 	FiniChild();
 }
 
 // Load the controller
-void GazeboRosPWMVel::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
+void GazeboRosDiffDrive::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 {
 
     this->parent = _parent;
@@ -93,7 +93,7 @@ void GazeboRosPWMVel::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 
     if (!_sdf->HasElement("legacyMode"))
     {
-      ROS_ERROR_NAMED("diff_drive", "GazeboRosPWMVel Plugin missing <legacyMode>, defaults to true\n"
+      ROS_ERROR_NAMED("diff_drive", "GazeboRosDiffDrive Plugin missing <legacyMode>, defaults to true\n"
 	       "This setting assumes you have a old package, where the right and left wheel are changed to fix a former code issue\n"
 	       "To get rid of this error just set <legacyMode> to false if you just created a new package.\n"
 	       "To fix an old package you have to exchange left wheel by the right wheel.\n"
@@ -123,7 +123,7 @@ void GazeboRosPWMVel::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 
     this->publish_tf_ = true;
     if (!_sdf->HasElement("publishTf")) {
-      ROS_WARN_NAMED("diff_drive", "GazeboRosPWMVel Plugin (ns = %s) missing <publishTf>, defaults to %d",
+      ROS_WARN_NAMED("diff_drive", "GazeboRosDiffDrive Plugin (ns = %s) missing <publishTf>, defaults to %d",
           this->robot_namespace_.c_str(), this->publish_tf_);
     } else {
       this->publish_tf_ = _sdf->GetElement("publishTf")->Get<bool>();
@@ -164,7 +164,7 @@ void GazeboRosPWMVel::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 
     ros::SubscribeOptions so =
         ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic_, 1,
-                boost::bind(&GazeboRosPWMVel::cmdVelCallback, this, _1),
+                boost::bind(&GazeboRosDiffDrive::cmdVelCallback, this, _1),
                 ros::VoidPtr(), &queue_);
 
     cmd_vel_subscriber_ = gazebo_ros_->node()->subscribe(so);
@@ -178,15 +178,15 @@ void GazeboRosPWMVel::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 
     // start custom queue for diff drive
     this->callback_queue_thread_ =
-        boost::thread ( boost::bind ( &GazeboRosPWMVel::QueueThread, this ) );
+        boost::thread ( boost::bind ( &GazeboRosDiffDrive::QueueThread, this ) );
 
     // listen to the update event (broadcast every simulation iteration)
     this->update_connection_ =
-        event::Events::ConnectWorldUpdateBegin ( boost::bind ( &GazeboRosPWMVel::UpdateChild, this ) );
+        event::Events::ConnectWorldUpdateBegin ( boost::bind ( &GazeboRosDiffDrive::UpdateChild, this ) );
 
 }
 
-void GazeboRosPWMVel::Reset()
+void GazeboRosDiffDrive::Reset()
 {
 #if GAZEBO_MAJOR_VERSION >= 8
   last_update_time_ = parent->GetWorld()->SimTime();
@@ -202,7 +202,7 @@ void GazeboRosPWMVel::Reset()
   joints_[RIGHT]->SetParam ( "fmax", 0, wheel_torque );
 }
 
-void GazeboRosPWMVel::publishWheelJointState()
+void GazeboRosDiffDrive::publishWheelJointState()
 {
     ros::Time current_time = ros::Time::now();
 
@@ -223,7 +223,7 @@ void GazeboRosPWMVel::publishWheelJointState()
     joint_state_publisher_.publish ( joint_state_ );
 }
 
-void GazeboRosPWMVel::publishWheelTF()
+void GazeboRosDiffDrive::publishWheelTF()
 {
     ros::Time current_time = ros::Time::now();
     for ( int i = 0; i < 2; i++ ) {
@@ -247,13 +247,13 @@ void GazeboRosPWMVel::publishWheelTF()
 }
 
 // Update the controller
-void GazeboRosPWMVel::UpdateChild()
+void GazeboRosDiffDrive::UpdateChild()
 {
 
     /* force reset SetParam("fmax") since Joint::Reset reset MaxForce to zero at
        https://bitbucket.org/osrf/gazebo/src/8091da8b3c529a362f39b042095e12c94656a5d1/gazebo/physics/Joint.cc?at=gazebo2_2.2.5#cl-331
        (this has been solved in https://bitbucket.org/osrf/gazebo/diff/gazebo/physics/Joint.cc?diff2=b64ff1b7b6ff&at=issue_964 )
-       and Joint::Reset is called after ModelPlugin::Reset, so we need to set maxForce to wheel_torque other than GazeboRosPWMVel::Reset
+       and Joint::Reset is called after ModelPlugin::Reset, so we need to set maxForce to wheel_torque other than GazeboRosDiffDrive::Reset
        (this seems to be solved in https://bitbucket.org/osrf/gazebo/commits/ec8801d8683160eccae22c74bf865d59fac81f1e)
     */
     for ( int i = 0; i < 2; i++ ) {
@@ -276,8 +276,11 @@ void GazeboRosPWMVel::UpdateChild()
         if ( publishWheelTF_ ) publishWheelTF();
         if ( publishWheelJointState_ ) publishWheelJointState();
 
-        // Update robot in case new velocities have been requested
+        // Update robot in case new velocities have been requested:
         getWheelVelocities();
+        // Fron now on:
+        //      - curren_speed: value of speed of the wheel in simulation
+        //      - wheel_speed: desired speed of wheel (obtained from getWheelVelocities
 
         double current_speed[2];
 
@@ -312,7 +315,7 @@ void GazeboRosPWMVel::UpdateChild()
 }
 
 // Finalize the controller
-void GazeboRosPWMVel::FiniChild()
+void GazeboRosDiffDrive::FiniChild()
 {
     alive_ = false;
     queue_.clear();
@@ -321,13 +324,30 @@ void GazeboRosPWMVel::FiniChild()
     callback_queue_thread_.join();
 }
 
-void GazeboRosPWMVel::getWheelVelocities()
+void GazeboRosDiffDrive::getWheelVelocities()
 {
     boost::mutex::scoped_lock scoped_lock ( lock );
-
-    double vr = x_;
+    
+    // Here, we transform the cmv_vel velocities into v_r linear, and v_a angular
+    double vr = x_; 
     double va = rot_;
+    
+// HERE IS WHERE WE MUST INTRODUCE THE CONVERSION:
+//      DESIRED VEL -> MOTOR MODEL -> WHEEL VEL
+// Here, some equations to consider:
+//      power = torque * ang_vel
+//      
 
+
+
+
+
+
+//
+
+
+    // If legacy mode = True: ang vel = 0.1 --> clockwise rotation
+    // no effect on linear velocity
     if(legacy_mode_)
     {
       wheel_speed_[LEFT] = vr + va * wheel_separation_ / 2.0;
@@ -340,14 +360,14 @@ void GazeboRosPWMVel::getWheelVelocities()
     }
 }
 
-void GazeboRosPWMVel::cmdVelCallback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
+void GazeboRosDiffDrive::cmdVelCallback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
 {
     boost::mutex::scoped_lock scoped_lock ( lock );
     x_ = cmd_msg->linear.x;
     rot_ = cmd_msg->angular.z;
 }
 
-void GazeboRosPWMVel::QueueThread()
+void GazeboRosDiffDrive::QueueThread()
 {
     static const double timeout = 0.01;
 
@@ -356,7 +376,7 @@ void GazeboRosPWMVel::QueueThread()
     }
 }
 
-void GazeboRosPWMVel::UpdateOdometryEncoder()
+void GazeboRosDiffDrive::UpdateOdometryEncoder()
 {
     double vl = joints_[LEFT]->GetVelocity ( 0 );
     double vr = joints_[RIGHT]->GetVelocity ( 0 );
@@ -416,7 +436,7 @@ void GazeboRosPWMVel::UpdateOdometryEncoder()
     odom_.twist.twist.linear.y = dy/seconds_since_last_update;
 }
 
-void GazeboRosPWMVel::publishOdometry ( double step_time )
+void GazeboRosDiffDrive::publishOdometry ( double step_time )
 {
 
     ros::Time current_time = ros::Time::now();
@@ -492,5 +512,5 @@ void GazeboRosPWMVel::publishOdometry ( double step_time )
     odometry_publisher_.publish ( odom_ );
 }
 
-GZ_REGISTER_MODEL_PLUGIN ( GazeboRosPWMVel )
+GZ_REGISTER_MODEL_PLUGIN ( GazeboRosDiffDrive )
 }

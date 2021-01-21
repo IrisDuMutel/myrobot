@@ -38,8 +38,8 @@
  * $ Id: 06/21/2013 11:23:40 AM piyushk $
  */
 
-#ifndef PWMVEL_PLUGIN_HH
-#define PWMVEL_PLUGIN_HH
+#ifndef DIFFDRIVE_PLUGIN_HH
+#define DIFFDRIVE_PLUGIN_HH
 
 #include <map>
 
@@ -70,7 +70,7 @@ namespace gazebo {
   class Joint;
   class Entity;
 
-  class GazeboRosPWMVel : public ModelPlugin {
+  class GazeboRosDiffDrive : public ModelPlugin {
 
     enum OdomSource
     {
@@ -78,8 +78,8 @@ namespace gazebo {
         WORLD = 1,
     };
     public:
-      GazeboRosPWMVel();
-      ~GazeboRosPWMVel();
+      GazeboRosDiffDrive();
+      ~GazeboRosDiffDrive();
       void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
       void Reset();
 
@@ -93,8 +93,12 @@ namespace gazebo {
       void publishWheelTF(); /// publishes the wheel tf's
       void publishWheelJointState();
       void UpdateOdometryEncoder();
+      
+      // Custom function definitions:
+      
 
 
+      //
       GazeboRosPtr gazebo_ros_;
       physics::ModelPtr parent;
       event::ConnectionPtr update_connection_;
@@ -103,7 +107,7 @@ namespace gazebo {
       double wheel_diameter_;
       double wheel_torque;
       double wheel_speed_[2];
-	    double wheel_accel;
+	  double wheel_accel;
       double wheel_speed_instr_[2];
 
       std::vector<physics::JointPtr> joints_;

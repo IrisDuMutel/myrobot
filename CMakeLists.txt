@@ -120,8 +120,7 @@ catkin_package(INCLUDE_DIRS plugins/light
                             # plugins/pwm_vel
                             plugins/imu
                             plugins/lidar
-                            # src/slam_mapping
-                            # src/myrobot_state_publisher
+                            src/dc_motor_model
 
                         
                             # plugins/simpletrackedvehicle
@@ -202,6 +201,7 @@ include_directories(plugins/diff_drive)
 # include_directories(plugins/pwm_vel)
 include_directories(plugins/imu)
 include_directories(plugins/lidar)
+include_directories(src/dc_motor_model)
 # include_directories(src/slam_mapping)
 # include_directories(src/myrobot_state_publisher)
 include_directories( ${catkin_INCLUDE_DIRS} 
@@ -238,6 +238,9 @@ add_library(imu_plugin SHARED plugins/imu/imu_plugin.cpp)
 target_link_libraries(imu_plugin  ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(laser_plugin plugins/lidar/laser_plugin.cpp)
 target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
+
+add_library(dc_motor_model SHARED src/dc_motor_model/Dc_motor_Dev.cpp)
+target_link_libraries(dc_motor_model ${catkin_LIBRARIES})
 ## Build ##
 ###########
 find_package(OpenCV REQUIRED)

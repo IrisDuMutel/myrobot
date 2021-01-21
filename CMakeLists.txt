@@ -41,7 +41,7 @@ find_package(catkin REQUIRED COMPONENTS
     genmsg 
     geometry_msgs
     rosconsole
-    openslam_gmapping 
+    #openslam_gmapping 
     nodelet
     rosbag_storage
     kdl_parser 
@@ -120,8 +120,7 @@ catkin_package(INCLUDE_DIRS plugins/light
                             # plugins/pwm_vel
                             plugins/imu
                             plugins/lidar
-                            # src/slam_mapping
-                            # src/myrobot_state_publisher
+
 
                         
                             # plugins/simpletrackedvehicle
@@ -202,8 +201,7 @@ include_directories(plugins/diff_drive)
 # include_directories(plugins/pwm_vel)
 include_directories(plugins/imu)
 include_directories(plugins/lidar)
-# include_directories(src/slam_mapping)
-# include_directories(src/myrobot_state_publisher)
+
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}

@@ -23,6 +23,8 @@
   <!-- <node name="image_view1" pkg="image_view" type="image_view" respawn="false" output="log">
   <remap from="image" to="/camera/color/image_raw" />
   </node> -->
+  <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/>
+
   
  
 </launch>

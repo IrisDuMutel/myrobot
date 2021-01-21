@@ -117,7 +117,7 @@ catkin_package(INCLUDE_DIRS plugins/light
                             plugins/actuator
                             plugins/diff_drive
                             plugins/template
-                            plugins/pwm_vel
+                            # plugins/pwm_vel
                             plugins/imu
                             plugins/lidar
                             # src/slam_mapping
@@ -199,7 +199,7 @@ include_directories(plugins/trackedvehicle)
 include_directories(plugins/actuator)
 include_directories(plugins/template)
 include_directories(plugins/diff_drive)
-include_directories(plugins/pwm_vel)
+# include_directories(plugins/pwm_vel)
 include_directories(plugins/imu)
 include_directories(plugins/lidar)
 # include_directories(src/slam_mapping)
@@ -220,8 +220,8 @@ add_library(actuator_plugin SHARED plugins/actuator/actuator_plugin.cpp)
 target_link_libraries(actuator_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(diff_drive_plugin SHARED plugins/diff_drive/diff_drive_plugin.cpp)
 target_link_libraries(diff_drive_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-add_library(pwm_vel_plugin SHARED plugins/pwm_vel/pwm_vel_plugin.cpp)
-target_link_libraries(pwm_vel_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+# add_library(pwm_vel_plugin SHARED plugins/pwm_vel/pwm_vel_plugin.cpp)
+# target_link_libraries(pwm_vel_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
 target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})###########template
 # add_executable(slam_devastator src/slam_mapping/slam_gmapping.cpp src/slam_mapping/main.cpp)
@@ -313,7 +313,7 @@ catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py script
 install(TARGETS
   actuator_plugin
   diff_drive_plugin
-  pwm_vel_plugin
+  # pwm_vel_plugin
   slam_gmapping
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}

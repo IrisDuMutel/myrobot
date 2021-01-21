@@ -239,7 +239,7 @@ target_link_libraries(imu_plugin  ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(laser_plugin plugins/lidar/laser_plugin.cpp)
 target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
 
-add_library(Dc_motor_Dev SHARED src/dc_motor_model/Dc_motor_Dev.cpp)
+add_library(Dc_motor_Dev SHARED src/dc_motor_model/ert_main.cpp)
 target_link_libraries(Dc_motor_Dev ${catkin_LIBRARIES})
 ## Build ##
 ###########

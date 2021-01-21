@@ -14,7 +14,7 @@
 #ifdef MATLAB_MEX_FILE
 #include "tmwtypes.h"
 #else
-#include "rtwtypes.h"
+#include "/home/iris/catkin_ws/src/myrobot/src/dc_motor_model/rtwtypes.h"
 #endif
 
 /* For models registering MassMatrix */

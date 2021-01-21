@@ -23,8 +23,8 @@
 #ifndef Dc_motor_Dev_COMMON_INCLUDES_
 # define Dc_motor_Dev_COMMON_INCLUDES_
 #include "rtwtypes.h"
-#include "rtw_continuous.h"
-#include "rtw_solver.h"
+#include "R2019b/simulink/include/rtw_continuous.h"
+#include "R2019b/simulink/include/rtw_solver.h"
 #endif                                 // Dc_motor_Dev_COMMON_INCLUDES_
 
 #include "Dc_motor_Dev_types.h"

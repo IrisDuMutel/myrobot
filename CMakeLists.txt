@@ -117,7 +117,7 @@ catkin_package(INCLUDE_DIRS plugins/light
                             plugins/actuator
                             plugins/diff_drive
                             plugins/template
-                            plugins/pwm_vel
+                            # plugins/pwm_vel
                             plugins/imu
                             plugins/lidar
                             # src/slam_mapping
@@ -199,7 +199,7 @@ include_directories(plugins/trackedvehicle)
 include_directories(plugins/actuator)
 include_directories(plugins/template)
 include_directories(plugins/diff_drive)
-include_directories(plugins/pwm_vel)
+# include_directories(plugins/pwm_vel)
 include_directories(plugins/imu)
 include_directories(plugins/lidar)
 # include_directories(src/slam_mapping)

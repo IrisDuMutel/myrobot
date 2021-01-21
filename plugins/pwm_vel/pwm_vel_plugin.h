@@ -93,8 +93,12 @@ namespace gazebo {
       void publishWheelTF(); /// publishes the wheel tf's
       void publishWheelJointState();
       void UpdateOdometryEncoder();
+      
+      // Custom function definitions:
+      
 
 
+      //
       GazeboRosPtr gazebo_ros_;
       physics::ModelPtr parent;
       event::ConnectionPtr update_connection_;

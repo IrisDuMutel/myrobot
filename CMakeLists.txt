@@ -41,7 +41,7 @@ find_package(catkin REQUIRED COMPONENTS
     genmsg 
     geometry_msgs
     rosconsole
-    openslam_gmapping 
+    # openslam_gmapping 
     nodelet
     rosbag_storage
     kdl_parser 
@@ -317,7 +317,7 @@ install(TARGETS
   actuator_plugin
   diff_drive_plugin
   # pwm_vel_plugin
-  #slam_gmapping
+  # slam_gmapping
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

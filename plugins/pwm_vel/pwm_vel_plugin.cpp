@@ -47,7 +47,7 @@
 #include <algorithm>
 #include <assert.h>
 
-#include <diff_drive_plugin.h>
+#include <pwm_vel_plugin.h>
 
 #include <ignition/math/Angle.hh>
 #include <ignition/math/Pose3.hh>

@@ -12,11 +12,11 @@ project(myrobot)
 find_package(catkin REQUIRED COMPONENTS
     gazebo_dev
     message_generation
+    nodelet
     angles
     std_srvs
+    std_srvs
     urdf
-    tf
-    tf2_ros
     dynamic_reconfigure
     rosgraph_msgs
     trajectory_msgs
@@ -42,11 +42,12 @@ find_package(catkin REQUIRED COMPONENTS
     geometry_msgs
     rosconsole
     # openslam_gmapping 
-    nodelet
     rosbag_storage
     kdl_parser 
     rostime  
+    tf
     tf2_kdl
+    tf2_ros
      
 
 )
@@ -187,10 +188,16 @@ add_definitions(
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-link_directories(${GAZEBO_LIBRARY_DIRS})
+link_directories(
+  ${catkin_LIBRARY_DIRS}
+  ${OGRE_LIBRARY_DIRS}
+  ${OGRE-Terrain_LIBRARY_DIRS}
+  ${OGRE-Paging_LIBRARY_DIRS}
+)
 include_directories(SYSTEM ${EIGEN3_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${std_msgs_INCLUDE_DIRS} 
-                    ${GAZEBO_INCLUDE_DIRS} ${roscpp_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${orocos_kdl_INCLUDE_DIRS} ${urdfdom_headers_INCLUDE_DIRS})
+                    ${GAZEBO_INCLUDE_DIRS} ${roscpp_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${orocos_kdl_INCLUDE_DIRS} ${urdfdom_headers_INCLUDE_DIRS}  ${OGRE-Terrain_INCLUDE_DIRS}
+                    ${OGRE-Paging_INCLUDE_DIRS})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 # set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
@@ -208,6 +215,7 @@ include_directories(src/dc_motor_model)
 include_directories(src/simple_node)
 include_directories(/usr/local/MATLAB/R2020b/toolbox/target/codertarget/rtos/inc)
 include_directories(/usr/local/MATLAB/R2020b/toolbox/ros/codertarget/src)
+include_directories(src/gazebo_ros_motors)
 # include_directories(src/slam_mapping)
 # include_directories(src/myrobot_state_publisher)
 include_directories( ${catkin_INCLUDE_DIRS} 
@@ -245,6 +253,11 @@ add_library(imu_plugin SHARED plugins/imu/imu_plugin.cpp)
 target_link_libraries(imu_plugin  ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(laser_plugin plugins/lidar/laser_plugin.cpp)
 target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
+
+add_library(custom_ros_dc_motor src/gazebo_ros_motors/gazebo_ros_dc_motor.cpp)
+target_link_libraries(custom_ros_dc_motor ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+# add_dependencies(custom_ros_dc_motor ${PROJECT_NAME}_gencfg)
+
 
 # add_library(Dc_motor_Dev SHARED src/dc_motor_model/ert_main.cpp)
 # target_link_libraries(Dc_motor_Dev ${catkin_LIBRARIES})
@@ -353,6 +366,12 @@ install(TARGETS
   install(DIRECTORY config launch rviz launch save_model
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
+
+install(TARGETS
+  gazebo_ros_dc_motor
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  )
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html

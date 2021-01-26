@@ -39,7 +39,7 @@
   
 
 
-   <gazebo>
+  <gazebo>
     <plugin name="turtlebot3_burger_controller" filename="libdiff_drive_plugin.so">
       <commandTopic>cmd_vel</commandTopic>
       <odometryTopic>odom</odometryTopic>
@@ -297,4 +297,32 @@
         <rosDebugLevel>na</rosDebugLevel> 
       </plugin> 
   </gazebo> -->
+
+
+  <!-- attached to left wheel and fully working-->
+  <gazebo>
+    <plugin name="pwm_vel_plugin" filename="libcustom_ros_dc_motor.so">
+        <command_topic>/motor/voltage_norm</command_topic>
+        <velocity_topic>/motor/velocity</velocity_topic>
+        <update_rate>100.0</update_rate>
+        <encoder_topic>/motor/encoder</encoder_topic>
+        <current_topic>/motor/current</current_topic>
+        <supply_topic>/motor/supply_voltage</supply_topic>
+        <motor_nominal_voltage>24.0</motor_nominal_voltage> 
+        <moment_of_inertia>0.001</moment_of_inertia> 
+        <armature_damping_ratio>0.0001</armature_damping_ratio> 
+        <electromotive_force_constant>0.03</electromotive_force_constant> 
+        <electric_resistance>13.8</electric_resistance> 
+        <electric_inductance>0.001</electric_inductance> 
+        <velocity_noise>0.0</velocity_noise>
+        <gear_ratio>72.0</gear_ratio>
+        <publish_velocity>true</publish_velocity>
+        <publish_encoder>true</publish_encoder>
+        <publish_current>false</publish_current>
+        <publish_motor_joint_state>true</publish_motor_joint_state>
+        <encoder_ppr>111</encoder_ppr>
+        <motor_wrench_frame>wheel_left_link</motor_wrench_frame> 
+        <motor_shaft_joint>wheel_left_joint</motor_shaft_joint>
+      </plugin>
+  </gazebo>
   </robot>

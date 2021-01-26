@@ -150,12 +150,12 @@
       </collision>
       
 
-      <!-- <visual name="wheel_left_link_visual">
+      <visual name="wheel_left_link_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <cylinder length="0.035" radius="0.06825"/>
         </geometry>
-      </visual> -->
+      </visual>
 
        
     </link>

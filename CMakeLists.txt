@@ -8,7 +8,6 @@ project(myrobot)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 
-
 find_package(catkin REQUIRED COMPONENTS
     gazebo_dev
     message_generation
@@ -51,15 +50,16 @@ find_package(catkin REQUIRED COMPONENTS
      
 
 )
+
+
+## System dependencies are found with CMake's conventions
+# find_package(Boost REQUIRED COMPONENTS system)
 find_package(gazebo REQUIRED)
 find_package(Boost REQUIRED)
 find_package(orocos_kdl REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(urdfdom_headers REQUIRED)
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
-
+find_package(OpenCV REQUIRED)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -84,6 +84,7 @@ find_package(urdfdom_headers REQUIRED)
 ##     find_package(catkin REQUIRED COMPONENTS ...)
 ##   * add "message_runtime" and every package in MSG_DEP_SET to
 ##     catkin_package(CATKIN_DEPENDS ...)
+
 ##   * uncomment the add_*_files sections below as needed
 ##     and list every .msg/.srv/.action file to be processed
 ##   * uncomment the generate_messages entry below
@@ -112,51 +113,7 @@ find_package(urdfdom_headers REQUIRED)
 #   std_msgs
 # )
 generate_messages(DEPENDENCIES std_msgs nav_msgs)
-catkin_package(INCLUDE_DIRS plugins/light
-                            plugins/contact
-                            plugins/depth_camera
-                            plugins/actuator
-                            plugins/diff_drive
-                            plugins/template
-                            # plugins/pwm_vel
-                            plugins/imu
-                            plugins/lidar
-                            src/dc_motor_model
-                            src/simple_node
 
-                        
-                            # plugins/simpletrackedvehicle
-              CATKIN_DEPENDS 
-                            message_runtime
-                            rospy
-                            nodelet
-                            angles
-                            std_srvs
-                            geometry_msgs
-                            nav_msgs
-                            urdf
-                            tf
-                            tf2_ros
-                            dynamic_reconfigure
-                            rosgraph_msgs
-                            trajectory_msgs
-                            image_transport
-                            camera_info_manager
-                            gazebo_plugins 
-                            gazebo_ros 
-                            roscpp 
-                            std_msgs
-                            sensor_msgs
-                            nav_msgs
-                            gazebo_msgs
-                            rosconsole
-                            kdl_parser 
-                            
-                            rostime
-                            tf2_kdl
-                            DEPENDS
-                            orocos_kdl 
-                            urdfdom_headers)
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
@@ -188,12 +145,67 @@ add_definitions(
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
+catkin_package(INCLUDE_DIRS plugins/light
+                            plugins/contact
+                            plugins/depth_camera
+                            plugins/actuator
+                            plugins/diff_drive
+                            plugins/template
+                            # plugins/pwm_vel
+                            plugins/imu
+                            plugins/lidar
+                            src/dc_motor_model
+                            src/simple_node
+
+                        
+              CATKIN_DEPENDS 
+                            message_runtime
+                            rospy
+                            nodelet
+                            angles
+                            std_srvs
+                            geometry_msgs
+                            nav_msgs
+                            urdf
+                            tf
+                            tf2_ros
+                            dynamic_reconfigure
+                            rosgraph_msgs
+                            trajectory_msgs
+                            image_transport
+                            camera_info_manager
+                            gazebo_plugins 
+                            gazebo_ros 
+                            roscpp 
+                            std_msgs
+                            sensor_msgs
+                            nav_msgs
+                            gazebo_msgs
+                            rosconsole
+                            kdl_parser 
+                            rostime
+                            tf2_kdl
+                            DEPENDS
+                            orocos_kdl 
+                            urdfdom_headers)
+
+# Add directories in which the linker will look for libraries.
+# link_directories([AFTER|BEFORE] directory1 [directory2 ...])
+# Adds the paths in which the linker should search for libraries. Relative paths 
+# given to this command are interpreted as relative to the current source directory
+
 link_directories(
   ${catkin_LIBRARY_DIRS}
   ${OGRE_LIBRARY_DIRS}
   ${OGRE-Terrain_LIBRARY_DIRS}
   ${OGRE-Paging_LIBRARY_DIRS}
 )
+
+# Add include directories to the build.
+# include_directories([AFTER|BEFORE] [SYSTEM] dir1 [dir2 ...])
+# Add the given directories to those the compiler uses to search for include files. 
+# Relative paths are interpreted as relative to the current source directory.
+
 include_directories(SYSTEM ${EIGEN3_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${std_msgs_INCLUDE_DIRS} 
                     ${GAZEBO_INCLUDE_DIRS} ${roscpp_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${orocos_kdl_INCLUDE_DIRS} ${urdfdom_headers_INCLUDE_DIRS}  ${OGRE-Terrain_INCLUDE_DIRS}
@@ -216,15 +228,32 @@ include_directories(src/simple_node)
 include_directories(/usr/local/MATLAB/R2020b/toolbox/target/codertarget/rtos/inc)
 include_directories(/usr/local/MATLAB/R2020b/toolbox/ros/codertarget/src)
 include_directories(src/gazebo_ros_motors)
-# include_directories(src/slam_mapping)
-# include_directories(src/myrobot_state_publisher)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}
                      ${PROJECT_SOURCE_DIR}
+                     ${OpenCV_INCLUDE_DIRS}
 )
-# add_library(simpletrackedvehicle SHARED plugins/simpletrackedvehicle/SimpleTrackedVehiclePlugin.cc)
-# add_library(contact SHARED plugins/actuator/ActuatorPlugin.cc)
+
+## Build ##
+###########
+## Specify additional locations of header files
+## Your package locations should be listed before other locations
+
+
+## Declare a C++ library
+# add_library(${PROJECT_NAME}
+#   src/${PROJECT_NAME}/myrobot.cpp
+# )
+# add_library(<name> [STATIC | SHARED | MODULE]
+#             [EXCLUDE_FROM_ALL]
+#             [<source>...])
+# Adds a library target called <name> to be built from the source files listed in the command invocation. 
+
+# target_link_libraries(<target> ... <item>... ...)
+# Specify libraries or flags to use when linking a given target and/or its dependents. Usage requirements from linked library 
+# targets will be propagated. Usage requirements of a target’s dependencies affect compilation of its own sources.
+# The named <target> must have been created by a command such as add_executable() or add_library()
 
 # Build our plugin
 add_library(contact_plugin SHARED plugins/contact/contact_plugin.cc)
@@ -239,63 +268,17 @@ target_link_libraries(diff_drive_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} 
 # target_link_libraries(pwm_vel_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(template_plugin SHARED plugins/template/template_plugin.cpp)
 target_link_libraries(template_plugin ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES})###########template
-# add_executable(slam_devastator src/slam_mapping/slam_gmapping.cpp src/slam_mapping/main.cpp)
-# target_link_libraries(slam_devastator ${Boost_LIBRARIES} ${catkin_LIBRARIES})
-# add_library(myrobot_state_publisher_solver src/myrobot_state_publisher/robot_state_publisher.cpp)
-# target_link_libraries(myrobot_state_publisher_solver ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES})
-# add_library(myrobot_joint_state_listener SHARED src/myrobot_state_publisher/joint_state_listener.cpp)
-# target_link_libraries(myrobot_joint_state_listener ${GAZEBO_LIBRARIES} myrobot_state_publisher_solver ${orocos_kdl_LIBRARIES})
-# add_executable(myrobot_state_publisher src/myrobot_state_publisher/robot_state_publisher_node.cpp)
-# target_link_libraries(myrobot_state_publisher ${GAZEBO_LIBRARIES} myrobot_state_publisher_solver myrobot_joint_state_listener ${orocos_kdl_LIBRARIES})
 add_library(depth_camera_plugin SHARED plugins/depth_camera/depth_camera_plugin.cpp)
 target_link_libraries(depth_camera_plugin  DepthCameraPlugin ${catkin_LIBRARIES})
 add_library(imu_plugin SHARED plugins/imu/imu_plugin.cpp)
 target_link_libraries(imu_plugin  ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(laser_plugin plugins/lidar/laser_plugin.cpp)
 target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
-
 add_library(custom_ros_dc_motor src/gazebo_ros_motors/gazebo_ros_dc_motor.cpp)
 target_link_libraries(custom_ros_dc_motor ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-# add_dependencies(custom_ros_dc_motor ${PROJECT_NAME}_gencfg)
-
 
 # add_library(Dc_motor_Dev SHARED src/dc_motor_model/ert_main.cpp)
 # target_link_libraries(Dc_motor_Dev ${catkin_LIBRARIES})
-## Declare executable
-add_executable(simple_node
-   src/simple_node/ert_main.cpp
-   src/simple_node/simple_node.cpp
-   src/simple_node/simple_node_data.cpp
-   /usr/local/MATLAB/R2020b/toolbox/target/codertarget/rtos/src/linuxinitialize.cpp
-   src/simple_node/slros_busmsg_conversion.cpp
-   src/simple_node/slros_initialize.cpp
-   /usr/local/MATLAB/R2020b/toolbox/ros/codertarget/src/slros_generic_param.cpp
-  #  ${${PROJECT_NAME}_C_SOURCES}
-  #  ${${PROJECT_NAME}_CPP_SOURCES}
-)
-add_dependencies(simple_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(simple_node
-   ${catkin_LIBRARIES}
-   ${Boost_LIBRARIES}
-  #  rt
-)
-## Build ##
-###########
-find_package(OpenCV REQUIRED)
-## Specify additional locations of header files
-## Your package locations should be listed before other locations
-
-
-
-include_directories(include
-  ${catkin_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
-
-)
-## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/myrobot.cpp
-# )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -309,7 +292,22 @@ include_directories(include
 
 # add_executable(camera_depth src/camera_depth.cpp)
 # target_link_libraries(camera_depth ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+## Declare executable
+add_executable(simple_node
+   src/simple_node/ert_main.cpp
+   src/simple_node/simple_node.cpp
+   src/simple_node/simple_node_data.cpp
+   /usr/local/MATLAB/R2020b/toolbox/target/codertarget/rtos/src/linuxinitialize.cpp
+   src/simple_node/slros_busmsg_conversion.cpp
+   src/simple_node/slros_initialize.cpp
+   /usr/local/MATLAB/R2020b/toolbox/ros/codertarget/src/slros_generic_param.cpp
+)
 
+add_dependencies(simple_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(simple_node
+   ${catkin_LIBRARIES}
+   ${Boost_LIBRARIES}
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -350,6 +348,9 @@ catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py script
 # install(TARGETS ${PROJECT_NAME}_node
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
+
+# This command generates installation rules for a project. Install rules specified by calls to 
+# the install() command within a source directory are executed in order during installation.
 
 install(TARGETS
   actuator_plugin
@@ -407,7 +408,5 @@ install(TARGETS
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
-
 
 ##add_dependencies(random_moving beginner_tutorials_generate_messages_cpp)

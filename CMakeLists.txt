@@ -121,6 +121,7 @@ catkin_package(INCLUDE_DIRS plugins/light
                             plugins/imu
                             plugins/lidar
                             src/dc_motor_model
+                            src/simple_node
 
                         
                             # plugins/simpletrackedvehicle
@@ -174,6 +175,8 @@ catkin_package(INCLUDE_DIRS plugins/light
 #   cfg/DynReconf1.cfg
 #   cfg/DynReconf2.cfg
 # )
+add_definitions(
+-DMODEL=simple_node -DNUMST=1 -DNCSTATES=0 -DHAVESTDIO -DMODEL_HAS_DYNAMICALLY_LOADED_SFCNS=0 -DCLASSIC_INTERFACE=0 -DALLOCATIONFCN=0 -DTID01EQ=0 -DTERMFCN=1 -DONESTEPFCN=1 -DMAT_FILE=0 -DMULTI_INSTANCE_CODE=0 -DINTEGER_CODE=0 -DMT=0 -DROS_PROJECT -DMW_SCHED_OTHER -DSTACK_SIZE=64 -D__MW_TARGET_USE_HARDWARE_RESOURCES_H__ -DRT=RT )
 
 ###################################
 ## catkin specific configuration ##
@@ -202,11 +205,15 @@ include_directories(plugins/diff_drive)
 include_directories(plugins/imu)
 include_directories(plugins/lidar)
 include_directories(src/dc_motor_model)
+include_directories(src/simple_node)
+include_directories(/usr/local/MATLAB/R2020b/toolbox/target/codertarget/rtos/inc)
+include_directories(/usr/local/MATLAB/R2020b/toolbox/ros/codertarget/src)
 # include_directories(src/slam_mapping)
 # include_directories(src/myrobot_state_publisher)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}
+                     ${PROJECT_SOURCE_DIR}
 )
 # add_library(simpletrackedvehicle SHARED plugins/simpletrackedvehicle/SimpleTrackedVehiclePlugin.cc)
 # add_library(contact SHARED plugins/actuator/ActuatorPlugin.cc)
@@ -241,6 +248,24 @@ target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
 
 # add_library(Dc_motor_Dev SHARED src/dc_motor_model/ert_main.cpp)
 # target_link_libraries(Dc_motor_Dev ${catkin_LIBRARIES})
+## Declare executable
+add_executable(simple_node
+   src/simple_node/ert_main.cpp
+   src/simple_node/simple_node.cpp
+   src/simple_node/simple_node_data.cpp
+   /usr/local/MATLAB/R2020b/toolbox/target/codertarget/rtos/src/linuxinitialize.cpp
+   src/simple_node/slros_busmsg_conversion.cpp
+   src/simple_node/slros_initialize.cpp
+   /usr/local/MATLAB/R2020b/toolbox/ros/codertarget/src/slros_generic_param.cpp
+  #  ${${PROJECT_NAME}_C_SOURCES}
+  #  ${${PROJECT_NAME}_CPP_SOURCES}
+)
+add_dependencies(simple_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(simple_node
+   ${catkin_LIBRARIES}
+   ${Boost_LIBRARIES}
+  #  rt
+)
 ## Build ##
 ###########
 find_package(OpenCV REQUIRED)

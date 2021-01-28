@@ -154,7 +154,7 @@ catkin_package(INCLUDE_DIRS plugins/light
                             # plugins/pwm_vel
                             plugins/imu
                             plugins/lidar
-                            src/dc_motor_model
+                            plugins/dc_motor_model
                             src/simple_node
 
                         
@@ -223,11 +223,11 @@ include_directories(plugins/diff_drive)
 # include_directories(plugins/pwm_vel)
 include_directories(plugins/imu)
 include_directories(plugins/lidar)
-include_directories(src/dc_motor_model)
+include_directories(plugins/dc_motor_model)
 include_directories(src/simple_node)
 include_directories(/usr/local/MATLAB/R2020b/toolbox/target/codertarget/rtos/inc)
 include_directories(/usr/local/MATLAB/R2020b/toolbox/ros/codertarget/src)
-include_directories(src/gazebo_ros_motors)
+include_directories(plugins/gazebo_ros_motors)
 include_directories( ${catkin_INCLUDE_DIRS} 
                      ${Boost_INCLUDE_DIR} 
                      ${GAZEBO_INCLUDE_DIRS}
@@ -274,7 +274,7 @@ add_library(imu_plugin SHARED plugins/imu/imu_plugin.cpp)
 target_link_libraries(imu_plugin  ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(laser_plugin plugins/lidar/laser_plugin.cpp)
 target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
-add_library(custom_ros_dc_motor src/gazebo_ros_motors/gazebo_ros_dc_motor.cpp)
+add_library(custom_ros_dc_motor plugins/gazebo_ros_motors/gazebo_ros_dc_motor.cpp)
 target_link_libraries(custom_ros_dc_motor ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 # add_library(Dc_motor_Dev SHARED src/dc_motor_model/ert_main.cpp)

@@ -14,13 +14,13 @@ def simple_publisher():
     i = 0
     while not rospy.is_shutdown():
         if v == 0 and i == 2:
-            v=0.05
+            v=0.5
             i = 0
-        elif v==0.05 and i == 2:
+        elif v==0.5 and i == 2:
             v = 0
             i = 0
         voltage = v
-        rospy.loginfo(voltage)
+        # rospy.loginfo(voltage)
         pub.publish(voltage)
         i+=1
         rate.sleep()

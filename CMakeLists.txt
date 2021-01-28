@@ -154,7 +154,7 @@ catkin_package(INCLUDE_DIRS plugins/light
                             # plugins/pwm_vel
                             plugins/imu
                             plugins/lidar
-                            plugins/dc_motor_model
+                            plugins/gazebo_ros_motors
                             src/simple_node
 
                         

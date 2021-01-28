@@ -343,24 +343,37 @@ void GazeboRosMotor::motorModelUpdate(double dt, double output_shaft_omega, doub
     const double f = 0.00000010651;
     const double C0 = 0.000029658;
     const double J_ours = 0.000000023;
-    const double tau = 1/120;
+    const double tau = 1;
     const double Cr = 0;
     const double res = 3.1;
-    double i0 = internal_current_;
+    internal_omega_ = output_shaft_omega * tau; // external shaft angular veloc. converted to internal side
+
+    // double i0 = internal_current_;
     double o0 = internal_omega_;
     double A = (-Kc*Kem/res - f)/J_ours;
-    double B = (Kc*V/res -C0);
-    double w_m = o0+dt*(A*o0+B);
-    double C_m = J_ours*(A*w_m+B);
+    ROS_INFO( "Value of A: %f ", A);
+
+    double B = (Kc*V/res -C0)/J;
+    ROS_INFO( "Value of B: %f ", B);
+
+    double w_m = o0+0.01*(A*o0+B);
+    ROS_INFO( "Value of omega: %f ", w_m);
+
+    double C_m = 1;
     ignition::math::Vector3d applied_torque;
-    ROS_INFO( "Value of dt: %f ", dt);
+    // ROS_INFO( "Value of dt: %f ", dt);
     // TODO: axis as param
-    applied_torque.Z() = C_m * tau; // motor torque T_ext = K * i * n_gear
+    applied_torque.Z() = C_m * 1/tau; // motor torque T_ext = K * i * n_gear
+    internal_omega_ = w_m;
+    ROS_INFO( "Value of applied torque: %f ", applied_torque.Z());
+
     this->link_->AddRelativeTorque(applied_torque);
+
     ///////////////////////////////////////////////////7
 
 
-
+    // double i0 = internal_current_;
+    // double o0 = internal_omega_;
     // double d2 = pow(d,2);
     // double L2 = pow(L,2);
     // double J2 = pow(J,2);
@@ -380,6 +393,9 @@ void GazeboRosMotor::motorModelUpdate(double dt, double output_shaft_omega, doub
     // ignition::math::Vector3d applied_torque;
     // // TODO: axis as param
     // applied_torque.Z() = Km * i_t * gear_ratio_; // motor torque T_ext = K * i * n_gear
+    // ROS_INFO( "Value of applied torque: %f ", applied_torque.Z());
+    // applied_torque.Z() = 1.877889; // motor torque T_ext = K * i * n_gear
+
     // this->link_->AddRelativeTorque(applied_torque);
 }
 

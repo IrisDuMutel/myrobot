@@ -14,9 +14,9 @@ def simple_publisher():
     i = 0
     while not rospy.is_shutdown():
         if v == 0 and i == 2:
-            v=0.5
+            v=5
             i = 0
-        elif v==0.5 and i == 2:
+        elif v==5 and i == 2:
             v = 0
             i = 0
         voltage = v

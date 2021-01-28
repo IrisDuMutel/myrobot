@@ -9,14 +9,14 @@ from std_msgs.msg import Float32
 def simple_publisher():
     pub = rospy.Publisher('motor/voltage_norm', Float32, queue_size=10)
     rospy.init_node('simple_publisher', anonymous=True)
-    rate = rospy.Rate(10) # 10hz
+    rate = rospy.Rate(100) # 100hz quite a smooth movement
     v = 0
     i = 0
     while not rospy.is_shutdown():
         if v == 0 and i == 2:
-            v=0.2
+            v=0.05
             i = 0
-        elif v==0.2 and i == 2:
+        elif v==0.05 and i == 2:
             v = 0
             i = 0
         voltage = v

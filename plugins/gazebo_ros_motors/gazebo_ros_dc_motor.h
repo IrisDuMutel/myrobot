@@ -90,7 +90,7 @@ namespace gazebo {
       // Motor model
       double motor_nominal_voltage_; /// the nominal voltage of the motor which corresponds to max angular velocity
       double moment_of_inertia_;
-      double armature_damping_ratio_;
+      double damping_ratio_;
       double electromotive_force_constant_; // Nm/A = V/(rad/s)
       double electric_resistance_;
       double electric_inductance_;
@@ -110,12 +110,12 @@ namespace gazebo {
       void QueueThread();
 
       // Reconfiguration
-      boost::shared_ptr<dynamic_reconfigure::Server<gazebo_ros_motors::motorModelConfig>> dynamic_reconfigure_server_;
-      boost::recursive_mutex reconf_mutex_;
-      bool notify_server_;
-      void reconfigureCallBack(const gazebo_ros_motors::motorModelConfig &config, uint32_t level);
-      ros::NodeHandle* node_handle_;
-      void paramServerUpdate();
+      // boost::shared_ptr<dynamic_reconfigure::Server<gazebo_ros_motors::motorModelConfig>> dynamic_reconfigure_server_;
+      // boost::recursive_mutex reconf_mutex_;
+      // bool notify_server_;
+      // void reconfigureCallBack(const gazebo_ros_motors::motorModelConfig &config, uint32_t level);
+      // ros::NodeHandle* node_handle_;
+      // void paramServerUpdate();
 
       // Helper variables
       double update_period_;

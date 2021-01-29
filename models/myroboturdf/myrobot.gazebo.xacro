@@ -6,8 +6,8 @@
   </gazebo>
   
   <gazebo reference="wheel_left_link">
-    <mu1>0.1</mu1>
-    <mu2>0.1</mu2>
+    <!-- <mu1>0.1</mu1>
+    <mu2>0.1</mu2> -->
     <kp>500000.0</kp>
     <kd>10.0</kd>
     <minDepth>0.001</minDepth>
@@ -17,8 +17,8 @@
   </gazebo>
 
   <gazebo reference="wheel_right_link">
-    <mu1>0.1</mu1>
-    <mu2>0.1</mu2>
+    <!-- <mu1>0.1</mu1>
+    <mu2>0.1</mu2> -->
     <kp>500000.0</kp>
     <kd>10.0</kd>
     <minDepth>0.001</minDepth>
@@ -304,7 +304,7 @@
     <plugin name="pwm_vel_plugin" filename="libcustom_ros_dc_motor.so">
         <command_topic>/motor/voltage_norm</command_topic>
         <velocity_topic>/motor/velocity</velocity_topic>
-        <update_rate>100.0</update_rate>
+        <update_rate>10.0</update_rate>
         <encoder_topic>/motor/encoder</encoder_topic>
         <current_topic>/motor/current</current_topic>
         <supply_topic>/motor/supply_voltage</supply_topic>
@@ -315,13 +315,13 @@
         <electric_resistance>13.8</electric_resistance> 
         <electric_inductance>0.001</electric_inductance> 
         <velocity_noise>0.0</velocity_noise>
-        <gear_ratio>72.0</gear_ratio>
+        <gear_ratio>1.0</gear_ratio>
         <publish_velocity>true</publish_velocity>
         <publish_encoder>true</publish_encoder>
         <publish_current>false</publish_current>
         <publish_motor_joint_state>true</publish_motor_joint_state>
         <encoder_ppr>111</encoder_ppr>
-        <motor_wrench_frame>wheel_left_link</motor_wrench_frame> 
+        <motor_wrench_frame>base_footprint</motor_wrench_frame> 
         <motor_shaft_joint>wheel_left_joint</motor_shaft_joint>
       </plugin>
   </gazebo>
@@ -330,7 +330,7 @@
     <plugin name="pwm_vel_plugin" filename="libcustom_ros_dc_motor.so">
         <command_topic>/motor/voltage_norm</command_topic>
         <velocity_topic>/motor/velocity</velocity_topic>
-        <update_rate>100.0</update_rate>
+        <update_rate>10.0</update_rate>
         <encoder_topic>/motor/encoder</encoder_topic>
         <current_topic>/motor/current</current_topic>
         <supply_topic>/motor/supply_voltage</supply_topic>
@@ -341,13 +341,13 @@
         <electric_resistance>13.8</electric_resistance> 
         <electric_inductance>0.001</electric_inductance> 
         <velocity_noise>0.0</velocity_noise>
-        <gear_ratio>72.0</gear_ratio>
+        <gear_ratio>1.0</gear_ratio>
         <publish_velocity>true</publish_velocity>
         <publish_encoder>true</publish_encoder>
         <publish_current>false</publish_current>
         <publish_motor_joint_state>true</publish_motor_joint_state>
         <encoder_ppr>111</encoder_ppr>
-        <motor_wrench_frame>wheel_right_link</motor_wrench_frame> 
+        <motor_wrench_frame>base_footprint</motor_wrench_frame> 
         <motor_shaft_joint>wheel_right_joint</motor_shaft_joint>
       </plugin>
   </gazebo>

@@ -134,15 +134,7 @@ void GazeboRosMotor::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf ) {
     internal_omega_ = 0;
     supply_voltage_ = motor_nominal_voltage_;
 
-    // Set up dynamic_reconfigure server
-    // ROS_INFO_NAMED(plugin_name_, "%s: Setting up dynamic reconfigure server.", gazebo_ros_->info());
-    // node_handle_ = new ros::NodeHandle(plugin_name_);
-    // dynamic_reconfigure_server_.reset(new dynamic_reconfigure::Server<gazebo_ros_motors::motorModelConfig>(reconf_mutex_, ros::NodeHandle(*node_handle_)));
-    // boost::recursive_mutex::scoped_lock scoped_lock(reconf_mutex_);
-    // notify_server_ = true;
-    // this->paramServerUpdate();
-    // dynamic_reconfigure_server_->setCallback(boost::bind(&GazeboRosMotor::reconfigureCallBack, this, _1, _2));
-    // scoped_lock.unlock();
+
 }
 
 void GazeboRosMotor::Reset() {
@@ -154,131 +146,7 @@ void GazeboRosMotor::Reset() {
   supply_voltage_ = motor_nominal_voltage_;
 }
 
-// bool GazeboRosMotor::checkParameters() {
-//    if ( this->damping_ratio_ !=0.0 && !isnan(this->damping_ratio_) &&
-//         this->electric_inductance_ !=0.0 && !isnan(this->electric_inductance_) &&
-//         this->electric_resistance_ !=0.0 && !isnan(this->electric_resistance_) &&
-//         this->electromotive_force_constant_ !=0.0 && !isnan(this->electromotive_force_constant_) &&
-//         this->moment_of_inertia_ !=0.0 && !isnan(this->moment_of_inertia_)) return true;
-//         else return false;
-// }
 
-// bool GazeboRosMotor::ValidateParameters() {
-//     const double& d = this->damping_ratio_;
-//     const double& L = this->electric_inductance_;
-//     const double& R = this->electric_resistance_;
-//     const double& Km = this->electromotive_force_constant_;
-//     const double& J = this->moment_of_inertia_;
-//     bool ok = true;
-//     // Check if d^2 L^2 + J^2 R^2 - 2 J L (2 Km^2 + d R) > 0 (which appears under sqrt)
-//     double Om = 0;
-//     if (d*d*L*L + J*J*R*R > 2*J*L*(2*Km*Km + d*R)) {
-//         Om = sqrt(d*d*L*L + J*J*R*R - 2*J*L*(2*Km*Km + d*R));
-//         // OK, roots are real, not complex
-//     } else {
-//         ok = false;
-//         ROS_WARN_NAMED(plugin_name_, "Incorrect DC motor parameters: d^2 L^2 + J^2 R^2 - 2 J L (2 Km^2 + d R) > 0 not satisfied!");
-//     }
-
-//     if (ok) {
-//       // Check if -dL-JR+Om < 0 (Other real root is always negative: -dL-JR-Om)
-//       if (Om < d*L+J*R) {
-//         // OK, both real roots are stable
-//       } else {
-//         ok = false;
-//         ROS_WARN_NAMED(plugin_name_, "Incorrect DC motor parameters: sqrt(d^2 L^2 + J^2 R^2 - 2 J L (2 Km^2 + d R)) < d*L+J*R not satisfied!");
-//       }
-//     }
-//     return ok;
-// }
-
-// void GazeboRosMotor::paramServerUpdate()
-// {
-//   if (notify_server_) {
-//     current_config_.velocity_noise        = velocity_noise_;
-//     current_config_.motor_nominal_voltage = motor_nominal_voltage_;
-//     current_config_.electric_resistance   = electric_resistance_;
-//     current_config_.electric_inductance   = electric_inductance_;
-//     current_config_.moment_of_inertia     = moment_of_inertia_;
-//     current_config_.armature_damping_ratio       = damping_ratio_;
-//     current_config_.electromotive_force_constant = electromotive_force_constant_;
-//     dynamic_reconfigure_server_->updateConfig(current_config_);
-//     ROS_INFO_NAMED(plugin_name_, "Notifying parameter server...");
-//     notify_server_ = false;
-//   }
-// }
-
-// void GazeboRosMotor::reconfigureCallBack(const gazebo_ros_motors::motorModelConfig &config, uint32_t level) {
-
-//   if (this->checkParameters())
-//   {
-//     // Noise and V does not affect linear stability
-//     this->velocity_noise_=config.velocity_noise;
-//     this->motor_nominal_voltage_=config.motor_nominal_voltage;
-//     bool ok = true;
-
-//     double temp = this->electric_resistance_; // Temporary storage for parameter
-//     // ROS_INFO_NAMED(plugin_name_, "Rt = %f", temp);
-//     if (electric_resistance_ != config.electric_resistance) {
-//       electric_resistance_ = config.electric_resistance;// R
-//       if (!this->ValidateParameters()) {
-//     	electric_resistance_ = temp;
-//     	ROS_WARN_NAMED(plugin_name_, "Electric resistance %6.3f discarded, keeping previous value of %6.3f Ohm", config.electric_resistance, electric_resistance_);
-//     	ok = false;
-//       }
-//     }
-
-//     temp = this->electric_inductance_;
-//     // ROS_INFO_NAMED(plugin_name_, "Lt = %f", temp);
-//     if (electric_inductance_ != config.electric_inductance) {
-//       electric_inductance_ = config.electric_inductance; // L
-//       if (!this->ValidateParameters()) {
-//     	electric_inductance_ = temp;
-//     	ROS_WARN_NAMED(plugin_name_, "Electric inductance %6.3f discarded, keeping previous value of %6.3f H", config.electric_inductance, electric_inductance_);
-//     	ok = false;
-//       }
-//     }
-
-//     temp = this->moment_of_inertia_;
-//     // ROS_INFO_NAMED(plugin_name_, "Jt = %f", temp);
-//     if (moment_of_inertia_ != config.moment_of_inertia) {
-//       moment_of_inertia_ = config.moment_of_inertia; // J
-//       if (!this->ValidateParameters()) {
-//     	moment_of_inertia_ = temp;
-//     	ROS_WARN_NAMED(plugin_name_, "Moment of inertia %6.3f discarded, keeping previous value of %6.3f kgm^2", config.moment_of_inertia, moment_of_inertia_);
-//     	ok = false;
-//       }
-//     }
-
-//     temp = this->damping_ratio_;
-//     // ROS_INFO_NAMED(plugin_name_, "Dt = %f", temp);
-//     if (damping_ratio_ != config.armature_damping_ratio) {
-//       damping_ratio_ = config.armature_damping_ratio; // d
-//       if (!this->ValidateParameters()) {
-//     	damping_ratio_ = temp;
-//     	ROS_WARN_NAMED(plugin_name_, "Armature damping %6.3f discarded, keeping previous value of %6.3f Nm/(rad/s)", config.armature_damping_ratio, damping_ratio_);
-//     	ok = false;
-//       }
-//     }
-
-//     temp = this->electromotive_force_constant_;
-//     // ROS_INFO_NAMED(plugin_name_, "Kt = %f", temp);
-//     if (electromotive_force_constant_ != config.electromotive_force_constant) {
-//       electromotive_force_constant_ = config.electromotive_force_constant; // Km
-//       if (!this->ValidateParameters()) {
-//     	electromotive_force_constant_ = temp;
-//     	ROS_WARN_NAMED(plugin_name_, "Motor constant %6.3f discarded, keeping previous value of %6.3f Nm/(rad/s)", config.electromotive_force_constant, electromotive_force_constant_);
-//     	ok = false;
-//       }
-//     }
-
-//     if (ok) {
-//       ROS_INFO_NAMED(plugin_name_, "DC Motor parameters validated and updated");
-//     } else {
-//       notify_server_ = true; // Some of the params were rejected, notify the param server from the main loop.
-//     }
-//   }
-// }
 
 void GazeboRosMotor::publishWheelJointState(double velocity, double effort) {
     if (this->publish_motor_joint_state_){
@@ -328,7 +196,7 @@ void GazeboRosMotor::motorModelUpdate(double dt, double output_shaft_omega, doub
         input_ = -1.0;
     }
     double T = actual_load_torque / gear_ratio_; // external loading torque converted to internal side
-    double V = input_ * supply_voltage_; // power supply voltage * (command input for motor velocity)
+    // double V = input_ * supply_voltage_; // power supply voltage * (command input for motor velocity)
     internal_omega_ = output_shaft_omega * gear_ratio_; // external shaft angular veloc. converted to internal side
     // DC motor exact solution for current and angular velocity (omega)
  
@@ -342,21 +210,22 @@ void GazeboRosMotor::motorModelUpdate(double dt, double output_shaft_omega, doub
     const double tau = 1;
     const double Cr = 0;
     const double res = 3.1;
+    double V = 3;
     ROS_INFO( "Value of V: %f ", V);
     // double i0 = internal_current_;
     double o0 = internal_omega_;
     double A = (-Kc*Kem/res - f)/J_ours;
     ROS_INFO( "Value of A: %f ", A);
 
-    double B = (Kc*V/res -C0)/J;
+    double B = (Kc*V/res -C0)/J_ours;
     ROS_INFO( "Value of B: %f ", B);
 
-    double w_m = o0+dt*(A*o0+B);
+    double w_m = o0+0.001*(A*o0+B);
     ROS_INFO( "Value of omega: %f ", w_m);
 
     double C_m = w_m*(-Kc*Kem/res-f)+Kc*V/res;
     ignition::math::Vector3d applied_torque;
-    // ROS_INFO( "Value of dt: %f ", dt);
+    ROS_INFO( "Value of dt: %f ", dt);
     // TODO: axis as param
     applied_torque.Z() = C_m * 1/tau; // motor torque T_ext = K * i * n_gear
     internal_omega_ = w_m;

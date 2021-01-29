@@ -356,10 +356,10 @@ void GazeboRosMotor::motorModelUpdate(double dt, double output_shaft_omega, doub
     double B = (Kc*V/res -C0)/J;
     ROS_INFO( "Value of B: %f ", B);
 
-    double w_m = o0+0.01*(A*o0+B);
+    double w_m = o0+dt*(A*o0+B);
     ROS_INFO( "Value of omega: %f ", w_m);
 
-    double C_m = 1;
+    double C_m = w_m*(-Kc*Kem/res-f)+Kc*V/res;
     ignition::math::Vector3d applied_torque;
     // ROS_INFO( "Value of dt: %f ", dt);
     // TODO: axis as param

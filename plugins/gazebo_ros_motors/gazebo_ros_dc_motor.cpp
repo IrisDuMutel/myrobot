@@ -400,16 +400,19 @@ void GazeboRosMotor::motorModelUpdate(double dt, double output_shaft_omega, doub
 }
 
 // Plugin update function
+
+// TODO: change ths update funtion to something that matches our model. 
+// for now, the integration is something that doesn't go well
 void GazeboRosMotor::UpdateChild() {
-    common::Time current_time = parent->GetWorld()->SimTime();
-    double seconds_since_last_update = ( current_time - last_update_time_ ).Double();
-    double current_output_speed = joint_->GetVelocity( 0u );
+    common::Time current_time = parent->GetWorld()->SimTime();     // Get current time
+    double seconds_since_last_update = ( current_time - last_update_time_ ).Double(); 
+    double current_output_speed = joint_->GetVelocity( 0u );       // Get current velocity
     ignition::math::Vector3d current_torque = this->link_->RelativeTorque();
-    double actual_load = current_torque.Z();
+    double actual_load = current_torque.Z();                       // Load last torque value
 
-    motorModelUpdate(seconds_since_last_update, current_output_speed, actual_load);
+    motorModelUpdate(seconds_since_last_update, current_output_speed, actual_load);// keep integrating and computing w_m and C_m
 
-    if ( seconds_since_last_update > update_period_ ) {
+    if ( seconds_since_last_update > update_period_ ) {  // Enter every 1 second 
         publishWheelJointState( current_output_speed, current_torque.Z() );
         publishMotorCurrent();
         auto dist = std::bind(std::normal_distribution<double>{current_output_speed, velocity_noise_},

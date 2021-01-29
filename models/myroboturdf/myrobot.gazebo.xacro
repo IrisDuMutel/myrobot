@@ -310,7 +310,7 @@
         <supply_topic>/motor/supply_voltage</supply_topic>
         <motor_nominal_voltage>24.0</motor_nominal_voltage> 
         <moment_of_inertia>0.001</moment_of_inertia> 
-        <armature_damping_ratio>0.0001</armature_damping_ratio> 
+        <damping_ratio>0.0001</damping_ratio> 
         <electromotive_force_constant>0.03</electromotive_force_constant> 
         <electric_resistance>13.8</electric_resistance> 
         <electric_inductance>0.001</electric_inductance> 
@@ -336,7 +336,7 @@
         <supply_topic>/motor/supply_voltage</supply_topic>
         <motor_nominal_voltage>24.0</motor_nominal_voltage> 
         <moment_of_inertia>0.001</moment_of_inertia> 
-        <armature_damping_ratio>0.0001</armature_damping_ratio> 
+        <damping_ratio>0.0001</damping_ratio> 
         <electromotive_force_constant>0.03</electromotive_force_constant> 
         <electric_resistance>13.8</electric_resistance> 
         <electric_inductance>0.001</electric_inductance> 

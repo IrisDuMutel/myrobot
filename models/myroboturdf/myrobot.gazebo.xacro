@@ -224,7 +224,7 @@
 
   
 
-  <gazebo reference="laser_sensor">
+  <!-- <gazebo reference="laser_sensor">
     <sensor type="ray" name="lds_lfcd_sensor">
       <pose>0 0 0 0 0 0</pose>
       <visualize>false</visualize>
@@ -254,7 +254,7 @@
         <frameName>laser_sensor</frameName>
       </plugin>
     </sensor>
-  </gazebo>
+  </gazebo> -->
 
  
 
@@ -300,7 +300,7 @@
 
 
   <!-- attached to left wheel and fully working-->
-  <gazebo>
+  <!-- <gazebo>
     <plugin name="pwm_vel_plugin" filename="libcustom_ros_dc_motor.so">
         <command_topic>/motor/voltage_norm</command_topic>
         <velocity_topic>/motor/velocity</velocity_topic>
@@ -324,9 +324,9 @@
         <motor_wrench_frame>base_footprint</motor_wrench_frame> 
         <motor_shaft_joint>wheel_left_joint</motor_shaft_joint>
       </plugin>
-  </gazebo>
+  </gazebo> -->
   <!-- attached to left wheel and fully working-->
-  <gazebo>
+  <!-- <gazebo>
     <plugin name="pwm_vel_plugin" filename="libcustom_ros_dc_motor.so">
         <command_topic>/motor/voltage_norm</command_topic>
         <velocity_topic>/motor/velocity</velocity_topic>
@@ -350,5 +350,5 @@
         <motor_wrench_frame>base_footprint</motor_wrench_frame> 
         <motor_shaft_joint>wheel_right_joint</motor_shaft_joint>
       </plugin>
-  </gazebo>
+  </gazebo> -->
   </robot>

@@ -23,7 +23,7 @@ import math
 from scipy.spatial.transform import Rotation as R
 from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
-from myrobot.msg import vect_msg
+from myrobot.msg import vect_msg, PWM
 import message_filters
 from sensor_msgs.msg import Image, CameraInfo
 import numpy as np
@@ -33,28 +33,23 @@ psi_int = 0
 
 def controller():
     rospy.init_node('controller',anonymous=True)
-    pub = rospy.Publisher('cmd_vel',Twist,queue_size=10)
+    pub = rospy.Publisher('PWM_refer',PWM,queue_size=10)
     odom_sub   = message_filters.Subscriber('/odom', Odometry)
-    ref_sub = message_filters.Subscriber('/traj_plann', Odometry)
-    # psi_refdoc= open("psi_ref.txt","w+")
-    # psi_estdoc= open("psi_des.txt","w+")
-    # ref_sub = message_filters.Subscriber('/rs_vect', vect_msg)
-    # ts = message_filters.TimeSynchronizer([ref_sub,odom_sub], 10)
+    ref_sub = message_filters.Subscriber('/simulink_references', Odometry)
     ts = message_filters.ApproximateTimeSynchronizer([ref_sub,odom_sub], queue_size=10, slop=0.5)
     ts.registerCallback(callback,pub)
-    # rate=rospy.Rate(30)
-    # rate.sleep()
-    # write_to_file()
     rospy.spin()
     
 
 def callback(ref_sub, odom_sub, pub):
+    
+    # Initialization
     global psi_int
-
-    Refer = Odometry()
-    Odom = Odometry()
     cmd = Twist()
+    pwm_refer = PWM()
+    Refer = Odometry()
     Refer = ref_sub
+    Odom = Odometry()
     Odom = odom_sub
 
     # Variable assignation:
@@ -67,12 +62,15 @@ def callback(ref_sub, odom_sub, pub):
     vel_ref = Refer.twist.twist.linear.x                   
     vel_odom = Odom.twist.twist.linear.x
     psi_ref = Refer.pose.pose.orientation.w
-    [yaw, pitch, roll] = get_rotation(Odom) # real orientation
+    
+    # real orientation
+    [yaw, pitch, roll] = get_rotation(Odom) 
     psi_est = yaw*180/math.pi
-    rel_vel = vel_ref - vel_odom
-    tot_dist = np.hypot(px_odom-px_start,py_odom-py_start)
+
+    # Distance differences: complete distance vs distance run
+    tot_dist = np.hypot(px_goal-px_start,py_goal-py_start)
     rel_dist = np.hypot(px_odom-px_start,py_odom-py_start)
-    actual_psi = Refer.twist.twist.angular.x 
+
     # Error computation:
     dist_error = tot_dist-rel_dist
     vx_error = vel_ref-vel_odom
@@ -84,11 +82,10 @@ def callback(ref_sub, odom_sub, pub):
     Kp_psi_Gain = 0.7
     Ki_psi_Gain = 0.0
     Integrator_psi_gainval = 0.02
+
     # Control
     vx_cmd = ((dist_error)*Ki_x_Gain+(vx_error)*Kp_x_Gain)
-    
     psi_int += Integrator_psi_gainval*psi_error
-
     psi_cmd = (psi_error*Kp_psi_Gain+psi_int*Ki_psi_Gain)
 
     # Normalization
@@ -106,12 +103,12 @@ def callback(ref_sub, odom_sub, pub):
     if vx_cmd < -1:
         vx_cmd = -1
     
-    # Transform into velocity commands
-    cmd.linear.x = vx_cmd
-    cmd.angular.z = psi_cmd
+    # PWM commands
+    pwm_refer.PWM_right = (vx_cmd+psi_cmd)*20000
+    pwm_refer.PWM_left = (vx_cmd-psi_cmd)*20000
 
     # Publishing
-    pub.publish(cmd)
+    pub.publish(pwm_refer)
 
 def get_rotation(Odom):
     orientation_q = Odom.pose.pose.orientation
@@ -123,7 +120,6 @@ def get_rotation(Odom):
 if __name__ == "__main__":
     try:
         controller()
-               
     except rospy.ROSInterruptException:
 
         pass

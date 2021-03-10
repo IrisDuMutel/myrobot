@@ -33,7 +33,7 @@ psi_int = 0
 
 def controller():
     rospy.init_node('controller',anonymous=True)
-    pub = rospy.Publisher('PWM_refer',PWM,queue_size=10)
+    pub = rospy.Publisher('PWM_refer',Twist,queue_size=10)
     odom_sub   = message_filters.Subscriber('/odom', Odometry)
     ref_sub = message_filters.Subscriber('/simulink_references', Odometry)
     ts = message_filters.ApproximateTimeSynchronizer([ref_sub,odom_sub], queue_size=10, slop=0.5)
@@ -46,7 +46,7 @@ def callback(ref_sub, odom_sub, pub):
     # Initialization
     global psi_int
     cmd = Twist()
-    pwm_refer = PWM()
+    pwm_refer = Twist()
     Refer = Odometry()
     Refer = ref_sub
     Odom = Odometry()
@@ -55,8 +55,8 @@ def callback(ref_sub, odom_sub, pub):
     # Variable assignation:
     px_goal = Refer.pose.pose.position.x
     py_goal = Refer.pose.pose.position.y
-    px_start = Refer.pose.pose.orientation.x
-    py_start = Refer.pose.pose.orientation.y
+    px_start = 0
+    py_start = 0
     px_odom = Odom.pose.pose.position.x
     py_odom = Odom.pose.pose.position.y
     vel_ref = Refer.twist.twist.linear.x                   
@@ -104,8 +104,16 @@ def callback(ref_sub, odom_sub, pub):
         vx_cmd = -1
     
     # PWM commands
-    pwm_refer.PWM_right = (vx_cmd+psi_cmd)*20000
-    pwm_refer.PWM_left = (vx_cmd-psi_cmd)*20000
+
+    if dist_error>0.1:
+        # PWM_right
+        pwm_refer.pose.pose.position.x = (vx_cmd+psi_cmd)*20000
+        # PWM_left
+        pwm_refer.pose.pose.position.y = (vx_cmd-psi_cmd)*20000
+    else:
+        pwm_refer.pose.pose.position.x = 0
+        pwm_refer.pose.pose.position.y = 0
+
 
     # Publishing
     pub.publish(pwm_refer)

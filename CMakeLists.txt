@@ -91,7 +91,8 @@ find_package(OpenCV REQUIRED)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
- add_message_files(DIRECTORY msg FILES vect_msg.msg)
+ add_message_files(DIRECTORY msg FILES vect_msg.msg
+                                       PWM.msg)
 
 
 ## Generate services in the 'srv' folder

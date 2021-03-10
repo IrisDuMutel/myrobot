@@ -33,19 +33,19 @@
         </geometry>
       </collision>
      
-     <visual name="cube_base_visual">
+     <!-- <visual name="cube_base_visual">
         <geometry>
           <box size="0.19 0.134 0.047"/>
         </geometry>
-      </visual>
+      </visual> -->
 
-      <!-- <visual name="cube_base_visual">
+      <visual name="cube_base_visual">
         <origin xyz="0.02 0 -0.01" rpy="1.5707 0 1.5707"/>
         <geometry>
           <mesh filename="package://myrobot/models/myroboturdf/meshes/Devastator.stl" scale="0.001 0.001 0.001"/>
         </geometry>
         <material name="light_black"/> 
-      </visual> -->
+      </visual>
 
       <collision name = "caster_collision">
       <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
@@ -64,13 +64,13 @@
         </surface> 
       </collision>
 
-      <visual name="caster_visual">
+      <!-- <visual name="caster_visual">
       <origin xyz="-0.05 0 -0.03" rpy="0 0 0"/>
         <geometry>
           <sphere radius="0.05"/>
         </geometry>
       </visual>
-      
+       -->
 
 
       <collision name = 'caster2_collision'>
@@ -90,12 +90,12 @@
         </surface> 
       </collision>
  
-     <visual name="caster2_visual">
+     <!-- <visual name="caster2_visual">
       <origin xyz="0.05 0 -0.03" rpy="0 0 0"/>
         <geometry>
           <sphere radius="0.05"/>
         </geometry>
-      </visual>
+      </visual> -->
 
 
     </link>
@@ -150,12 +150,12 @@
       </collision>
       
 
-      <visual name="wheel_left_link_visual">
+      <!-- <visual name="wheel_left_link_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <cylinder length="0.035" radius="0.06825"/>
         </geometry>
-      </visual>
+      </visual> -->
 
        
     </link>
@@ -182,12 +182,12 @@
       </collision>
       
 
-      <visual  name="wheel_right_link_visual">
+      <!-- <visual  name="wheel_right_link_visual">
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <cylinder length="0.035" radius="0.06825"/>
         </geometry>
-      </visual>
+      </visual> -->
 
     </link>
 

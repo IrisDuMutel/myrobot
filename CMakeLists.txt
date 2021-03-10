@@ -340,7 +340,7 @@ target_link_libraries(simple_node
 catkin_install_python(PROGRAMS scripts/realsense.py scripts/controller.py scripts/arbiter.py 
                                scripts/force.py scripts/light.py scripts/vector_fcn.py scripts/move_head.py
                                src/respawnGOAL.py scripts/myrobot_dqn_stage_1.py src/env_stage_1.py
-                               scripts/action_graph.py scripts/result_graph.py
+                               scripts/action_graph.py scripts/result_graph.py scripts/set_odom.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 ## Mark executables for installation

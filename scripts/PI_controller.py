@@ -33,7 +33,7 @@ psi_int = 0
 
 def controller():
     rospy.init_node('controller',anonymous=True)
-    pub = rospy.Publisher('cmd_vel',Twist,queue_size=10)
+    pub = rospy.Publisher('simulink_plant',PWM,queue_size=10)
     odom_sub   = message_filters.Subscriber('/odom', Odometry)
     ref_sub = message_filters.Subscriber('/traj_plann', Odometry)
     # psi_refdoc= open("psi_ref.txt","w+")

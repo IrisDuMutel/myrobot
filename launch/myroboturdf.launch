@@ -23,9 +23,9 @@
   <remap from="image" to="/camera/color/image_raw" />
   </node> -->
   <!-- <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/> -->
-  <node pkg="myrobot" name="simple_node" type="simple_node" output="screen"/>
-  <node pkg="myrobot" name="simple_publisher" type="simple_publisher.py" output="screen"/>
-
+  <!-- <node pkg="myrobot" name="simple_node" type="simple_node" output="screen"/>
+  <node pkg="myrobot" name="simple_publisher" type="simple_publisher.py" output="screen"/> -->
+  <!-- <node pkg="myrobot" name="controller" type="PI_controller.py" output="screen"/> -->
   
  
 </launch>

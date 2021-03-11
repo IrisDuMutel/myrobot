@@ -5,7 +5,7 @@
   <arg name="z_pos" default="0.0"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find myrobot)/worlds/empty_world.world"/>
+    <arg name="world_name" value="$(find myrobot)/worlds/obstacle_world.world"/>
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
@@ -25,8 +25,8 @@
   <!-- <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/> -->
   <!-- <node pkg="myrobot" name="simple_node" type="simple_node" output="screen"/>
   <node pkg="myrobot" name="simple_publisher" type="simple_publisher.py" output="screen"/> -->
+  <node pkg="myrobot" name="controller" type="PI_controller.py" output="screen"/>
   <!-- <node pkg="myrobot" name="set_odom" type="set_odom.py" output="screen"/>  -->
-  <!-- <node pkg="myrobot" name="controller" type="PI_controller.py" output="screen"/> -->
 
   
  

@@ -101,8 +101,8 @@
       </imu>
     </plugin>
   </gazebo>
-<!-- 
-  <gazebo reference="RealSense">
+
+  <!-- <gazebo reference="RealSense">
     <sensor name="camera" type="depth">
       <update_rate>20</update_rate>
       <camera>
@@ -142,7 +142,6 @@
       <hackBaseline>0</hackBaseline>
     </plugin> 
     </sensor> 
-    
   </gazebo> -->
 
   <!-- <gazebo reference="rightfront_force_sensor">

@@ -20,6 +20,7 @@
 
 import rospy
 import math
+import numpy
 from scipy.spatial.transform import Rotation as R
 from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
@@ -33,20 +34,23 @@ psi_int = 0
 
 def controller():
     rospy.init_node('controller',anonymous=True)
-    pub = rospy.Publisher('/cmd_vel',Twist,queue_size=10)
-    odom_sub   = message_filters.Subscriber('/odom_diffdrive', Odometry)
+    # odom_sub   = rospy.Subscriber('/odom', Odometry)
+    # pub = rospy.Publisher('/PWM_refer',Twist,queue_size=10)
+    pub2 = rospy.Publisher('/cmd_vel',Twist,queue_size=10)
+    odom_sub   = message_filters.Subscriber('/odom', Odometry)
     ref_sub = message_filters.Subscriber('/simulink_references', Twist)
-    ts = message_filters.ApproximateTimeSynchronizer([ref_sub,odom_sub], queue_size=10, slop=0.5)
-    ts.registerCallback(callback,pub)
+    ts = message_filters.ApproximateTimeSynchronizer([ref_sub,odom_sub], queue_size=10, slop=0.5, allow_headerless=True)
+    ts.registerCallback(callback,pub2)
     rospy.spin()
     
+def callback(ref_sub,odom_sub,pub2):
 
-def callback(ref_sub, odom_sub, pub):
+
+
     
     # Initialization
     global psi_int
     cmd = Twist()
-    pwm_refer = Twist()
     Refer = Twist()
     Refer = ref_sub
     Odom = Odometry()
@@ -74,7 +78,10 @@ def callback(ref_sub, odom_sub, pub):
     # Error computation:
     dist_error = tot_dist-rel_dist
     vx_error = vel_ref-vel_odom
-    psi_error = psi_ref-psi_est
+    psi_error = psi_ref*180/math.pi-psi_est
+
+    if psi_error>180:
+        psi_error = psi_error-360*numpy.sign(psi_error)
 
     # Control tuning
     Kp_x_Gain = 1
@@ -88,37 +95,54 @@ def callback(ref_sub, odom_sub, pub):
     psi_int += Integrator_psi_gainval*psi_error
     psi_cmd = (psi_error*Kp_psi_Gain+psi_int*Ki_psi_Gain)
 
+    psivel_cmd = psi_error/30
+
     # Normalization
     psi_cmd = psi_cmd/180 #degrees
     vx_cmd = vx_cmd/1
 
     # Saturation
-    if psi_cmd > 0.5:
-        psi_cmd = 0.5
-    if psi_cmd < -0.5:
-        psi_cmd = -0.5
+    # if psi_cmd > 0.5:
+    #     psi_cmd = 0.5
+    # if psi_cmd < -0.5:
+    #     psi_cmd = -0.5
+    if psivel_cmd > 3:
+        psivel_cmd = 3
+    if psivel_cmd < -3:
+        psivel_cmd = -3
 
-    if vx_cmd > 1:
-        vx_cmd = 1
-    if vx_cmd < -1:
-        vx_cmd = -1
+    if vx_cmd > 0.4:
+        vx_cmd = 0.4
+    if vx_cmd < -0.4:
+        vx_cmd = -0.4
     
-    # # PWM commands
+    # PWM commands
 
     # if dist_error>0.1:
     #     # PWM_right
-    #     pwm_refer.linear.x = (vx_cmd+psi_cmd)*20000
+    #     cmd.linear.x = (vx_cmd+psi_cmd)*20000
     #     # PWM_left
-    #     pwm_refer.linear.y = (vx_cmd-psi_cmd)*20000
+    #     cmd.linear.y = (vx_cmd-psi_cmd)*20000
     # else:
-    #     pwm_refer.linear.x = 0
-    #     pwm_refer.linear.y = 0
+    #     cmd.linear.x = 0
+    #     cmd.linear.y = 0
     
-    cmd.linear.x = vx_cmd
-    cmd.angular.z = psi_cmd
+    # pub.publish(cmd)
+
+    # cmd_vel commands
+    if dist_error>0.1:
+        cmd.linear.x = vel_ref
+        cmd.angular.z = psivel_cmd
+        cmd.linear.y = 0
+    else:
+        cmd.linear.x = 0
+        cmd.angular.z = 0
+        cmd.linear.y = 0
+
+    pub2.publish(cmd)
 
     # Publishing
-    pub.publish(cmd)
+    
 
 def get_rotation(Odom):
     orientation_q = Odom.pose.pose.orientation

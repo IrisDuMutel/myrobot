@@ -99,6 +99,7 @@
         <!-- <param name="odom1_relative" value="true"/> -->
 
         <param name="imu0_remove_gravitational_acceleration" value="$(arg imu_remove_gravitational_acceleration)"/>
+        <param name="publish_acceleration" value="true"/>
 
         <param name="print_diagnostics" value="true"/>
 

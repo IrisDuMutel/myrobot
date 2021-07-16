@@ -275,8 +275,8 @@ add_library(imu_plugin SHARED plugins/imu/imu_plugin.cpp)
 target_link_libraries(imu_plugin  ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 add_library(laser_plugin plugins/lidar/laser_plugin.cpp)
 target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
-add_library(custom_ros_dc_motor plugins/gazebo_ros_motors/gazebo_ros_dc_motor.cpp)
-target_link_libraries(custom_ros_dc_motor ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+# add_library(custom_ros_dc_motor plugins/gazebo_ros_motors/gazebo_ros_dc_motor.cpp)
+# target_link_libraries(custom_ros_dc_motor ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 # add_library(Dc_motor_Dev SHARED src/dc_motor_model/ert_main.cpp)
 # target_link_libraries(Dc_motor_Dev ${catkin_LIBRARIES})
@@ -294,21 +294,26 @@ target_link_libraries(custom_ros_dc_motor ${catkin_LIBRARIES} ${Boost_LIBRARIES}
 # add_executable(camera_depth src/camera_depth.cpp)
 # target_link_libraries(camera_depth ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 ## Declare executable
-add_executable(simple_node
-   src/simple_node/ert_main.cpp
-   src/simple_node/simple_node.cpp
-   src/simple_node/simple_node_data.cpp
-   /usr/local/MATLAB/R2020b/toolbox/target/codertarget/rtos/src/linuxinitialize.cpp
-   src/simple_node/slros_busmsg_conversion.cpp
-   src/simple_node/slros_initialize.cpp
-   /usr/local/MATLAB/R2020b/toolbox/ros/codertarget/src/slros_generic_param.cpp
-)
 
-add_dependencies(simple_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(simple_node
-   ${catkin_LIBRARIES}
-   ${Boost_LIBRARIES}
-)
+#### TO BE USED ONLY IN THE CASE WE ARE USEING THE GROUND STATION ####
+
+# add_executable( simple_node
+#    src/simple_node/ert_main.cpp
+#    src/simple_node/simple_node.cpp
+#    src/simple_node/simple_node_data.cpp
+#    /usr/local/MATLAB/R2020b/toolbox/target/codertarget/rtos/src/linuxinitialize.cpp
+#    src/simple_node/slros_busmsg_conversion.cpp
+#    src/simple_node/slros_initialize.cpp
+#    /usr/local/MATLAB/R2020b/toolbox/ros/codertarget/src/slros_generic_param.cpp
+# )
+
+# add_dependencies(simple_node ${catkin_EXPORTED_TARGETS})
+# target_link_libraries(simple_node
+#    ${catkin_LIBRARIES}
+#    ${Boost_LIBRARIES}
+# )
+
+########################################################################
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -369,11 +374,11 @@ install(TARGETS
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-install(TARGETS
-  gazebo_ros_dc_motor
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  )
+# install(TARGETS
+#   gazebo_ros_dc_motor
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   )
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html

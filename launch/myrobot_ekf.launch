@@ -1,0 +1,41 @@
+<launch>
+    <arg name="model" default="myrobot"/>
+    <arg name="x_pos" default="0.0"/>
+    <arg name="y_pos" default="0.0"/>
+    <arg name="z_pos" default="0.0"/>
+  
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find myrobot)/worlds/obstacle_world.world"/>
+      <arg name="paused" value="false"/>
+      <arg name="use_sim_time" value="true"/>
+      <arg name="gui" value="true"/>
+      <arg name="headless" value="false"/>
+      <arg name="debug" value="false"/>
+      <arg name="verbose" value="true"/>
+    </include>
+  
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find myrobot)/models/myroboturdf/$(arg model).urdf.xacro" />
+  
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_urdf" args="-urdf -model $(arg model) -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+    <!-- <node pkg="myrobot" name="realsense" type="slam_gmapping.py" output="screen"/> -->
+    <!-- <node pkg="myrobot" name="force" type="force.py" output="screen"/> --> -->
+    <!-- <node name="image_view1" pkg="image_view" type="image_view" respawn="false" output="log">
+    <remap from="image" to="/camera/color/image_raw" />
+    </node> -->
+    <!-- <node pkg="myrobot" name="realsense" type="realsense.py" output="screen"/> -->
+    <!-- <node pkg="myrobot" name="simple_node" type="simple_node" output="screen"/>
+    <node pkg="myrobot" name="simple_publisher" type="simple_publisher.py" output="screen"/> -->
+    <node pkg="myrobot" name="controller" type="PI_controller.py" output="screen"/>
+    <!-- <node pkg="myrobot" name="set_odom" type="set_odom.py" output="screen"/>  -->
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+        <rosparam command="load" file="$(find robot_localization)/params/ekf_template.yaml" />
+    
+        <!--  Placeholder for output topic remapping
+        <remap from="odometry/filtered" to=""/>
+        <remap from="accel/filtered" to=""/>
+        -->
+    
+    </node>
+    
+   
+  </launch>

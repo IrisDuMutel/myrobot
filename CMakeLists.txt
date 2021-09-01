@@ -273,8 +273,8 @@ add_library(depth_camera_plugin SHARED plugins/depth_camera/depth_camera_plugin.
 target_link_libraries(depth_camera_plugin  DepthCameraPlugin ${catkin_LIBRARIES})
 add_library(imu_plugin SHARED plugins/imu/imu_plugin.cpp)
 target_link_libraries(imu_plugin  ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-add_library(laser_plugin plugins/lidar/laser_plugin.cpp)
-target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
+# add_library(laser_plugin plugins/lidar/laser_plugin.cpp)
+# target_link_libraries(laser_plugin RayPlugin ${catkin_LIBRARIES})
 # add_library(custom_ros_dc_motor plugins/gazebo_ros_motors/gazebo_ros_dc_motor.cpp)
 # target_link_libraries(custom_ros_dc_motor ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 

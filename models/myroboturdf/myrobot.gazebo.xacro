@@ -74,14 +74,18 @@
      <material>Gazebo/Blue</material> 
   </gazebo> -->
   <gazebo>
-    <plugin name="imu_plugin" filename="libimu_plugin.so">
+    <!-- <plugin name="imu_plugin" filename="libimu_plugin.so"> -->
+    <plugin name="imu_plugin" filename="libhector_gazebo_ros_imu.so">
       <alwaysOn>true</alwaysOn>
       <bodyName>imu_link</bodyName>
       <frameName>imu_link</frameName>
-      <topicName>imu</topicName>
+      <topicName>imu/data_raw</topicName>
       <serviceName>imu_service</serviceName>
       <gaussianNoise>0.0</gaussianNoise>
+      <xyzOffset>0 0 0</xyzOffset>
+      <rpyOffset>0 0 0</rpyOffset>
       <updateRate>200</updateRate>
+      <visualize>true</visualize>
       <imu>
         <noise>
           <type>gaussian</type>
@@ -102,7 +106,7 @@
     </plugin>
   </gazebo>
 
-  <!-- <gazebo reference="RealSense">
+  <gazebo reference="RealSense">
     <sensor name="camera" type="depth">
       <update_rate>20</update_rate>
       <camera>
@@ -127,7 +131,7 @@
       <depthImageTopicName>/camera/depth/image_raw</depthImageTopicName>
       <depthImageCameraInfoTopicName>/camera/depth/camera_info</depthImageCameraInfoTopicName>
       <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
-      <frameName>RealSense</frameName>
+      <frameName>footprint</frameName>
       <pointCloudCutoff>0.3</pointCloudCutoff>
       <pointCloudCutoffMax>4.5</pointCloudCutoffMax>
       <distortionK1>0</distortionK1>
@@ -142,7 +146,7 @@
       <hackBaseline>0</hackBaseline>
     </plugin> 
     </sensor> 
-  </gazebo> -->
+  </gazebo>
 
   <!-- <gazebo reference="rightfront_force_sensor">
     <sensor name="rf_force_sensor" type="contact">
